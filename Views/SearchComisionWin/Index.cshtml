@@ -1,0 +1,151 @@
+﻿@using Kendo.Mvc.UI;
+<div id="SearchComisionWin">
+    @Automation.Helper.winClass.windowHeader("", "جستجو", 600, 450)
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <div>
+            <center>
+                <table>
+                    <tr>
+                        <td>
+                            فیلد جستجو:@Html.DropDownList("cboSearchFiald1", new SelectList(new[] { new { ID = "0", Name = "نام و نام خانوادگی" } }, "ID", "Name"))
+                        </td>
+                        <td>
+                            نوع جستجو: @Html.DropDownList("cboSearchType1", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch1")
+                        </td>
+                        <td>
+                            نتیجه رکوردها: @Html.TextBox("txtTop1", 30, new { @style = "width:30px;" }) رکورد
+                        </td>
+                    </tr>
+                </table>
+            </center>
+            <br />
+        </div>
+        <center>
+            <p>
+                @Automation.Helper.winClass.Buttons("Select", "انتخاب", "Next")
+                @Automation.Helper.winClass.Buttons("exit1", "خروج", "Exit")
+            </p>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblCommisionSelect>()
+                .Name("searchGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldStaffName).Title("نام و نام خانوادگی");
+                    columns.Bound(p => p.fldOrganicRoleName).Title("پست سازمانی");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "SearchComisionWin")
+            )
+            )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var state;
+        $("document").ready(function () {
+            $("#Select").button();
+            $("#exit1").button();
+
+
+             state = '@ViewBag.state';
+            $("#exit1").click(function () {
+                isWinOpen = false;
+                $("#SearchComisionWin").remove();
+            });
+
+            $('#Select').click(function () { GridDblClick(); });
+
+            $('#SearchComisionWin #searchGrid table tr').live('dblclick', function () { GridDblClick(); });
+
+
+            $('#SearchComisionWin #btnClose').click(function () {
+                $("#SearchComisionWin").remove();
+                isWinOpen = false;
+            });
+
+            $(document).keyup(function (e) {
+                if (e.keyCode == 27) {
+                    $("#SearchComisionWin").remove();
+                    isWinOpen = false;
+                }
+            });
+
+            $('#txtSearch1').keyup(function () {
+                var url = '@Url.Action("Reload", "SearchComisionWin")';
+                Reload(url, 'searchGrid', $("#cboSearchFiald1").val(), $("#txtSearch1").val(), $("#txtTop1").val(), $("#cboSearchType1").val());
+            });
+
+
+        });
+
+        function GridDblClick() {
+            var entityGrid = $("#searchGrid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var name = selectedItem.fldStaffName + "(" + selectedItem.fldOrganicRoleName + ")";
+
+                if (state == 1) {
+                    var id = selectedItem.fldID;
+                    var name = selectedItem.fldStaffName;
+                    var Role = selectedItem.fldOrganicRoleName;
+
+                    S_StaffID = id;
+                    $('#S_StaffName').val(name);
+                    $('#lblS_StaffNameError').html(Role);
+                    isWinOpen = false;
+                }
+                else if (state == 2) {
+                    var id = selectedItem.fldID;
+                    var name = selectedItem.fldStaffName;
+                    var Role = selectedItem.fldOrganicRoleName;
+
+                    D_StaffID = id;
+                    $('#D_StaffName').val(name);
+                    $('#lblD_StaffNameError').html(Role);
+                    isWinOpen = false;
+                }
+                $('#SearchComisionWin').remove();
+            }
+            else {
+                windowAppend('body', '/metro/error');
+                $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                $("#error .wintitle").html("خطا");
+            }
+        }
+
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+
+    </script>
+    @Automation.Helper.winClass.windowFother();
+</div>

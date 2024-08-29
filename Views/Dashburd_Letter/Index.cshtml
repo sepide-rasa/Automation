@@ -1,0 +1,124 @@
+﻿
+@using Kendo.Mvc.UI;
+<div id="Dashburd_Letter">
+    @Automation.Helper.winClass.windowHeader("", "نامه های خوانده نشده", 1200, 600)
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    
+        
+        <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Automation.Models.sp_LetterSelectInboxNotRead>()
+                .Name("InboxGrid")
+                .Scrollable(scrollable => scrollable.Virtual(true).Height(497))
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldSubject).Title("عنوان نامه").Width(200);
+                    columns.Bound(p => p.fldOrderId).Title("ش ثبت نامه").Width(80);
+                    columns.Bound(p => p.fldID).Title("کد").Hidden();
+                    columns.Bound(p => p.fldLetterNumber).Title("ش نامه").Width(100);
+                    columns.Bound(p => p.fldLetterDate).Title("تاریخ نامه").Width(90);
+                    columns.Bound(p => p.AssimentLetterStatus).Title("وضعیت ارجاع").Width(100);
+                    columns.Bound(p => p.fldLetterstatus).Title("وضعیت نامه").Width(100);
+                    columns.Bound(p => p.fldAssigmentDate).Title("تاریخ ارجاع").Width(90);
+                    columns.Bound(p => p.fldType).Title("نوع نامه").Width(150);
+                    columns.Bound(p => p.fldCommision).Title("ارسال کننده").Width(200);
+                    columns.Bound(p => p.LetterRecievers).Title("گیرنده").Width(200);
+                    columns.Bound(p => p.assigmentid).Hidden();
+                    columns.Bound(p => p.fldReceiverComisionID).Hidden();
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Scrollable(scrol => scrol.Enabled(true))
+            .Resizable(resize => resize.Columns(true))
+            .DataSource(data =>
+                data.Ajax()
+                                .Read("Fill", "Dashburd_Letter")
+            )
+                //.ClientRowTemplate("<table role='grid'><tr><td></td><td></td><td></td><td></td></tr></table>")
+        )
+    </div>
+   
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#Select").button();
+            $("#exit1").button();
+            isWinOpen = false;
+            var state = '@ViewBag.state';
+            $("#exit1").click(function () {
+                $("#Dashburd_Letter").remove();
+            });
+            $(document).keyup(function (e) {
+                if (e.keyCode == 27) {
+                    $("#Dashburd_Letter").remove();
+                    isWinOpen = false;
+                }
+            });
+            $('#Dashburd_Letter #btnClose').click(function () {
+                $("#Dashburd_Letter").remove();
+                isWinOpen = false;
+            });
+
+            $('#Select').click(function () {
+                var entityGrid = $("#searchGrid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var name = selectedItem.fldName + ' ' + selectedItem.fldFamily;
+                    isWinOpen = false;
+                    StaffID = id;
+                    $('#StaffName').val(name);
+                    $('#Dashburd_Letter').remove();
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+
+
+            $('#Dashburd_Letter #searchGrid table tr').live('dblclick', function () {
+                var entityGrid = $("#searchGrid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var name = selectedItem.fldName + ' ' + selectedItem.fldFamily;
+                    isWinOpen = false;
+                    StaffID = id;
+                    $('#StaffName').val(name);
+                    $('#Dashburd_Letter').remove();
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+
+            $('#txtSearch1').keyup(function () {
+                var url = '@Url.Action("Reload", "Search")';
+                Reload(url, 'searchGrid', $("#cboSearchFiald1").val(), $("#txtSearch1").val(), $("#txtTop1").val(), $("#cboSearchType1").val());
+            });
+
+
+        });
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+
+    </script>
+    @Automation.Helper.winClass.windowFother();
+</div>

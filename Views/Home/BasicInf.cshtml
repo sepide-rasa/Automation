@@ -1,0 +1,243 @@
+﻿<div id="BasicInf">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#O_Unit').click(function () {
+            windows('#win', '/orgunit');
+        });
+        $('#AssignmentType').click(function () {
+            windows('#win', '/AssignmentType');
+        });
+        $('#SecurityType').click(function () {
+            windows('#win', '/SecurityType');
+        });
+        $('#OrganicRol').click(function () {
+            windows('#win', '/OrganicRole');
+        });
+        $('#Comision').click(function () {
+            windows('#win', '/SearchStaff/Index/1');
+
+        });
+        $('#Staff').click(function () {
+            windows('#win', '/Staff');
+        });
+        $('#Pattern').click(function () {
+            windows('#win', '/LetterPattern');
+        });
+        $('#ExternalPartner').click(function () {
+            windows('#win', '/ExternalPartner');
+        });
+        $('#Archive').click(function () {
+            windows('#win', '/Archive');
+        });
+        $('#ProgramSetting').click(function () {
+            windows('#win', '/ProgramSetting');
+        });
+        $('#SecretariatFormat').click(function () {
+            windows('#win', '/SecretariatSearch/index/1');
+        });
+        $('#SecretarialOrganizationUnit').click(function () {
+            windows('#win', '/SecretariatSearch/index/2');
+        });
+        $('#substitute').click(function () {
+            windows('#win', '/substitute');
+        });
+        $('#AssignmentRole').click(function () {
+            windows('#win', '/SearchComision');
+        });
+
+        $('#Premission').click(function () {
+            windows('#win', '/Permission');
+        });
+        $('#ApplicationPart').click(function () {
+            windows('#win', '/ApplicationPart');
+        });
+        $('#UserGroup').click(function () {
+            windows('#win', '/UserGroup');
+        }); 
+        $('#User').click(function () {
+            windows('#win', '/User');
+        });
+        
+    });
+</script>
+@using Kendo.Mvc.UI;
+
+@(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+         .HtmlAttributes(new { @style = "height:600px" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+
+              Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                            horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "center-pane" })
+                            .Content(@<div id="win">
+                        </div>);
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Collapsible(false)
+                            .Size("220px")
+                            .Content(Html.Kendo().PanelBar().Name("sp1")
+                            .Items(item =>
+                            {
+                                if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 2))
+                                {
+                                    item.Add().Text("سازمان")
+                                        .ImageUrl(Url.Content("~/content/images/organization.png"))
+                                        .Expanded(true)
+                                        .Items(Banks =>
+                                        {
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 3))
+                                            {
+                                                Banks.Add().Text("تعریف چارت سازمانی")
+                                                    .HtmlAttributes(new { id = "O_Unit" })
+                                                    .ImageUrl(Url.Content("~/content/images/64.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 7))
+                                            {
+                                                Banks.Add().Text("تعریف پست سازمانی")
+                                                    .HtmlAttributes(new { id = "OrganicRol" })
+                                                    .ImageUrl(Url.Content("~/content/images/OrganicRol.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 55))
+                                            {
+                                                Banks.Add().Text("تعریف دبیرخانه ها")
+                                                    .HtmlAttributes(new { id = "SecretarialOrganizationUnit" })
+                                                    .ImageUrl(Url.Content("~/content/images/1376570130_folder_home2.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 11))
+                                            {
+                                                Banks.Add().Text("تعیین فرمت شماره دهی")
+                                                    .HtmlAttributes(new { id = "SecretariatFormat" })
+                                                    .ImageUrl(Url.Content("~/content/images/stamp.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 37))
+                                            {
+                                                Banks.Add().Text("تعریف الگو نامه")
+                                                    .HtmlAttributes(new { id = "Pattern" })
+                                                    .ImageUrl(Url.Content("~/content/images/Pattern.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 57))
+                                            {
+                                                Banks.Add().Text("تنظیمات")
+                                                    .HtmlAttributes(new { id = "ProgramSetting" })
+                                                    .ImageUrl(Url.Content("~/content/images/1375985679_package_system.png"));
+                                            }
+                                        });
+                                }
+                                if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 59))
+                                {
+                                    item.Add().Text("کارمندان")
+                                    .ImageUrl(Url.Content("~/content/images/Staff.png"))
+                                    .Expanded(true)
+                                    .Items(Banks =>
+                                    {
+
+                                        if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 15))
+                                        {
+                                            Banks.Add().Text("تعریف کارمندان")
+                                            .HtmlAttributes(new { id = "Staff" })
+                                            .ImageUrl(Url.Content("~/content/images/Staff1.png"));
+                                        }
+                                        if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 19))
+                                        {
+                                            Banks.Add().Text("تعریف احکام کاری")
+                                            .HtmlAttributes(new { id = "Comision" })
+                                            .ImageUrl(Url.Content("~/content/images/Commision.png"));
+                                        }
+                                    });
+                                }
+                                if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 60))
+                                {
+                                    item.Add().Text("ارجاعات")
+                                    .ImageUrl(Url.Content("~/content/images/assign.png"))
+                                    .Expanded(true)
+                                    .Items(Banks =>
+                                    {
+                                        if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 23))
+                                        {
+                                            Banks.Add().Text("تعریف انواع ارجاع")
+                                                .HtmlAttributes(new { id = "AssignmentType" })
+                                                .ImageUrl(Url.Content("~/content/images/assigntype.png"));
+                                        }
+                                        if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 24))
+                                        {
+                                            Banks.Add().Text("تعریف انواع محرمانگی")
+                                                .HtmlAttributes(new { id = "SecurityType" })
+                                                .ImageUrl(Url.Content("~/content/images/security.png"));
+                                        }
+                                        if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 31))
+                                        {
+                                            Banks.Add().Text("تعریف ارگانهای خارجی")
+                                                .HtmlAttributes(new { id = "ExternalPartner" })
+                                                .ImageUrl(Url.Content("~/content/images/1376572725_industry.png"));
+                                        }
+                                        if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 35))
+                                        {
+                                            Banks.Add().Text("مدیریت قوانین ارجاع")
+                                                .HtmlAttributes(new { id = "AssignmentRole" })
+                                                .ImageUrl(Url.Content("~/content/images/assign.png"));
+                                        }
+                                    });
+                                }
+                                if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 61))
+                                {
+                                    item.Add().Text("مدیریت کاربران")
+                                        .ImageUrl(Url.Content("~/content/images/1375796619_User Green.png"))
+                                        .Expanded(true)
+                                        .Items(Banks =>
+                                        {
+
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 65))
+                                            {
+                                                Banks.Add().Text("تعریف گروه های کاربری")
+                                                    .HtmlAttributes(new { id = "UserGroup" })
+                                                    .ImageUrl(Url.Content("~/content/images/UserGroups.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 63))
+                                            {
+                                                Banks.Add().Text("تعیین دسترسی")
+                                                    .HtmlAttributes(new { id = "Premission" })
+                                                    .ImageUrl(Url.Content("~/content/images/1376572594_Keychain Access.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 36))
+                                            {
+                                                Banks.Add().Text("تعریف کاربران")
+                                                 .HtmlAttributes(new { id = "User" })
+                                                 .ImageUrl(Url.Content("~/content/images/1375797163_group.png"));
+                                            }
+                                        });
+                                }
+                                if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 62))
+                                {
+                                    item.Add().Text("بایگانی")
+                                    .ImageUrl(Url.Content("~/content/images/1376570677_my_documents.png"))
+                                        .Expanded(true)
+                                        .Items(Banks =>
+                                        {
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 38))
+                                            {
+                                                Banks.Add().Text("تعریف آرشیو")
+                                                    .HtmlAttributes(new { id = "Archive" })
+                                                    .ImageUrl(Url.Content("~/content/images/archive.png"));
+                                            }
+                                            
+                                        });
+                                }
+                            })
+                            .ToHtmlString());
+                    }).ToHtmlString()
+              );
+      })
+      )
+</div>

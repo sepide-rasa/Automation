@@ -1,0 +1,294 @@
+﻿@using Kendo.Mvc.UI;
+<div id="OrgUnit">
+    <div>
+        <br />
+        <a href="@Url.Content("~/Helps/تعریف چارت سازمانی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;">
+        </a>
+        <center>
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        <span style="color: Red;">*</span>عنوان:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtTitle")
+                        <span id="lblTitleError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="right">
+                        @Html.CheckBox("isDabirkhane", false)دبیرخانه
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        چارت سازمانی:
+                    </td>
+                    <td colspan="2" dir="rtl" id="O_Unit" align="right">
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <script type="text/javascript">
+            var dataItem;
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                Pid = dataItem.id;
+            }
+            function expand() {
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.expand(".k-item");
+            }
+            var Pid;
+            $("document").ready(function () {
+
+                $('#O_Unit').html($('#LocationDiv').valueOf());
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exit").button();
+                $("#Help").button();
+
+
+                $("#exit").click(function () {
+                    $("#OrgUnit").remove();
+                });
+
+                $('#OrgUnit').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#OrgUnit').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+                $(document).keyup(function (event) {
+                    if (event.which == 119) {
+                        SaveRecord();
+                    }
+                    else if (event.which == 113) {
+                        EditRecord();
+                    }
+                    else if (event.which == 115) {
+                        DeleteRecord();
+                    }
+                });
+                $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+                $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+                $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+                jQuery("#EditLink").click(function () {
+                    EditRecord();
+                });
+
+                $('#DelLink').click(function () {
+                    DeleteRecord();
+                });
+
+                $("#AddLink").click(function () {
+                    SaveRecord();
+                });
+
+
+                $("#txtTitle").keyup(function () {
+                    if ($("#txtTitle").val() != '') {
+                        $("#txtTitle").removeClass("input-validation-error");
+                        $("#lblTitleError").html("");
+                    }
+                    else {
+                        $("#txtTitle").addClass("input-validation-error");
+                        $('#lblTitleError').html('لطفا عنوان را وارد کنید.');
+                    }
+                });
+
+            });
+            function Clear() {
+                $("#txtTitle").val('');
+                $('#fldId').val('0');
+                document.getElementById('isDabirkhane').checked = false;
+            }
+            function SaveRecord() {
+                var er = false;
+                if ($("#txtTitle").val() == '') {
+                    $("#txtTitle").addClass("input-validation-error");
+                    $('#lblTitleError').html('لطفا عنوان را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblTitleError').html('');
+
+
+                if (er)
+                    return;
+
+                var data = {
+                    fldName: $("#txtTitle").val(),
+                    fldPID: Pid,
+                    fldId: $("#fldId").val(),
+                    isDabirkhane: document.getElementById('isDabirkhane').checked
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/OrgUnit/Save")', "#win");
+                }
+                Clear();
+            }
+            function EditRecord() {
+                if (Pid != null) {
+                    var URL = '@Url.Content("~/OrgUnit/Details")';
+                    URL = URL + "/" + Pid;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            Pid = data.fldPId;
+                            $("#fldId").val(data.fldId);
+                            $("#txtTitle").val(data.fldName);
+                            document.getElementById('isDabirkhane').checked = data.isDabirkhane;
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+            function DeleteRecord() {
+                if (Pid != null) {
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + Pid + "&URL=" + '@Url.Content("~/OrgUnit/Delete")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            }
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoTreeView');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { id: 1 },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoTreeView").dataSource.data(result);
+                    }
+
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var tree = $('#treeview').data("kendoTreeView");
+                        tree.dataSource.read();
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+            function drop(e) {
+                var data = $('#treeview').data('kendoTreeView').dataItem(e.sourceNode);
+                var newData = $('#treeview').data('kendoTreeView').dataItem(e.destinationNode);
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: '/OrgUnit/Move',
+                    data: {
+                        Source: data.id,
+                        Destination: newData.id
+                    },
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var tree = $('#treeview').data("kendoTreeView");
+                        tree.dataSource.read();
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+            .Name("treeview")
+            .DragAndDrop(true)
+            .DataTextField("Name")
+            .Checkboxes(chkbxs =>
+            {
+                chkbxs.Enabled(false).CheckChildren(false);
+            })
+            .DataSource(dataSource => dataSource
+            .Read(read => read
+            .Action("_RolsTree", "OrgUnit")
+            )
+            )
+            .Events(events =>
+            {
+                events.Select("select");
+                events.DataBound("expand");
+                events.Drop("drop");
+            })
+        )
+    </div>
+    <div id="myc" class="Console">
+    </div>
+</div>

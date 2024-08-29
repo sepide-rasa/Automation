@@ -1,0 +1,174 @@
+﻿@using Kendo.Mvc.UI;
+<div id="DistributeAnswerDate">
+    @Automation.Helper.winClass.windowHeader("", "توزیع", 400, 200)
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    @{
+        Automation.Models.AutomationEntities p = new Automation.Models.AutomationEntities();
+        var date = MyLib.Shamsi.Miladi2ShamsiString(p.sp_GetDate().FirstOrDefault().fldDateTime);
+
+    }
+    <script type="text/javascript">
+    
+    var WindowOpen = false;
+   
+    var isWinOpen = false;
+    $("document").ready(function () {
+
+        $("#TsendLetter").button();
+        $("#TExit").button();
+        AssSourceId = '@ViewBag.AssSourceId';
+        LetterType = '@ViewBag.fldLetterType';
+        $('#txtEndDate').val('@date');
+
+        $('#txtEndDate').datepicker({
+            showButtonPanel: true
+        });
+        $('#DistributeAnswerDate #btnClose').click(function () {
+            $("#DistributeAnswerDate").remove();
+            isWinOpen = false;
+        });
+
+
+        $("#TExit").click(function () {
+            isWinOpen = false;
+            WinOpen = false;
+            $("#DistributeAnswerDate").remove();
+        });
+
+        $("#TsendLetter").click(function () {
+            if (LetterID != 0) {
+                $("#DistributeAnswerDate").remove();
+                $('#Lock').show();
+                var URL = '@Url.Content("~/Letter/Distribute")';
+                $.ajax({
+                    type: "post",
+                    url: URL,
+                    data: {
+                        fldAssignmentAnswerDate: $("#txtEndDate").val(),
+                        fldLetterID: LetterID,
+                        fldLetterBoxID: LetterBoxID,
+                        fldComisionID: $('#cboCreator').val(),
+                        fldReceiverComisionID: girandeID,
+                        fldRoneveshId: rooneveshtID,
+                        fldAssignmentID: AssignmentSId,
+                        AssignmentTypeId: AssignmentTypeId
+                    },
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        $('#Lock').hide();
+
+                        $.ajax({
+                            type: "GET",
+                            url: '/MailContact/ChekHaveMail',
+                            data: {
+                                state: 1, LetterID: LetterID
+                            },
+                            success: function (data) {
+                                if (data.Name != "") {
+                                    $("#error").remove();
+                                    windowAppend('body', '/MailContact/Index?State=3&LetterID=' + LetterID + '&Name=' + data.Name + '&Email=' + data.Email);
+
+                                }
+
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        });
+
+    });
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ارسال موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    $('#Lock').hide();
+                    $("#DistributeAnswerDate").remove();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    
+    </script>
+    <div>
+        <br />
+        <table>
+            <tr>
+                <td>
+                    @Automation.Helper.winClass.Buttons("TsendLetter", "توزیع نامه", "Save")
+                    @Automation.Helper.winClass.Buttons("TExit", "خروج", "Exit")
+                </td>
+            </tr>
+        </table>
+        <div>
+            <table>
+                <tr>
+                    
+                    <td align="right">
+                        <span style="color: Red;">*</span>حداکثر مهلت پاسخ:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtEndDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                        <span id="lblBirthDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+               
+            </table>
+        </div>
+    </div>
+    @Automation.Helper.winClass.windowFother();
+</div>

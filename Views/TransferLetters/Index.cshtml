@@ -1,0 +1,159 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="TransferLetters">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+   
+    <div>
+        <br />
+         <a href="@Url.Content("~/Helps/انتقال نامه های جاری.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+    
+        <center>
+            @Html.Hidden("fldID")
+            <table>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام و نام خانوادگی فرد مبدا(Ins):
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("S_StaffName")
+                        <span id="lblS_StaffNameError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام و نام خانوادگی فرد مقصد(Ins):
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("D_StaffName")
+                        <span id="lblD_StaffNameError" style="color: Red;"></span>
+                    </td>
+                </tr>
+             
+              
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("Trans", "انتقال نامه های جاری", "yes")
+                @Automation.Helper.winClass.Buttons("TransSend", "انتقال نامه های ارسال شده", "yes")
+
+            </p>
+        </center>
+        
+    </div>
+    <script type="text/javascript">
+        var S_StaffID=0;
+        var D_StaffID=0;
+        var ch = 0;
+        var isWinOpen = false;
+        $("document").ready(function () {
+            $("#Trans").button();
+            $("#TransSend").button();
+            $("#Help").button();
+
+            $('#S_StaffName').keyup(function () {
+                if (isWinOpen == false) {
+                    windowAppend("body", "/SearchComisionWin/index/1");
+                    isWinOpen = true;
+                }
+            });
+            $('#D_StaffName').keyup(function () {
+                if (isWinOpen == false) {
+                    windowAppend("body", "/SearchComisionWin/index/2");
+                    isWinOpen = true;
+                }
+            });
+            
+
+
+            $("#exit").click(function () {
+                $("#TransferLetters").remove();
+            });
+         
+
+          
+           
+            jQuery("#Trans").click(function () {
+                TransRecord(1);
+            });
+            jQuery("#TransSend").click(function () {
+                TransRecord(2);
+            });
+
+        });
+
+        function TransRecord(Type) {
+            var er = false;
+
+            if (S_StaffID == 0) {
+                $("#S_StaffName").addClass("input-validation-error");
+                $('#lblS_StaffNameError').html('لطفا نام را انتخاب نمایید.');
+                er = true;
+            }
+            else
+                $("#S_StaffName").removeClass("input-validation-error");
+
+            if (D_StaffID == 0) {
+                $("#D_StaffName").addClass("input-validation-error");
+                $('#lblD_StaffNameError').html('لطفا نام را انتخاب نمایید.');
+                er = true;
+            }
+            else
+                $("#D_StaffName").removeClass("input-validation-error");
+
+            if (er)
+                return;
+
+            var data = {
+                S_StaffID: S_StaffID,
+                D_StaffID: D_StaffID,
+                Type: Type
+            }
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/TransferLetters/TransLetters")', "#win");
+            }
+        }
+
+        
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                data: JSON3.stringify(sendInfo),
+                contentType: 'application/json',
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                            $("#error .wintitle").html("انتقال موفق");
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+
+
+    </script>
+</div>

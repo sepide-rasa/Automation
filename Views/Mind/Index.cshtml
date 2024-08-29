@@ -1,0 +1,321 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Mind">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+ <div>
+ <br/>
+  <a href="@Url.Content("~/Helps/یادآوری.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+ <center>
+ <table>
+            <tr>
+             @Html.Hidden("fldID")
+                    <td align="left">
+                        <span style="color: Red;">*</span>ایجاد کننده:
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                                .Name("cboCreator")
+                                  .OptionLabel("ایجاد کننده...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetComission", "Mind");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:250px;" })
+                                  )
+                        <span id="lblCreatorError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span id="lblcreator" style="color: Red;"></span>
+                    </td><td align="left">
+                        <span style="color: Red;">*</span>تاریخ  یادآوری:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                        <span id="lblDateError" style="color: Red;"></span>
+                    </td>                   
+                    </tr>
+                     <tr>
+                    <td align="left">
+                          <span style="color: Red;">*</span>موضوع یادآوری:
+                        
+                    </td>
+                    <td align="right">
+                       @Automation.Helper.winClass.textbox("txtSub")
+                       <span id="lblSubError" style="color: Red;"></span>
+                    </td>
+                  </tr>
+                    <tr>
+                    <td align="left">
+                     <span style="color: Red;">*</span>متن یادآوری:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textArea("txtMind",4,30)
+                        <span id="lblMindError" style="color: Red;"></span>
+                    </td>
+                  </tr>
+                   <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+            </table>
+  </center>
+<div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblMindSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.StaffName).Title("نام"); 
+                    columns.Bound(p => p.fldMindDate).Title("تاریخ یادآوری");
+                    columns.Bound(p => p.fldSubject).Title("موضوع یادآوری");
+            })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+            )
+        )
+        </div>
+
+
+  <script type="text/javascript">
+      $("document").ready(function () {
+          $("#AddLink").button();
+          $("#EditLink").button();
+          $("#DelLink").button();
+          $("#Help").button();
+          $("#exit").button();
+
+          $("#cboCreator").change(function () {
+              var url = '@Url.Action("Reload", "Mind")';
+              Reload(url, 'Grid', '0', $("#cboCreator").val(), 0, 1);
+          });
+          $("#exit").click(function () {
+              $("#Mind").remove();
+          });
+          $('#Mind').on('keyup', 'input', function (event) {
+              if (event.which == 13) {
+                  var inputs = $('#Mind').find(':input:visible');
+                  inputs.eq(inputs.index(this) + 1).focus();
+              }
+          });
+
+          $(document).keyup(function (event) {
+              if (event.which == 119) {
+                  SaveRecord();
+              }
+              else if (event.which == 113) {
+                  EditRecord();
+              }
+              else if (event.which == 115) {
+                  DeleteRecord();
+              }
+          });
+          $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+          $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+          $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+          jQuery("#EditLink").click(function () {
+              EditRecord();
+          });
+
+          $('#DelLink').click(function () {
+              DeleteRecord();
+          });
+
+          $("#AddLink").click(function () {
+              SaveRecord();
+          });
+          
+
+          $("#txtMind").keyup(function () {
+              if ($("#txtMind").val() != '') {
+                  $("#txtMind").removeClass("input-validation-error");
+                  $("#lblMindError").html("");
+              }
+              else {
+                  $("#txtMind").addClass("input-validation-error");
+                  $('#lblMindError').html('لطفا متن یادآوری را وارد نمایید.');
+              }
+          });
+
+          $("#txtSub").keyup(function () {
+              if ($("#txtSub").val() != '') {
+                  $("#txtSub").removeClass("input-validation-error");
+                  $("#lblSubError").html("");
+              }
+              else {
+                  $("#txtSub").addClass("input-validation-error");
+                  $('#lblSubError').html('لطفا موضوع یادآوری را وارد نمایید.');
+              }
+          });
+
+         
+         
+          //          });
+          $('#txtDate').datepicker({
+              showButtonPanel: true,
+              changeMonth: true,
+              changeYear: true
+          });
+      });
+      function Clear() {
+          $('#fldID').val(0);
+          $('#txtDate').val('');
+          $('#txtMind').val('');
+          $('#txtSub').val('');
+          $('#txtDesc').val('');
+
+      }
+      function DeleteRecord() {
+              var entityGrid = $("#Grid").data("kendoGrid");
+              var selectedItem = entityGrid.dataItem(entityGrid.select());
+              if (selectedItem) {
+                  var id = selectedItem.fldID;
+                  var URL = '@Url.Content("~/metro/YesNomsg")';
+                  URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Mind/Delete")';
+                  if (MetroDialogOpen == false) {
+                      MetroDialogOpen = true;
+                      windowAppend("body", URL);
+                      $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                  }
+              }
+              else {
+                  windowAppend('body', '/metro/error');
+                  $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                  $("#error .wintitle").html("خطا");
+              }
+              Clear();
+          }
+       function SaveRecord() {
+              var er = false;
+              if ($("#txtDate").val() == '') {
+                  $("#txtDate").addClass("input-validation-error");
+                  $('#lblDateError').html('لطفا تاریخ یادآوری وارد نمایید.');
+                  er = true;
+              }
+              else
+                  $('#lblDateError').html('');
+
+              if ($("#txtSub").val() == '') {
+                  $("#txtSub").addClass("input-validation-error");
+                  $('#lblSubError').html('لطفا موضوع یادآوری را وارد نمایید.');
+                  er = true;
+              }
+              else
+                  $('#lblSubError').html('');
+
+              if ($("#txtMind").val() == '') {
+                  $("#txtMind").addClass("input-validation-error");
+                  $('#lblMindError').html('لطفا متن یادآوری نمایید.');
+                  er = true;
+              }
+              else
+                  $('#lblMindeError').html('');
+
+              if (er)
+                  return;
+
+              var data = {
+                  fldSubject: $("#txtSub").val(), fldMindDate: $("#txtDate").val(), fldText: $("#txtMind").val(),
+                  fldCreatedComisionID: $("#cboCreator").val(), fldDesc: $("#txtDesc").val(), fldID: $("#fldID").val()
+              };
+
+              if (data != '') {
+                  PostForm(data, '@Url.Content("~/Mind/Save")', "#win");
+              }
+              Clear();
+          }
+       function EditRecord() {
+          var entityGrid = $("#Grid").data("kendoGrid");
+          var selectedItem = entityGrid.dataItem(entityGrid.select());
+          if (selectedItem) {
+              var id = selectedItem.fldID;
+              var URL = '@Url.Content("~/Mind/Details")';
+              URL = URL + "/" + id;
+              $.ajax({
+                  type: "GET",
+                  url: URL,
+                  success: function (data) {
+                      $('#fldID').val(data.fldID);
+                      $('#txtDate').val(data.fldMindDate);
+                      $('#txtSub').val(data.fldSubject);
+                      $('#txtMind').val(data.fldText);
+                      //                          $('#cboCreator').val(data.fldCreatedComisionID);
+                      fldCreatedComisionID = data.fldCreatedComisionID;
+                      $('#txtDesc').val(data.fldDesc);
+                  },
+                  failure: function (data) {
+                      alert(data.data);
+                  }
+              });
+          }
+          else {
+              windowAppend('body', '/metro/error');
+              $('#message').html('لطفا یک سطر را انتخاب کنید.');
+              $("#error .wintitle").html("خطا");
+          }
+      }
+      function Reload(Url, gridname, field, value, top, searchType) {
+          var grid = $('#' + gridname).data('kendoGrid');
+          $.ajax({
+              url: Url,
+              type: 'get',
+              datatype: 'json',
+              data: { field: field, value: value, top: top, searchtype: searchType },
+              error: function (xhr, status, error) {
+                  alert(xhr + status);
+              },
+              success: function (result) {
+                  $("#" + gridname).data("kendoGrid").dataSource.data(result);
+              }
+
+          });
+      }
+      function PostForm(datas, url, id) {
+          var sendInfo = datas;
+          $('#Lock').show();
+          $.ajax({
+              type: "POST",
+              url: url,
+              data: sendInfo,
+              datatype: "json",
+              success: function (data) {
+                  var m = data;
+                  windowAppend("body", "/metro/error");
+                  $("#message").html(m.data);
+                  switch (m.state) {
+                      case 0:
+                          $("#error .wintitle").html("ذخیره موفق");
+                                                      var url = '@Url.Action("Reload", "Mind")';
+//                                                      Reload(url, 'Grid', '0', '', 30, 1);
+                                                      Reload(url, 'Grid', '0', $("#cboCreator").val(), 0, 1);
+                          break;
+                      case 1:
+                          $("#error .wintitle").html("خطا");
+                          break;
+                  }
+
+                  $('#Lock').hide();
+              },
+              failure: function (data) {
+                  alert(data.data);
+              }
+          });
+      }
+  </script>
+   </div>
+ </div>
+

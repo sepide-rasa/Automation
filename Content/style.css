@@ -1,0 +1,37 @@
+/* -------------------------------------------------------
+
+	Description: Analog jQuery Clock
+	Version: 1.0
+	Author: Anli Zaimi
+	Author URI: http://azmind.com
+
+------------------------------------------------------- */
+#container {
+	width: 100px;
+	height: 100px;
+	margin: 60px auto 80px auto;
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+
+.rotatingHands {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+}
+
+#hours, #minutes, #seconds {
+	position: absolute;
+	display: block;
+}
+
+.glass {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	top: 0px;
+	left: 0px;
+}
+
+

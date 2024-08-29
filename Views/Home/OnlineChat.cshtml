@@ -1,0 +1,573 @@
+﻿<div id="OnlineChat">
+    @{
+        Automation.Models.AutomationEntities hh = new Automation.Models.AutomationEntities();
+        var user = hh.sp_tblUserSelect("fldId", Session["UserId"].ToString(), 1, 1, "").FirstOrDefault();
+        var q = hh.sp_tblCommisionSelect("fldStaffID", user.fldStaffID.ToString(), 0, 1, "");
+        var Date = hh.sp_GetDate().FirstOrDefault().fldDateTime;
+        var LastLogin = hh.sp_tblInputInfoSelect("fldStaffID", user.fldStaffID.ToString(), 2, Convert.ToInt32(Session["UserId"]), Session["UserPass"].ToString()).ToList();
+        var group = hh.sp_tblGroupsSelect("fldUserID", Session["UserId"].ToString(), 0, Convert.ToInt32(Session["UserId"])).ToList();
+        string _Date = "", Time = "", Ip = "";
+        if (LastLogin.Count == 2)
+        {
+            _Date = LastLogin[1].fldDateTime;
+            Time = LastLogin[1].fldTime.ToString();
+            Ip = LastLogin[1].fldIP.ToString();
+        }
+        var NodeId = "";
+        var Friend = hh.sp_tblFriendsSelect("fldUserID", Session["UserId"].ToString(), 0, Convert.ToInt32(Session["UserId"])).ToList();
+    }
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/kendo.tabstrip.min.js")" type="text/javascript"></script>
+    <div id="divChatWindow" style="width: 535px; display: none; direction: rtl;">
+        <div style="overflow: auto;">
+            <ul id="messages" style="width: 460px; height: 360px; text-align: right;">
+            </ul>
+        </div>
+        <hr />
+        متن پیغام: @Html.TextBox("msg", null, new { @Class = "ChatText", @style = "width: 330px;" })
+        <button id="btnChatSend" class="ChatSend" style="border-color: #99ccff; font-size: Smaller;
+            border-style: Solid; border-width: 1px; height: 24px; font-family: Tahoma;">
+            ارسال</button>
+        <button id="btnAllChat" class="AllChat" style="border-color: #99ccff; font-size: Smaller;
+        border-style: Solid; border-width: 1px; height: 24px; font-family: Tahoma;">
+            همه پیام ها
+        </button>
+        <button id="close" style="border-color: #99ccff; font-size: Smaller; border-style: Solid;
+            border-width: 1px; height: 24px; font-family: Tahoma;">
+            خروج</button>
+    </div>
+    @Html.Hidden("hdnUserId")
+    @Html.Hidden("hdnUserName")
+    <script type="text/javascript">
+        var userid = '@Session["UserId"].ToString()';
+        var FriendId;      
+        var username = '@user.fldStaffName';
+        var IsOnline;
+        $('#hdnUserId').val(userid);
+        $('#hdnUserName').val(username);
+        function expand() {
+            var treeview = $("#chattreeview").data("kendoTreeView");
+            treeview.expand(".k-item");
+        } var node;
+        function ChatTreeSelect(e) {
+            var dataItem = this.dataItem(e.node);
+            node = dataItem;
+            NodeId = dataItem.id;
+            dataItem.IsOnline;
+            if (NodeId != 0 & NodeId != 1) {
+                var z = NodeId.substring(0, 1);
+                var ID = NodeId.substring(1, NodeId.length);
+
+                $.ajax({
+                    type: "GET",
+                    url: '/Chat/LoadNodeId',
+                    data: {
+                        ID: ID,
+                        Ch: z
+                    },
+                    success: function (data) {
+                        //                        var myid = '@Session["UserId"]';
+                        //                        chat.server.createGroup(myid, data.FriendId);
+                        //                        var ischatopen = false;
+                        //                        var tabStrip = $("#tabstrip").data("kendoTabStrip");
+                        //                        for (var i = 0; i < tabStrip.items().length; i++) {
+                        //                            var g = tabStrip.items()[i];
+                        //                            var t = g.querySelectorAll('.k-link');
+                        //                            if (t[0].innerText == data.TabName) {
+                        //                                ischatopen = true;
+                        //                                tabStrip.select(i);
+                        //                                break;
+                        //                            }
+                        //                        }
+                        //                        if (ischatopen == false) { 
+                        //                            tabStrip.append({
+                        //                                text: data.TabName,
+                        //                                content: "<div id='chatcontainer" + data.FriendId + "'></div>"
+                        //                            });
+                        //                            windows('#chatcontainer' + data.FriendId, '/chat/index');
+                        //                            //var divid = "#chatcontainer" + $(this).attr('data-userid');
+                        //                            //$(divid).append(chatWindow);
+                        //                            alert(2);
+                        //                            var tabsLen = tabStrip.items().length - 1;
+                        //                            tabStrip.select(tabsLen);
+                        //                        }
+
+                        chat.server.createGroup($('#hdnUserId').val(), data.FriendId);
+                        var ischatopen = false;
+                        var tabStrip = $("#tabstrip").data("kendoTabStrip");
+                        for (var i = 1; i < tabStrip.items().length; i++) {
+                            var g = tabStrip.items()[i];
+                            var t = g.querySelectorAll('.k-link');
+                            if (t[0].innerText == data.TabName) {
+                                ischatopen = true;
+                                tabStrip.select(i);
+                                break;
+                            }
+                        }
+                        if (ischatopen == false) {
+                            tabStrip.append({
+                                text: data.TabName,
+                                content: "<div id='chatcontainer" + data.FriendId + "'></div>"
+                            });
+                            var chatWindow = $("#divChatWindow").clone(true);
+                            $(chatWindow).css('display', 'block');
+                            $(chatWindow).attr('chatToId', data.FriendId);
+                            $(chatWindow).attr('IsOnline', dataItem.IsOnline);
+                            var divid = "#chatcontainer" + data.FriendId;
+                            $(divid).append(chatWindow);
+                            FriendId = data.FriendId;
+                            $.ajax({
+                                type: "GET",
+                                url: '/Chat/LoadChat',
+                                data: {
+                                    FriendId: data.FriendId,
+                                    UID: '@Session["UserId"]',
+                                    h: 30
+                                },
+                                success: function (data1) {
+                                    $('div[chatToId=' + data.FriendId + ']').find('ul').append(data1.ChatString);
+                                    var t = $('div[chatToId=' + data.FriendId + ']').find('div');
+                                    t.scrollTop(t[0].scrollHeight); var tree = $('#chattreeview').data("kendoTreeView");
+                                    tree.dataSource.read();
+                                }
+                            });
+                            var tabsLen = tabStrip.items().length - 1;
+                            tabStrip.select(tabsLen);
+                        } else {
+                            var tree = $('#chattreeview').data("kendoTreeView");
+                            tree.dataSource.read();
+                        }
+                    }
+                });
+                
+           
+            }
+        }
+        var isWinOpen = false;
+        var t;
+        $(document).ready(function () {
+            $("#user_add").button();
+            $("#user_delete").button();
+
+            $("#user_add").click(function () {
+                if (isWinOpen == false) {
+                    windowAppend("body", "/Chat/AddFriends?State=1");
+                    isWinOpen = true;
+                }
+            });
+            $('#close').click(function (e) {
+                var tabStrip = $("#tabstrip").data("kendoTabStrip");
+                var tab = tabStrip.select(),
+                    otherTab = tab.next();
+                otherTab = otherTab.length ? otherTab : tab.prev();
+
+                tabStrip.remove(tab);
+                tabStrip.select(otherTab);
+            });
+            $("#user_delete").click(function () {
+                if (NodeId != null) {
+                    var z = NodeId.substring(0, 1);
+                    var ID = NodeId.substring(1, NodeId.length);
+
+                    var URL = '@Url.Content("~/metro/YesNomsgFriendChat")';
+                    URL = URL + "/?id=" + ID + "&ch=" + z + "&URL=" + '@Url.Content("~/chat/DelFriends")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+                        $("#message").html('آیا مایل به حذف مورد انتخاب شده هستید؟');
+
+                        //Ext.MessageBox.show({
+                        //    title: "هشدار",
+                        //    msg: "آیا برای حذف مطمئن هستید؟",
+                        //    icon: Ext.MessageBox.WARNING,
+                        //    buttons: Ext.MessageBox.YESNO,
+                        //    fn: function (btn) {
+                        //        if (btn == 'yes') {
+                        //            Ext.net.DirectMethod.request({
+                        //                url: '/Chat/DelFriends',
+                        //                params: {
+                        //                    id: ID,
+                        //                    Ch: z
+                        //                },
+                        //                success: function (data) {
+                        //                    Ext.MessageBox.show({
+                        //                        title: data.MsgTitle,
+                        //                        msg: data.Msg,
+                        //                        icon: Ext.MessageBox.INFO,
+                        //                        buttons: Ext.MessageBox.OK
+                        //                    });
+                        //                    reloadTree();
+                        //                }
+                        //            });
+                        //        }
+                        //    }
+                        //});
+                    }
+                    else {
+                        windowAppend('body', '/metro/error');
+                        $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                        $("#error .wintitle").html("خطا");
+                    }
+                }
+            });
+            $(".AllChat").click(function () {
+                FriendId = $(this).parent().attr('chatToId');
+                $.ajax({
+                    type: "GET",
+                    url: '/Chat/LoadChat',
+                    data: {
+                        FriendId: $(this).parent().attr('chatToId'),
+                        UID: userid,
+                        h: 0
+                    },
+                    success: function (data1) {
+                        $('div[chatToId=' + FriendId + ']').find('ul').contents().remove();
+                        $('div[chatToId=' + FriendId + ']').find('ul').append(data1.ChatString);
+                        var t = $('div[chatToId=' + FriendId + ']').find('div');
+                        if (t.length != 0)
+                            t.scrollTop(t[0].scrollHeight);
+                    }
+                });
+            });
+            $(".ChatSend").click(function () {
+                strChatText = $('.ChatText', $(this).parent()).val();
+                var friendid = $(this).parent().attr('chatToId');
+                 
+                if (strChatText != '') {
+                    var strGroupName = $(this).parent().attr('groupname');
+                    if (typeof strGroupName !== 'undefined' && strGroupName !== false)
+                        chat.server.send($("#hdnUserName").val() + ' : ' + strChatText, $(this).parent().attr('groupname'), $("#hdnUserId").val(), friendid);
+
+                    /*$('.ChatText', $(this).parent()).find('ul').prepend(strChatText);*/
+                    $('.ChatText', $(this).parent()).val('');
+                }
+
+                var er = false;
+
+                if (strChatText == '') {
+                    er = true;
+                }
+                if (er == true)
+                    return;
+
+                $.ajax({
+                    type: "post",
+                    url: '/Chat/Save',
+                    data: {
+                        fldMatneMessage: strChatText,
+                        fldReceiverUserID: $(this).parent().attr('chatToId'),
+                        fldGroupReceiverId: null
+                    },
+                    success: function (data) {
+                        if ($('div[chattoid=' + friendid + ']').attr("isonline") == "false") {
+                            //chat.server.createGroup($('#hdnUserId').val(),friendid)
+                            $('div[chattoid=' + friendid + ']').find('ul').append('<li>' + $("#hdnUserName").val() + ' : ' + strChatText + '</li>');
+                            var t = $('div[chatToId=' + friendid + ']').find('div');
+                            t.scrollTop(t[0].scrollHeight);
+                        }
+                    }
+                }); $('.ChatText', $(this).parent()).focus();
+            });
+            $(".ChatText").keyup(function (e) {
+                if (e.keyCode == 13) {
+                    strChatText = $('.ChatText', $(this).parent()).val();
+                    t = $('.ChatText', $(this).parent());
+                    var friendid = $(this).parent().attr('chatToId');
+                    if (strChatText != '') {
+                        var strGroupName = $(this).parent().attr('groupname');
+                        if (typeof strGroupName != 'undefined' && strGroupName != false)
+                            chat.server.send($("#hdnUserName").val() + ' : ' + strChatText, $(this).parent().attr('groupname'), $("#hdnUserId").val(), friendid);
+
+                        //$('.ChatText', $(this).parent()).find('ul').prepend(strChatText);
+                        $('.ChatText', $(this).parent()).val('');
+                        //$('.ChatText', $(this).parent()).focus();
+                        //if (!IsOnline) {
+                        //$.ajax({
+                        //type: "GET",
+                        //url: '/Chat/LoadChat',
+                        //data: {
+                        //FriendId: '@Session["FriendId"]',
+                        //UID: $("#hdnUserId").val()
+                        //},
+                        //success: function (data) {
+                        //$('#Msg' + '@ViewBag.FriendId').html(data.ChatString);
+
+                        //}
+                        //});
+                        //}
+                    }
+                    //                if (Group == "1") {
+                    //                    GroupID = $(this).attr('data-userid');
+                    //                    FriendId = null;
+                    //                }
+
+                    var er = false;
+
+                    if (strChatText == '') {
+                        er = true;
+                    }
+                    if (er == true)
+                        return;
+
+                    $.ajax({
+                        type: "post",
+                        url: '/Chat/Save',
+                        data: {
+                            fldMatneMessage: strChatText,
+                            fldReceiverUserID: $(this).parent().attr('chatToId'),
+                            fldGroupReceiverId: null
+                        },
+                        success: function (data) {
+                            if ($('div[chattoid=' + friendid + ']').attr("isonline") == "false") {
+                                $('div[chattoid=' + friendid + ']').find('ul').append('<li>' + $("#hdnUserName").val() + ' : ' + strChatText + '</li>');
+                                var t = $('div[chatToId=' + friendid + ']').find('div');
+                                t.scrollTop(t[0].scrollHeight);
+                            }
+                        }
+                    });
+                    $('.ChatText', $(this).parent()).focus();
+                }
+            });
+        });
+
+    
+    </script>
+    @using Kendo.Mvc.UI;
+    @(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+         .HtmlAttributes(new { @style = "height:595px" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+
+              Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+                        horizontalPanes.Add()
+                           .HtmlAttributes(new { id = "center-pane" })
+                           .Content(@<div>
+                               @*@(Html.X().TabPanel().ID("ChatTabPanel")
+                                            .Layout(Ext.Net.LayoutType.HBox)
+                                            .LayoutConfig(new Ext.Net.HBoxLayoutConfig { Align = Ext.Net.HBoxAlign.Stretch })
+                                        )*@
+                               @(Html.Kendo().TabStrip()
+                                  .Name("tabstrip")
+                                       //.Items(tabstrip =>
+                                       //    {
+                                       //        tabstrip.Add().Text("دوستان");
+                                       //    })
+                                                  .Items(i => { i.Add().Content(" ").Text("d").HtmlAttributes(new { @style = "display:none;" }); })
+                                  )
+                           </div>
+                            );
+
+                        horizontalPanes.Add()
+                        .HtmlAttributes(new { id = "right-pane" })
+                        .Collapsible(false)
+                        .Size("220px")
+                        .Content(
+
+                                   Html.Kendo().PanelBar()
+                           .ExpandMode(PanelBarExpandMode.Single)
+                           .Name("Boxes").Items(i =>
+                           {
+
+
+                               i.Add()
+                                   .Expanded(true)
+                                   .Content(@<div style="direction: rtl;">
+                                       <center>
+                                           <button id="user_add" title="اضافه کردن دوست" style="height: 24px; font-size: 13px;
+                                               direction: rtl; font-family: tornado tahoma; width: 20px; background-image: url('/Content/images/user_add.png');
+                                               background-repeat: no-repeat; background-position-x: 95%;">
+                                           </button>
+                                           <button id="user_delete" title="حذف" style="height: 24px; font-size: 13px; direction: rtl;
+                                               font-family: tornado tahoma; width: 20px; background-image: url('/Content/images/user_delete.png');
+                                               background-repeat: no-repeat; background-position-x: 95%;">
+                                           </button>
+                                       </center>
+                                       @*@(
+
+            Html.X().TreePanel().Width(217).ID("tree").Border(false)
+                      .TopBar(
+                            Html.X().Toolbar()
+                            .Items(
+                            Html.X().Label().Text(user.fldStaffName)
+                            , Html.X().Button().Icon(Ext.Net.Icon.UserAdd).ToolTip("اضافه کردن دوستان")
+                                    .DirectEvents(de => { de.Click.Url = "/Chat/AddFriends?State=1"; })
+                            , Html.X().Button().Icon(Ext.Net.Icon.GroupAdd).ToolTip("ایجاد گروه")
+                                    .DirectEvents(de => { de.Click.Url = "/Chat/AddFriends?State=2"; })
+                            , Html.X().Button().Icon(Ext.Net.Icon.GroupEdit).ToolTip("ویرایش گروه")
+                                    .Listeners(de => { de.Click.Handler = "EditGroup()"; })
+                            , Html.X().Button().Icon(Ext.Net.Icon.UserDelete).ToolTip("حذف")
+                                    .Listeners(de => { de.Click.Handler = "DeleteFriends()"; })
+
+                            )
+                        )
+                    .Listeners(a =>
+                            {
+                                a.ItemClick.Handler = "GetId(record)";
+                            })
+                  .RootVisible(false)
+                        .DirectEvents(li =>
+                        {
+                            li.CellDblClick.Url = "/chat/index";
+                            li.CellDblClick.ExtraParams.Add(new { containerId = "ChatTabPanel" });
+                        })
+                  .RTL(true)
+                  .AutoScroll(true)
+                    .UseArrows(true)
+
+                  .Store(
+                  Html.X().TreeStore()
+                  .Proxy(
+                        Html.X().AjaxProxy().Url(Url.Action("GetChildren"))
+                    )
+                    )
+                //.Root( Html.X().Node().NodeID("0").Text("دوستان"))
+
+
+        )*@
+                                       @(Html.Kendo().PanelBar()
+                                            .ExpandMode(PanelBarExpandMode.Single)
+                                            .Name("Boxes").Items(it =>
+                                            {
+                                                it.Add().Text(user.fldStaffName)
+                                                    .Expanded(true)
+                                                    .Content(
+                                                    Html.Kendo().TreeView()
+                                                    .DataImageUrlField("image")
+                                                    .Name("chattreeview")
+                                                    .DataTextField("Name")
+                                                    .DataImageUrlField("image")
+                                                   .DataSource(dataSource => dataSource
+                                                        .Read(read => read
+                                                            .Action("_RolsTree", "Home")
+                                                        )
+                                                    )
+                                                    .Events(ev => { ev.Select("ChatTreeSelect"); ev.DataBound("expand"); })
+                                                    //.Items(root =>
+                                                    //{
+                                                    //    root.Add()
+                                                    //        .Text("دوستان")
+                                                    //        .Id("0")
+                                                    //        .ImageUrl(Url.Content("~/Content/images/folder.png"))
+                                                    //        .Expanded(true)
+                                                    //        .Items(items =>
+                                                    //        {
+                                                    //            foreach (var fitem in Friend)
+                                                    //            {
+                                                    //                items.Add().Text(fitem.fldName)
+                                                    //                    .Id("F" + fitem.fldId.ToString())
+                                                    //                    .ImageUrl(Url.Content("~/Content/images/onlineUser.png"));
+                                                    //            }
+                                                    //        });
+                                                    //root.Add()
+                                                    //    .Text("گروه ها")
+                                                    //    .Id("1")
+                                                    //    .ImageUrl(Url.Content("~/Content/images/folder.png"))
+                                                    //    .Expanded(true)
+                                                    //    .Items(items =>
+                                                    //    {
+                                                    //        foreach (var gitem in group)
+                                                    //        {
+                                                    //            items.Add().Text(gitem.fldName)
+                                                    //                    .Id("G" + gitem.fldId.ToString())
+                                                    //                    .ImageUrl(Url.Content("~/Content/images/Group.png"))
+                                                    //                    .Expanded(true)
+                                                    //                    .Items(its =>
+                                                    //                    {
+                                                    //                        var groupFriend = hh.sp_tblGroupFriendsSelect("fldGroupId", gitem.fldId.ToString(), 0).ToList();
+                                                    //                        foreach (var _I in groupFriend)
+                                                    //                        {
+                                                    //                            its.Add().Text(_I.fldName)
+                                                    //                                .Id("G" + _I.fldId.ToString())
+                                                    //                                .ImageUrl(Url.Content("~/Content/images/onlineUser.png"));
+                                                    //                        }
+                                                    //                    });
+                                                    //        }
+                                                    //    });
+                                                    //})
+
+                                                    .ToHtmlString()
+                                                    );
+                                            })
+                                            )
+                                   </div>);
+
+
+                           }).ToHtmlString());
+                    }).ToHtmlString()
+                                );
+      })
+)
+</div>
+<script type="text/javascript">
+
+    /*function GetId(record) {
+    NodeId = record.getId();
+    if (NodeId != 0 & NodeId != 1) {
+    var z = NodeId.substring(0, 1);
+    var ID = NodeId.substring(1, NodeId.length);
+
+            
+    .net.DirectMethod.request({
+    url: '/Chat/LoadNodeId',
+    params: {
+    ID: ID,
+    Ch: z
+    },
+    success: function () {
+    Ext.net.Mask.hide();
+    }
+    });
+    }
+    };*/
+    function reloadTree() {
+        App.tree.store.load();
+    }
+
+    /*function EditGroup() {
+
+    if (NodeId != null) {
+    var z = NodeId.substring(0, 1);
+    var ID = NodeId.substring(1, NodeId.length);
+    if (z == 'G') {
+    Ext.net.Mask.show({ msg: 'در حال بارگذاری...' });
+    Ext.net.DirectMethod.request({
+    url: '/Chat/AddFriends',
+    params: {
+    State: 3,
+    Gid: ID
+    },
+    success: function () {
+    Ext.net.Mask.hide();
+    }
+    });
+    }
+    else {
+    Ext.MessageBox.show({
+    title: "خطا",
+    msg: "لطفا یک گروه را انتخاب کنید",
+    icon: Ext.MessageBox.ERROR,
+    buttons: Ext.MessageBox.OK
+    });
+    }
+    }
+    else {
+    Ext.MessageBox.show({
+    title: "خطا",
+    msg: "لطفا یک گروه را انتخاب کنید",
+    icon: Ext.MessageBox.ERROR,
+    buttons: Ext.MessageBox.OK
+    });
+    }
+    }*/
+</script>

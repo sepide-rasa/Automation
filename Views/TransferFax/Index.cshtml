@@ -1,0 +1,234 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="TransferFax">
+
+    
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <style type="text/css">
+        #pdfbox
+        {
+            width: 820px;
+            height: 400px;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <div> 
+        <br />
+        <center>
+            <table>
+                @Html.Hidden("fldID") 
+               
+            </table>
+            <p>
+                @*@Automation.Helper.winClass.Buttons("Transfer", "بارگذاری فکس ها", "yes")
+                @Automation.Helper.winClass.Buttons("AddLink", "انتقال به نامه وارده", "Save")*@
+            </p>
+            <div id="listImage">
+            
+            
+            </div>
+            
+        </center>
+    </div>
+  
+   
+    <script type="text/javascript">
+        function Preview() {
+            windowAppend('body', '/ExternalLetter/PreviewLetterPDFBox');
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            var t = '@Url.Content("~/TransferFax/GeneratePDF/")' + selectedItem.fldId;
+            $('#pdf').html("<br/><object style='width: 800px;height: 550px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+
+        }
+
+        function DelFile() {
+        var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/TransferFax/Delete")';
+                if (MetroDialogOpen == false) {
+                    MetroDialogOpen = true;
+                    windowAppend("body", URL);
+
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+            }
+        }
+
+        function SaveFile() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                windowAppend('body', '/Externalletter/Index?Id=2&Email_Fax_ECEId=' + selectedItem.fldId);
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        var t;
+        var tempId;
+
+        var carfile;
+
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#Detail").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Show").button();
+            $("#Transfer").button();
+            $("#exit").button();
+            $("#Help").button();
+        
+
+            
+
+            $("#Transfer").click(function () {
+//                $.ajax({ url: '/TransferFax/listImage/', cache: false, async: false, type: "GET" })
+//                .done(function (e) {
+//                    $('#listImage').html(e);
+
+//                })
+//                .fail(function (e) { console.log(e); });
+
+//                var url = '@Url.Action("Reload", "TransferFax")';
+//                ReloadTFax(url, 'Grid');
+            });
+
+
+            $('#TransferFax').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#TransferFax').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+
+            $("#exit").click(function () {
+                $("#TransferFax").remove();
+            });
+
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+
+
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+        });
+
+        function SaveRecord() {
+
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+  
+
+//            var t = $('input[type=checkbox]');
+//            for (var i = 0; i < t.length; i++) {
+//                if (t.valueOf()[i].checked) {
+//                    tempId = t.valueOf()[i].value;
+//                }
+//            }
+//            $("#TransferFax").remove();
+            windowAppend('body', '/Externalletter/Index?Id=2&Email_Fax_ECEId=' + selectedItem.fldId);
+        }
+
+        function ReloadTFax(Url, gridname) {
+            $('#Lock').show();
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                   
+                    $('#Lock').hide();
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            var url = '@Url.Action("Reload", "TransferFax")';
+                            ReloadTFax(url, 'Grid');
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>
+<div>
+ <a href="@Url.Content("~/Helps/انتقال فکس ها.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+       
+<center>
+<fieldset style="width:800px;">
+<div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_FaxTempSelect>()
+                .Name("Grid")
+                .Scrollable(m=>m.Enabled(true).Height(500))
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("شماره").Width(60).Hidden();
+                    columns.Bound(p => p.fldTitle).Title("نام").Width(60);
+                    columns.Command(command => command.Custom("Preview").Click("Preview").Text("پیش نمایش").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "Preview" })).Width(60);
+                    columns.Command(command => command.Custom("SaveFile").Click("SaveFile").Text("انتقال به نامه وارده").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "SaveFile" })).Width(60);
+                    columns.Command(command => command.Custom("DelFile").Click("DelFile").Text("حذف").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "DelFile" })).Width(60);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                        .PageSize(1000)
+                                                .Read("Fill", "TransferFax")
+            )
+        )
+        </div>
+</fieldset>
+</center>
+</div>

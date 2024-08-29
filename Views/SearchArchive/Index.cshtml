@@ -1,0 +1,266 @@
+﻿@using Kendo.Mvc.UI;
+<div id="SearchArchive">
+    @Automation.Helper.winClass.windowHeader("", "جستجو آرشیو", 700, 550)
+    <div>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    @Html.Hidden("fldID")
+                    <td align="left">
+                        عنوان نامه:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtTitle")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        نام آرشیو :
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtName")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("AddLinkArchive", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("exitArchive", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        آرشیو :
+                    </td>
+                    <td colspan="2" dir="rtl" id="App_part" align="right">
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <script type="text/javascript">
+            var dataItem;
+            var id = '@ViewBag.Id';
+           
+            //            function select(e) {
+            //                dataItem = this.dataItem(e.node);
+            //                A_Letter = dataItem.id;
+            //            }
+            function expand() {
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.expand(".k-item");
+            }
+            var A_Letter;
+            var LetterId;
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                A_Letter = dataItem.id;
+                var url = '@Url.Content("~/SearchArchive/LetterArchivePosition")';
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    data: { id: A_Letter },
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        $('#txtName').val(m.Position);
+                        //                        var treeview = $("#treeview").data("kendoTreeView");
+                        //                        treeview.collapse(".k-item");
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            $("document").ready(function () {
+                $('#App_part').html($('#LocationDiv').valueOf());
+                $("#AddLinkArchive").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exitArchive").button();
+                $("#Help").button();
+                $('#SearchArchive #btnClose').click(function () {
+                    $("#SearchArchive").remove();
+                    isWinOpen = false;
+                });
+
+                $(document).keyup(function (e) {
+                    if (e.keyCode == 27) {
+                        $("#SearchArchive").remove();
+                        isWinOpen = false;
+                    }
+                });
+                $("#exitArchive").click(function () {
+
+                    $("#SearchArchive").remove();
+                });
+
+                LetterId = '@ViewBag.Id';
+                $.ajax({
+                    type: "GET",
+                    url: '/SearchArchive/GetInf',
+                    datatype: 'json',
+                    data: { idLetter: LetterId },
+                    success: function (data) {
+                        $('#txtTitle').val(data.Subject);
+                        $('#fldID').val(data.ArchiveId);
+                    }
+                    , failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+                $('#DelLink').click(function () {
+                    if (A_Letter != null) {
+                        var URL = '@Url.Content("~/metro/YesNomsg")';
+                        URL = URL + "/?id=" + A_Letter + "&URL=" + '@Url.Content("~/SearchArchive/Delete")';
+                        windowAppend("body", URL);
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                    else {
+                        windowAppend('body', '/metro/error');
+                        $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                        $("#error .wintitle").html("خطا");
+                    }
+                    Clear();
+                });
+
+                jQuery("#EditLink").click(function () {
+
+                    if (A_Letter != null) {
+                        var URL = '@Url.Content("~/SearchArchive/Details")';
+                        URL = URL + "/" + A_Letter;
+                        $.ajax({
+                            type: "GET",
+                            url: URL,
+                            success: function (data) {
+                                A_Letter = data.fldPID;
+                                $("#fldID").val(data.fldID);
+                                $("#txtName").val(data.fldName);
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+                    }
+                    else {
+                        windowAppend('body', '/metro/error');
+                        $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                        $("#error .wintitle").html("خطا");
+                    }
+                });
+                $("#txtName").keyup(function () {
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    var filterText = $("#txtName").val();
+                    if (filterText !== "") {
+                        treeview.dataSource.filter({
+                            field: "Name",
+                            operator: "contains",
+                            value: filterText
+                        });
+                    } else {
+                        treeview.dataSource.filter({});
+                    }
+                });
+                $("#AddLinkArchive").click(function () {
+
+                    var data = {
+                        fldArchiveName: $("#txtName").val(),
+                        fldArchiveID: A_Letter,
+                        fldID: $("#fldID").val(),
+                        fldLetterID: id
+                    };
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/SearchArchive/Save")', "#win");
+                    }
+                    Clear();
+                });
+
+            });
+            function Clear() {
+                $("#txtTitle").val('');
+                $('#fldID').val('0');
+                $("#txtName").val('');
+            }
+            //            $('#txtSearch').keyup(function () {
+            //                var url = '@Url.Action("Reload", "SearchArchive")';
+            //                Reload(url, 'treeview', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            //            });
+
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoTreeView');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { id: 1 },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoTreeView").dataSource.data(result);
+                    }
+
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                $("#SearchArchive").remove();
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        Refresh_Grid();
+                        //                        var tree = $('#treeview').data("kendoTreeView");
+                        //                        tree.dataSource.read();
+                        //var url = '@Url.Action("_ArchiveTree", "SearchArchive")';
+                        //Reload(url, 'TreeView', '0', '', 30, 1);
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        .DataImageUrlField("Image")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                         .Action("_ArchiveTree", "SearchArchive")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("select");
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+    @Automation.Helper.winClass.windowFother();
+</div>

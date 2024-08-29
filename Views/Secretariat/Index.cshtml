@@ -1,0 +1,332 @@
+﻿@using Kendo.Mvc.UI;
+<div id="Pattern">
+    <div>
+        <br />
+        
+         <a href="@Url.Content("~/Helps/تعیین فرمت شماره دهی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+       
+         <center>
+            <table>
+                <tr>
+                    <td align="left">
+                     <span style="color: Red;">*</span>نام دبیرخانه:
+                       </td>
+                    <td align="right">
+                        @Html.TextBox("txtName", "", new { @readonly = "true", @style = "background-color: #E9E9E9;" })
+                        <span id="lblNameError" style="color: Red;"></span>   
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        سال:
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboYear")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .OptionLabel("سال...")
+                                  .BindTo(new List<SelectListItem>() {
+                                      new SelectListItem() {
+                                          Text = "1392",
+                                          Value = "1392"
+                                      },
+                                        new SelectListItem() {
+                                          Text = "1393",
+                                          Value = "1393"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1394",
+                                          Value = "1394"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1395",
+                                          Value = "1395"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1396",
+                                          Value = "1396"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1397",
+                                          Value = "1397"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1398",
+                                          Value = "1398"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1399",
+                                          Value = "1399"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1400",
+                                          Value = "1400"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1401",
+                                          Value = "1401"
+                                      },
+                                      new SelectListItem() {
+                                          Text = "1402",
+                                          Value = "1402"
+                                      }
+                                  })
+                            )
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        الگو :
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboType")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .BindTo(new List<SelectListItem>() {
+                                      new SelectListItem() {
+                                          Text = "شماره ثبت",
+                                          Value = "0"
+                                      },
+                                     new SelectListItem() {
+                                         Text = "شمارنده",
+                                          Value = "1"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "سال دو رقمی",
+                                          Value = "2"
+                                      },
+                                    new SelectListItem() {
+                                         Text = "سال چهار رقمی",
+                                          Value = "3"
+                                      },
+                                      new SelectListItem() {
+                                         Text = "شماره حکم",
+                                          Value = "4"
+                                      }
+                                  })
+                            )
+                        @Automation.Helper.winClass.Buttons("AddType", "اضافه", "yes")
+                        <span id="lblcboTypeError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        شماره شروع:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtStartNumber", null, new { style = "text-align:left;width:162px;height: 25px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        کارکتر:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtChar", null, new { style = "text-align:left;width:162px;height: 25px;" })
+                        @Automation.Helper.winClass.Buttons("AddChar", "اضافه", "yes")   
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> متن الگو:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtPattern", null, new { @readonly = "true", @maxlength = "1", style = "text-align:right;width:350px;height: 25px;" })
+                        @Automation.Helper.winClass.Buttons("Clean", "حذف الگو", "Clean")
+                               <span id="lblPatternError" style="color: Red;"></span>   
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldId")
+                </tr>
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+    </div>
+    <script type="text/javascript">
+        var Secretariat;
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#AddChar").button();
+            $("#AddType").button();
+            $("#Clean").button();
+            $("#Help").button();
+            $("#exit").button();
+            $("#exit").click(function () {
+                $("#Pattern").remove();
+            });
+
+            $('#Secretariat').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Secretariat').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+            $('#txtName').val('@ViewBag.name');
+            id = '@ViewBag.id';
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Pattern")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $('#cboYear').change(function () {
+                var URL = '@Url.Content("~/Secretariat/Details")';
+                URL = URL;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    data: { id: id, year: $('#cboYear').val() },
+                    success: function (data) {
+                        Pid = data.fldPId;
+                        $("#fldId").val(data.fldId);
+                        $("#txtDesc").val(data.fldDesc);
+                        $("#txtPattern").val(data.fldNumeralFormat);
+                        $("#txtStartNumber").val(data.fldStartNumber);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            });
+
+            $('#cboType').change(function () {
+                $("#txtChar").val('');
+            });
+
+            $('#AddChar').click(function () {
+                var id = $("#txtPattern").val().toString();
+                $("#txtPattern").val(id + $("#txtChar").val() + '*');
+            });
+            $('#AddType').click(function () {
+                var id = $("#txtPattern").val().toString();
+                var drop = $("#cboType").data("kendoDropDownList");
+
+                $("#txtPattern").val(id + drop.text() + '*');
+            });
+            $('#Clean').click(function () {
+                $("#txtPattern").val('');
+                $("#txtChar").val('');
+            });
+
+
+            $('#DelLink').click(function () {
+                if (Pid != null) {
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + Pid + "&URL=" + '@Url.Content("~/Secretariat/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            });
+        });
+
+
+        function Clear() {
+            $('#txtDesc').val('');
+            $('#txtPattern').val('');
+            $('#txtStartNumber').val('');
+        }
+        function SaveRecord() {
+            var er = false;
+
+            if ($("#txtPattern").val() == '') {
+                $("#txtPattern").addClass("input-validation-error");
+                $('#lblPatternError').html('لطفا متن الگو را وارد کنید.');
+                er = true;
+            }
+            else
+                $('#lblPatternError').html('');
+
+            if (er)
+                return;
+            //            if (Pid == null) {
+            //                alert('لطفا یک مورد از دبیرخانه را انتخاب کنید.');
+            //                return;
+            //            }
+            var data = {
+                fldYear: $("#cboYear").val(),
+                fldNumeralFormat: $("#txtPattern").val(),
+                fldStartNumber: $("#txtStartNumber").val(),
+                fldSecretariatId: id,
+                fldID: $("#fldId").val(),
+                fldDesc: $("#txtDesc").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/Secretariat/Save")', "#win");
+            }
+            Clear();
+        }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+    </script>
+</div>

@@ -1,0 +1,184 @@
+﻿@using Kendo.Mvc.UI;
+<div id="SendToSecretariat">
+    @Automation.Helper.winClass.windowHeader("", "ارسال به دبیرخانه", 600, 350)
+    <div>
+        <br />
+        <center>
+            <table>
+            <tr>
+                  <td align="left">
+                                  <span style="color: Red;">*</span>انتخاب دبیرخانه:
+                              </td>
+                              <td align="right" colspan="7">
+                                  @(Html.Kendo().DropDownList()
+                                .Name("cboSecretariat")
+                                  .DataTextField("fldName")
+                                  .OptionLabel("دبیرخانه...")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetSecretariat", "SendToSecretariat");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:250px;" })
+                                  )
+                                  <span id="lblCreatorError" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                       <tr>
+                    <td align="left"> کاربران دبیرخانه:
+                    </td>
+                    <td colspan="2" dir="rtl" id="O_Secretariat" align="right"></td>
+                </tr>
+                 <tr>
+                 <td></td>
+                <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("SendToSecreteriant", "ارسال", "yes")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                  </tr>
+            </table>
+        </center>
+        <script type="text/javascript">
+            var dataItem;
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                Pid = dataItem.id;
+            }
+            function expand() {
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.expand(".k-item");
+            }
+            function SecData() {
+                return {
+                    SecretariatId: $('#cboSecretariat').val()
+                }
+            }
+            var Pid;
+            $("document").ready(function () {
+                $('#O_Secretariat').html($('#LocationDiv').valueOf());
+                $("#SendToSecreteriant").button();
+                $("#exit").button();
+
+                $('#SendToSecretariat #btnClose').click(function () {
+                    $("#SendToSecretariat").remove();
+                    isWinOpen = false;
+                });
+
+
+
+                $("#exit").click(function () {
+                    $("#SendToSecretariat").remove();
+                });
+
+                $('#cboSecretariat').change(function () {
+                    var tree = $('#treeview').data("kendoTreeView");
+                    tree.dataSource.read();
+                    
+                });
+
+                $('#SendToSecreteriant').click(function () {
+                    var checkedNodes = new Array();
+                    var checked = $('#SendToSecretariat input[type=checkbox]');
+                    for (var i = 0; i < checked.length; i++) {
+                        var f = checked.valueOf()[i];
+                        if (f.checked == true)
+                            checkedNodes.push({ "ReciverComId": f.value });
+                    }
+
+                    var data = {
+                        checkedNodes: checkedNodes,
+                        LetterId: LetterID,
+                        SourceId: AssignmentSId,
+                        SenderComId: creatorId,
+                        secretriant: $('#cboSecretariat').val()
+                    };
+                    d = data;
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/SendToSecretariat/Send")', "#win");
+                    }
+                });
+            });
+            function Clear() {
+                $("#txtTitle").val('');
+                $('#fldId').val('0');
+            }
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoTreeView');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { id: 1 },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoTreeView").dataSource.data(result);
+                    }
+
+                });
+            }
+            function Cheked() {
+                var checked = $('#SendToSecretariat input[type=checkbox]');
+                for (var j = 0; j < checked.length; j++) {
+                    var f = checked.valueOf()[j]; f.checked = true;
+                }
+            }
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON3.stringify(sendInfo),
+                    datatype: "json",
+                    contentType: 'application/json',
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var tree = $('#treeview').data("kendoTreeView");
+                        tree.dataSource.read();
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(true).CheckChildren(false);
+                           
+                        })
+                       
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                 .Action("_SecretariatTree", "SendToSecretariat")
+                                 .Data("SecData")
+                                )
+                        ).Events(ev => ev.DataBound("Cheked"))
+                        )
+    </div>
+    @Automation.Helper.winClass.windowFother()
+</div>

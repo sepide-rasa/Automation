@@ -1,0 +1,160 @@
+﻿
+@{
+    string MsgLog = "Msg" + Convert.ToString(ViewBag.FriendId);
+    string txtMsg = "txtMsg" + Convert.ToString(ViewBag.FriendId);
+    string btnSend = "btnSend" + Convert.ToString(ViewBag.FriendId);
+    string btnClose = "btnClose" + Convert.ToString(ViewBag.FriendId);
+    string btnAllChat = "btnAllChat" + Convert.ToString(ViewBag.FriendId);
+    string TabName = Convert.ToString(ViewBag.TabName);
+}
+@*@(
+ Html.X().Panel().ID(TabId).Title(TabName).Closable(true).Height(700).Width(600)
+        .LayoutConfig(new Ext.Net.TableLayoutConfig { Columns = 2 })
+    .Items(
+        Html.X().Hidden().ItemID("FriendId"),
+        Html.X().Hidden().ItemID("GroupName"),
+        Html.X().Hidden().ItemID("fldId"),
+        Html.X().TextArea().ItemID("chatLog").Enable(true).ApplyStyles("backgroun-color:red;").Width(600).Height(400).ColSpan(2).ReadOnly(true)
+         .Listeners(li => { li.AfterRender.Handler = "LoadName();"; })
+        ,Html.X().TextField().ItemID("text").Width(500)
+                    , Html.X().Button().Text("ارسال").Width(70).Height(30).Listeners(l => l.Click.Handler = "Save();")
+    )
+)*@
+<div style="width: 505px; direction: rtl;">
+    <div style="overflow: auto;">
+        <ul id="@MsgLog" style="width: 460px; height: 400px; text-align: right;">
+        </ul>
+    </div>
+    <hr />
+    متن پیغام: @Html.TextBox(txtMsg, null, new { @Class = "ChatText", @style = "width: 330px;" })
+    <button id="@btnSend" class="ChatSend" style="border-color: #99ccff; font-size: Smaller;
+        border-style: Solid; border-width: 1px; height: 24px; font-family: Tahoma;">
+        ارسال</button>
+    <button id="@btnAllChat" class="AllChat" style="border-color: #99ccff; font-size: Smaller;
+        border-style: Solid; border-width: 1px; height: 24px; font-family: Tahoma;">
+        همه پیام ها
+    </button>
+    <button id="@btnClose" style="border-color: #99ccff; font-size: Smaller; border-style: Solid;
+        border-width: 1px; height: 24px; font-family: Tahoma;">
+        خروج</button>
+</div>
+<script type="text/javascript">
+    var FriendId = '@ViewBag.FriendId';
+    var Group = '@ViewBag.Group';
+    var GroupID = null;
+    var myid = '@Session["UserId"]';
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: '/Chat/LoadChat',
+            data: {
+                FriendId: FriendId,
+                h: 30
+            },
+            success: function (data) {
+                $('#Msg' + '@ViewBag.FriendId').html(data.ChatString);
+
+            }
+        });
+
+        $('#' + '@btnSend').click(function () {
+            chat.server.send($('#' + '@txtMsg').val(), $('#chatcontainer' + '@ViewBag.FriendId').attr('groupname'), '@ViewBag.FriendId');
+            if (Group == "1") {
+                GroupID = '@ViewBag.FriendId';
+                FriendId = null;
+            }
+
+            var er = false;
+
+            if ($('#' + '@txtMsg').val() == '') {
+                er = true;
+            }
+            if (er == true)
+                return;
+
+            $.ajax({
+                type: "post",
+                url: '/Chat/Save',
+                data: {
+                    fldMatneMessage: $('#' + '@txtMsg').val(),
+                    fldReceiverUserID: '@ViewBag.FriendId',
+                    fldGroupReceiverId: GroupID
+                },
+                success: function (data) {
+                    $.ajax({
+                        type: "GET",
+                        url: '/Chat/LoadChat',
+                        data: {
+                            FriendId: '@ViewBag.FriendId',
+                            h: 30
+                        },
+                        success: function (data) {
+                            $('#Msg' + '@ViewBag.FriendId').html(data.ChatString);
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#' + '@btnAllChat').click(function () {
+
+            $.ajax({
+                type: "GET",
+                url: '/Chat/LoadChat',
+                data: {
+                    FriendId: '@ViewBag.FriendId',
+                    h: 0
+                },
+                success: function (data) {
+                    $('#Msg' + '@ViewBag.FriendId').html(data.ChatString);
+                }
+            });
+
+        });
+    });
+    function Save() {
+        var text = App.ChatTabPanel.activeTab.queryById('text');
+        var Id = App.ChatTabPanel.activeTab.queryById('fldId');
+        var FId = App.ChatTabPanel.activeTab.queryById('FriendId');
+        var GroupName = App.ChatTabPanel.activeTab.queryById('GroupName');
+        chat.server.send(text.getValue().toString(), GroupName.getValue().toString(), FId.getValue().toString());
+
+        if (Group == "1") {
+            GroupID = FriendId.getValue();
+            FriendId = null;
+        }
+
+        var er = false;
+
+        if (text.validate() == false) {
+            er = true;
+        }
+        if (er == true)
+            return;
+
+        Ext.net.DirectMethod.request({
+            url: '/Chat/Save',
+            params: {
+                fldId: Id.getValue(),
+                fldMatneMessage: text.getValue(),
+                fldReceiverUserID: FId.getValue(),
+                fldGroupReceiverId: GroupID
+            },
+            success: function () {
+                Ext.net.DirectMethod.request({
+                    url: '/Chat/LoadChat',
+                    params: {
+                        FriendId: App.ChatTabPanel.activeTab.queryById('FriendId').getValue(),
+                        h:30
+                    },
+                    success: function (data) {
+                        Ext.net.Mask.hide();
+                        text.setValue('');
+                        App.ChatTabPanel.activeTab.queryById("chatLog").setValue(data.ChatString);
+                    }
+                });
+            }
+
+        });
+    }
+</script>

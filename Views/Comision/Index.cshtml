@@ -1,0 +1,480 @@
+﻿@using Kendo.Mvc.UI;
+<div id="Comision">
+<script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                    <span style="color: Red;">*</span>پست سازمانی:
+                     <span id="lblO_RoleError" style="color: Red;"></span>
+                    </td>
+                    <td colspan="2" dir="rtl" id="O_Role" align="right"></td>
+                </tr>
+                <tr>
+                    <td align="left"></td>
+                    <td colspan="2" dir="rtl" id="OrgRoleLocation" align="right"></td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldID")
+                    <td align="left">
+                    <span style="color: Red;">*</span>نام و نام خانوادگی کارمند:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("StaffName")  
+                        <span id="lblStaffNameError" style="color: Red;"></span>                      
+                    </td>
+                 </tr>
+                <tr>   
+                    <td align="left">
+                    <span style="color: Red;">*</span>تاریخ شروع حکم:
+                    </td>
+                    <td align="right">
+                         @Html.TextBox("txtStartDate", null, new { @style = "width: 164px;height: 23px;" })   
+                             <span id="lblStartDateError" style="color: Red;"></span>                        
+                    </td>
+                </tr>
+                <tr>   
+                    <td align="left">
+                    <span style="color: Red;">*</span>تاریخ پایان حکم:
+                    </td>
+                    <td align="right">    
+                        @Html.TextBox("txtEndDate", null, new { @style = "width: 164px;height: 23px;" }) 
+                         <span id="lblEndDateError" style="color: Red;"></span>                    
+                    </td>
+                </tr>
+                <tr>   
+                    <td align="left">
+                    <span style="color: Red;">*</span>شماره حکم:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtComisionNumber")  
+                        <span id="lblComisionNumberError" style="color: Red;"></span>                       
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                             @Automation.Helper.winClass.Buttons("Back", "بازگشت", "Back")
+                        </p>
+                    </td>
+                </tr>
+                
+            </table>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام و نام خانوادگی کارمند" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblCommisionSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldStaffName).Title("نام کارمند");
+                    columns.Bound(p => p.fldStartDate).Title("تاریخ شروع حکم");
+                    columns.Bound(p => p.fldEndDate).Title("تاریخ پایان حکم");
+                    columns.Bound(p => p.fldOraganicNumber).Title("شماره حکم");
+                    columns.Bound(p => p.fldOrganicRoleName).Title("پست سازمانی");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "Comision")
+            )
+        )
+        </div>
+        <script type="text/javascript">
+            var dataItem;
+            function select(e) {
+                dataItem = this.dataItem(e.node);
+                O_Role = dataItem.id;
+                var url = '@Url.Content("~/Comision/OrgRolePosition")';
+            $.ajax({
+                type: "get",
+                url: url,
+                data: { id: O_Role },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#OrgRoleLocation').html('مورد انتخاب شده: ' + m.Position);
+                    var treeview = $("#treeview").data("kendoTreeView");
+                    treeview.collapse(".k-item");
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+        var O_Role = null;
+        var StaffId;
+            $("document").ready(function () {
+                StaffId = '@ViewBag.Staffid';
+                $.ajax({
+                    type: "GET",
+                    url: '/Comision/GetInf',
+                    datatype: 'json',
+                    data: { idStaff: StaffId },
+                    success: function (data) {
+                        $('#StaffName').val(data.StaffName);
+                    }
+                    , failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+
+                $('#txtStartDate').datepicker({
+                    onSelect: function (dateText, inst) {
+                        $('#txtEndDate').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                    },
+                    showButtonPanel: true,
+                    changeMonth: true,
+                    changeYear: true
+                });
+                $('#txtEndDate').datepicker({
+                    showButtonPanel: true,
+                    changeMonth: true,
+                    changeYear: true
+                });
+                $('#Comision').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#Comision').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+                $('#O_Role').html($('#LocationDiv').valueOf());
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exit").button();
+                $("#Back").button();
+                
+                Step = '@ViewBag.Step';
+
+                $('#Back').click(function () {
+                    if (Step==1)
+                        windows('#win', '/SearchComision');
+                    if (Step == 2)
+                        windows('#win', '/SearchStaff');
+
+                });
+
+
+                $("#exit").click(function () {
+                    $("#Comision").remove();
+                });
+
+                $(document).keyup(function (event) {
+                    if (event.which == 119) {
+                        SaveRecord();
+                    }
+                    else if (event.which == 113) {
+                        EditRecord();
+                    }
+                    else if (event.which == 115) {
+                        DeleteRecord();
+                    }
+                });
+                $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+                $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+                $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+                jQuery("#EditLink").click(function () {
+                    EditRecord();
+                });
+
+                $('#DelLink').click(function () {
+                    DeleteRecord();
+                });
+
+                $("#AddLink").click(function () {
+                    SaveRecord();
+                });
+                $('#txtSearch').keyup(function () {
+                    var url = '@Url.Action("Reload", "Comision")';
+                     Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+                });
+
+               
+                $("#txtStaffName").keyup(function () {
+                    if ($("#StaffName").val() != '') {
+                        $("#txtStaffName").removeClass("input-validation-error");
+                        $("#lblStaffNameError").html("");
+                    }
+                    else {
+                        $("#txtStaffName").addClass("input-validation-error");
+                        $('#lblStaffNameError').html('لطفا نام کارمند را وارد کنید.');
+                    }
+                });
+
+                $("#txtStartDate").keyup(function () {
+                    if ($("#txtStartDate").val() != '') {
+                        $("#txtStartDate").removeClass("input-validation-error");
+                        $("#lblStartDateError").html("");
+                    }
+                    else {
+                        $("#txtStartDate").addClass("input-validation-error");
+                        $('#lblStartDateError').html('لطفا تاریخ شروع حکم را وارد کنید.');
+                    }
+                });
+                $("#txtEndDate").keyup(function () {
+                    if ($("#txtEndDate").val() != '') {
+                        $("#txtEndDate").removeClass("input-validation-error");
+                        $("#lblEndDateError").html("");
+                    }
+                    else {
+                        $("#txtEndTimeH").addClass("input-validation-error");
+                        $('#lblEndDateError').html('لطفا تاریخ پایان حکم را وارد کنید.');
+                    }
+                });
+                
+
+                $("#txtComisionNumber").keyup(function () {
+                    if ($("#txtComisionNumber").val() != '') {
+                        $("#txtComisionNumber").removeClass("input-validation-error");
+                        $("#lblComisionNumberError").html("");
+                    }
+                    else {
+                        $("#txtComisionNumber").addClass("input-validation-error");
+                        $('#lblComisionNumberError').html('لطفا شماره حکم را وارد کنید.');
+                    }
+                });
+            });
+            function Clear() {
+                $('#fldID').val('0');
+                $("#txtStartDate").val('');
+                $("#txtEndDate").val('');
+                $("#txtComisionNumber").val('');
+                $("#txtDesc").val('');
+            }
+
+            function DeleteRecord() {
+                    var entityGrid = $("#Grid").data("kendoGrid");
+                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+                    if (selectedItem) {
+                        var id = selectedItem.fldID;
+                        var URL = '@Url.Content("~/metro/YesNomsg")';
+                        URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Comision/Delete")';
+                        if (MetroDialogOpen == false) {
+                            MetroDialogOpen = true;
+                            windowAppend("body", URL);
+
+                            $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                        }
+                    }
+                    else {
+                        windowAppend('body', '/metro/error');
+                        $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                        $("#error .wintitle").html("خطا");
+                    }
+                    Clear();
+                }
+
+             function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Comision/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            O_Role = data.fldOrganicRoleID;
+                            $("#fldID").val(data.fldID);
+                            $("#txtStartDate").val(data.fldStartDate);
+                            $("#txtStartDate").val(data.fldStartDate);
+                            $("#txtEndDate").val(data.fldEndDate);
+                            $("#txtComisionNumber").val(data.fldOraganicNumber);
+                            $("#txtDesc").val(data.fldDesc);
+                            O_Unit = data.fldOrganicRoleID;
+                            var url = '@Url.Content("~/Comision/OrgUnitPosition")';
+                            $.ajax({
+                                type: "get",
+                                url: url,
+                                data: { id: O_Unit },
+                                datatype: "json",
+                                success: function (data) {
+                                    var m = data;
+                                    $('#OrgRoleLocation').html('مورد انتخاب شده: ' + m.Position);
+                                    var treeview = $("#treeview").data("kendoTreeView");
+                                    treeview.collapse(".k-item");
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+              function SaveRecord() {
+                    var er = false;
+                    if ($("#txtStaffName").val() == '') {
+                        $("#txtStaffName").addClass("input-validation-error");
+                        $('#lblStaffNameError').html('لطفا نام کارمند را وارد کنید.');
+                        er = true;
+                    }
+                    else
+                        $('#lblStaffNameError').html('');
+                    var er = false;
+                    if ($("#txtStartDate").val() == '') {
+                        $("#txtStartDate").addClass("input-validation-error");
+                        $('#lblStartDateError').html('لطفا تاریخ شروع حکم را وارد کنید.');
+                        er = true;
+                    }
+                    else
+                        $('#lblStartDateError').html('');
+
+                    if ($("#txtEndDate").val() == '') {
+                        $("#txtEndDate").addClass("input-validation-error");
+                        $('#lblEndDateError').html('لطفا تاریخ پایان حکم را وارد کنید.');
+                        er = true;
+                    }
+                    else
+                        $('#lblEndDateError').html('');
+
+                    if ($("#txtComisionNumber").val() == '') {
+                        $("#txtComisionNumber").addClass("input-validation-error");
+                        $('#lblComisionNumberError').html('لطفا شماره حکم را وارد کنید.');
+                        er = true;
+                    }
+                    else
+                        $('#lblComisionNumberError').html('');
+
+                    if (O_Role == null) {
+                        er = true;
+                        alert('لطفا یک مورد از پست سازمانی را انتخاب نمایید.');
+                    }
+
+                    if (er)
+                        return;
+
+                    var data = {
+                        fldID: $("#fldID").val(),
+                        fldStaffID: StaffId,
+                        fldOrganicRoleID:O_Role,
+                        fldStartDate:$("#txtStartDate").val(),
+                        fldEndDate:$("#txtEndDate").val(),
+                        fldOraganicNumber: $("#txtComisionNumber").val(),
+                        fldDesc:$("#txtDesc").val()
+                };
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/Comision/Save")', "#win");
+                    }
+                    Clear();
+                }
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoGrid');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { field: field, value: value, top: top, searchtype: searchType },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    }
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        var url = '@Url.Action("Reload", "Comision")';
+                        Reload(url, 'Grid', '1', StaffId, 30, 2);
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_RolsTree", "Comision")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("select");
+                        })
+                        )
+    </div>
+</div>
+

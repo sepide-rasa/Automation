@@ -1,0 +1,351 @@
+﻿@using Kendo.Mvc.UI;
+<div id="ShowCharkhe_LetterContent">
+    <div>
+        <br />
+        <center>
+         @Html.Hidden("fldId")
+            <table>
+                  @*<tr>
+                  <td align="left">
+                                  <span style="color: Red;">*</span>از تاریخ:
+                              </td>
+                              <td align="right">
+                                  @Html.TextBox("txtStart", null, new { @style = "width: 164px;height: 23px;", @readonly="true" })   
+                                  <span id="lblStartError" style="color: Red;"></span>
+                              </td>
+                              <td align="left">
+                                  <span style="color: Red;">*</span>تا تاریخ:
+                              </td>
+                              <td align="right">
+                              @Html.TextBox("txtEnd", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" }) 
+                                  <span id="lblEndError" style="color: Red;"></span>
+                              </td>
+                  </tr>*@ 
+                <tr>
+                    <td align="center" colspan="4">
+                        <p>
+                         @*@Automation.Helper.winClass.Buttons("Show", "نمایش تاریخچه", "yes")
+                            @Automation.Helper.winClass.Buttons("Back", "بازگشت", "Back")*@
+                        </p>
+                    </td>
+                </tr>
+                </table>
+                <table>
+                <tr>
+                    <td align="left">چرخه نامه :
+                    </td>
+                    <td colspan="2" dir="rtl" id="P_Tree" align="right"></td>
+
+                </tr>
+                <tr>
+              <td></td>
+                    <td  dir="rtl" id="Location" style="color: Red;"  align="center">
+                    </td>
+                </tr>
+                
+            </table>
+        </center>
+        <script type="text/javascript">
+            function ShowDetail() {
+                LetterID = '@ViewBag.LetterId';
+                var entityGrid = $("#TarikhcheGrid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldLogID;
+                    if (isWinOpen == false) {
+                        if ($("#CboChangeType").val() != 2)
+                            windowAppend('body', '@Url.Content("~/HistoryLetter/Index")' + '?Pid=' + Pid + "&ChangeType=" + $("#CboChangeType").val() + "&LogID=" + id);
+
+                        else if ($("#CboChangeType").val() == 2) {
+                            windowAppend('body', '/ExternalLetter/PreviewLetterPDFBox');
+                            var t = '@Url.Content("~/HistoryLetter/GenerateLetterPDF/")';
+                            t = t + "/?id=" + LetterID + "&Sender=" + Sender + "&LogID=" + id + "&PNode=" + PNode+ "&LogID=" + id;
+                            $('#pdf').html("<br/><object style='width: 800px;height: 550px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+
+                        }
+                        isWinOpen = true;
+                    }
+
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            }
+</script>
+    <script type="text/javascript">
+        var isWinOpen = false;
+    var dataItem = '';
+    var Pid = null;
+    var Nodeid = null;
+    var Pid2 = null;
+    var Win = 0;
+    var Start = "";
+    var End = "";
+    var LetterID = 0;
+    var AssId = 0;
+    var Sender = 0;
+    var PNode = "";
+    function FillTree(nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].id == Nodeid) PNode = nodes[i].Sender; if (nodes[i].hasChildren) {
+                FillTree(nodes[i].children.view());
+            }
+        }
+    }
+    function select(e) {
+        dataItem = this.dataItem(e.node);
+        Pid = dataItem.id;
+        Nodeid = dataItem.pid;
+        Pid2 = Pid;
+        AssId = dataItem.AssId;
+        Sender = dataItem.Sender;
+        FillTree($('#treeview').data("kendoTreeView").dataSource.view());
+        var url = '@Url.Action("Reload", "ShowCharkhe_LetterContent")';
+        if ($("#CboChangeType").val() != "" & Sender!=0)
+            ReloadTarikhche(url, 'TarikhcheGrid', $("#CboChangeType").val(), Sender, '@ViewBag.LetterId');
+    }
+    function LID(id) {
+        return {
+            LetterID: id
+        }
+    }
+    function expand() {
+        var treeview = $("#treeview").data("kendoTreeView");
+        treeview.expand(".k-item");
+    }
+    function show(Pid2) {
+
+        if (isWinOpen == false) {
+            windowAppend('body', '@Url.Content("~/HistoryLetter/Index")' + '?Pid=' + Pid);
+            isWinOpen = true;
+        }
+
+    }
+    $("document").ready(function () {
+
+        $('#P_Tree').html($('#LocationDiv').valueOf());
+        $("#Back").button();
+        $("#ShowDetail").button();
+
+         
+
+        $('#txtStart').datepicker({
+            onSelect: function (dateText, inst) {
+                $('#txtEnd').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+            },
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true
+        });
+        $('#txtEnd').datepicker({
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true
+        });
+
+        $('#CboChangeType').change(function () {
+            var url = '@Url.Action("Reload", "ShowCharkhe_LetterContent")';
+            if ($("#CboChangeType").val() != "" & Sender != 0)
+                ReloadTarikhche(url, 'TarikhcheGrid', $("#CboChangeType").val(), Sender, '@ViewBag.LetterId');
+        });
+
+        //$("#txtStart").keyup(function () {
+        //    if ($("#txtStart").val() != '') {
+        //        $("#txtStart").removeClass("input-validation-error");
+        //        $("#lblStartError").html("");
+        //    }
+        //    else {
+        //        $("#txtStart").addClass("input-validation-error");
+        //        $('#lblStartError').html('لطفا تاریخ را وارد کنید.');
+        //    }
+        //});
+
+        //$("#txtEnd").keyup(function () {
+        //    if ($("#txtEnd").val() != '') {
+        //        $("#txtEnd").removeClass("input-validation-error");
+        //        $("#lblEndError").html("");
+        //    }
+        //    else {
+        //        $("#txtEnd").addClass("input-validation-error");
+        //        $('#lblEndError').html('لطفا تاریخ را وارد کنید.');
+        //    }
+        //});
+
+        $("#Show").click(function () {
+            var er = false;
+
+            //if ($("#txtStart").val() == '') {
+            //    $("#txtStart").addClass("input-validation-error");
+            //    $('#lblStartError').html('لطفا تاریخ را وارد کنید.');
+            //    er = true;
+            //}
+            //else {
+            //    $("#txtStart").removeClass("input-validation-error");
+            //    $('#lblStartError').html('');
+            //}
+            //if ($("#txtEnd").val() == '') {
+            //    $("#txtEnd").addClass("input-validation-error");
+            //    $('#lblEndError').html('لطفا تاریخ را وارد کنید.');
+            //    er = true;
+            //}
+            //else {
+            //    $("#txtEnd").removeClass("input-validation-error");
+            //    $('#lblEndError').html('');
+            //}
+
+            if (er)
+                return;
+            LetterID = '@ViewBag.LetterId';
+            Start = $("#txtStart").val();
+            End = $("#txtEnd").val();
+            show();
+        });
+        $('#ShowCharkhe_LetterContent').on('keyup', 'input', function (event) {
+            if (event.which == 13) {
+                var inputs = $('#ShowCharkhe_LetterContent').find(':input:visible');
+                inputs.eq(inputs.index(this) + 1).focus();
+            }
+        });
+
+        $("#Back").click(function () {
+            windows("#emkanat", "/Search_Letter2/Index");
+        });
+        $('#ShowCharkhe_LetterContent #btnClose').click(function () {
+            $("#ShowCharkhe_LetterContent").remove();
+            isWinOpen = false;
+        });
+
+    });
+    function Clear() {
+
+        $('#fldId').val('0');
+        Pid = 0;
+
+    }
+
+    function ReloadTarikhche(Url, gridname, field, Sender, LetterID) {
+        var grid = $('#' + gridname).data('kendoGrid');
+        $.ajax({
+            url: Url,
+            type: 'get',
+            datatype: 'json',
+            data: { field: field, Sender: Sender, LetterID: LetterID },
+            error: function (xhr, status, error) {
+                alert(xhr + status);
+            },
+            success: function (result) {
+                $("#" + gridname).data("kendoGrid").dataSource.data(result);
+            }
+
+        });
+    }
+    function PostForm(datas, url, id) {
+        var sendInfo = datas;
+        $('#Lock').show();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(sendInfo),
+            datatype: "json",
+            contentType: 'application/json',
+            success: function (data) {
+                var m = data;
+                windowAppend("body", "/metro/error");
+                $("#message").html(m.data);
+                switch (m.state) {
+                    case 0:
+                        $("#error .wintitle").html("ذخیره موفق");
+                        break;
+                    case 1:
+                        $("#error .wintitle").html("خطا");
+                        break;
+                }
+
+                var tree = $('#treeview').data("kendoTreeView");
+                tree.dataSource.read();
+                $('#Lock').hide();
+
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+
+        </script>
+
+    </div>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                 .Action("_RolsTree", "ShowCharkhe_LetterContent")
+                                 .Data("LID(" + ViewBag.LetterId + ")")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                           events.Select("select");
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+    <table style=" width :800px; " align="center">
+        <tr>
+            <td>
+                نوع تغییرات:
+                @(Html.Kendo().DropDownList()
+                    .Name("CboChangeType")
+                    .OptionLabel("...")
+                    .Items(it =>
+                    {
+                        it.Add().Text("مشخصات نامه").Value("1");
+                        it.Add().Text("متن نامه").Value("2");
+                        it.Add().Text("پیوست های نامه").Value("3");
+                        it.Add().Text("سوابق نامه").Value("4");
+                        it.Add().Text("پیگیری نامه").Value("5");
+                    })
+                )
+            </td>
+        </tr>
+        <tr class="k-rtl demo-section">
+            <td>
+                @(Html.Kendo().Grid<Automation.Models.TarikhcheGrid>()
+                .Name("TarikhcheGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldLogID).Title("کد").Hidden();
+                    columns.Bound(p => p.تاریخ_ایجاد).Title("تاریخ تغییرات").Width(45);
+                    columns.Bound(p => p.ساعت_تغییر).Title("ساعت تغییرات").ClientTemplate("#=ساعت_تغییر.Hours#:#=ساعت_تغییر.Minutes#").Width(45);
+                    columns.Bound(p => p.نوع_تغییرات).Title("نوع تغییرات").Width(45);
+                    columns.Command(command => command.Custom("ShowDetail").Click("ShowDetail").Text("نمایش جزئیات").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "ShowDetail" })).Width(45);
+                })
+                        .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                        .Pageable()
+                        .Scrollable()
+                        .DataSource(data =>
+                            data.Ajax()
+                            .PageSize(10000)
+                        )
+                )
+            </td>
+        </tr>
+    </table>
+    <style type="text/css">
+    .treeview-back
+    {
+        width: 700px;
+        margin: 30px;
+        padding: 20px;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+</style>
+</div>
+

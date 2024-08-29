@@ -1,0 +1,71 @@
+﻿<div class="modal" id="YesNomsgFriendChat">
+
+    @Automation.Helper.winClass.windowHeader("", "هشدار", 250, 180)
+    <br />
+    <div id="message">
+    </div>
+    <br />
+    @Automation.Helper.winClass.Buttons("yes", "بله", "yes")
+    @Automation.Helper.winClass.Buttons("No", "خیر", "no")
+    <br />
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#yes").button();
+            $("#No").button();
+            $("#yes").click(function () {
+                MetroDialogOpen = false;
+                var url = '@ViewBag.URL';
+                var data = { id: '@ViewBag.ID', ch: '@ViewBag.ch' };
+                PostFormChat(data, url, "#win");
+                $("#YesNomsgFriendChat").remove();
+            });
+
+            $("#No").click(function () {
+                MetroDialogOpen = false;
+                $("#YesNomsgFriendChat").remove();
+            });
+            $("#btnClose").click(function () {
+                MetroDialogOpen = false;
+                $("#YesNomsgFriendChat").remove();
+            });
+        });
+        function PostFormChat(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var tabStrip = $("#tabstrip").data("kendoTabStrip");
+                    var tab = tabStrip.select(),
+                   otherTab = tab.next();
+                    otherTab = otherTab.length ? otherTab : tab.prev();
+                    tabStrip.remove(tab);
+                    tabStrip.select(otherTab);
+
+                    var tree = $('#chattreeview').data("kendoTreeView");
+                    tree.dataSource.read();
+                    
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+    @Automation.Helper.winClass.windowFother()
+</div>

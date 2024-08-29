@@ -1,0 +1,422 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Search_Letter2">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        
+         <a href="@Url.Content("~/Helps/تاریخچه نامه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+  
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        شماره ثبت رایانه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtOrderId")
+                    </td>           
+                    <td align="left">
+                        موضوع نامه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtSubject")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        شماره نامه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtLetterNumber")
+                    </td>
+                    <td align="left">
+                        تاریخ نامه:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtLetterDate")
+                    </td>                   
+                    
+                </tr>
+                <tr>
+                    <td align="left">
+                        از تاریخ:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtStartDate","", new { @title="تاریخ ثبت در رایانه"})
+                    </td>
+                    <td align="left">
+                        تا تاریخ:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtEndDate","", new { @title = "تاریخ ثبت در رایانه" })
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td align="left">
+                         محرمانگی:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                            .Name("cboSecurityType")
+                            .OptionLabel("محرمانگی...")
+                            .DataTextField("fldName")
+                            .DataValueField("fldID")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetSecurityTypes", "Letter");
+                                });
+                            }).HtmlAttributes(new { @style = "width:169px;" })
+                        )
+                        <span id="lblSecurityTypeError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                         نوع نامه:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                .Name("cboImmediacyType")
+                                  .OptionLabel("فوریت...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetImmediacyTypes", "Letter");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                        <span id="lblImmediacyTypeError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                 <td align="left">
+                        فرستنده:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtSender")
+                    </td>
+                    <td align="left">
+                        گیرنده:
+                    </td>
+                    <td>
+                        @Html.TextBox("txtReciver")
+                    </td>
+                    
+                </tr>
+                <tr>               
+                
+                    <td align="left">
+                        کلید واژه:
+                    </td>
+                    <td colspan="5" align="right">
+                        @Html.TextBox("txtKeywords", null, new { @style = "direction:rtl;font-family:tornado tahoma;width: 500px;height: 23px;" })
+                        <span id="lblKeywordsError" style="color: Red;"></span>
+                    </td>
+                    
+                </tr>
+                <tr>
+                <td align="left">
+                        توضیحات:
+                    </td>
+                    <td colspan="5">
+                        @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("Search", "جستجو", "search")
+                @Automation.Helper.winClass.Buttons("Next", "تاریخچه", "Next")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "موضوع نامه " } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.tblLetterModel>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldOrderId).Title("ش ثبت در رایانه");
+                    columns.Bound(p => p.fldSubject).Title("موضوع");
+                    columns.Bound(p => p.fldLetterNumber).Title("شماره نامه");
+                    columns.Bound(p => p.fldLetterDate).Title("تاریخ نامه");
+                    columns.Bound(p => p.fldSenderName).Title("فرستنده");
+                    columns.Bound(p => p.ReciverName).Title("گیرنده");
+                    columns.Bound(p => p.Desc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var girandeName = '';
+        var girandeID = '';
+        var rooneveshtName = '';
+        var rooneveshtID = '';
+        var WinOpen = false;
+        $("document").ready(function () {
+            $("#Search").button();
+            $("#exit").button();
+            $("#Next").button();
+            $("#Help").button();
+            $('#txtLetterDate').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $('#txtStartDate').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $('#txtEndDate').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $("#exit").click(function () {
+                $("#Search_Letter2").remove();
+            });
+
+            $('#Search_Letter2').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Search_Letter2').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $("#Next").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    windows("#emkanat", "/ShowCharkhe_LetterContent/Index?LetterId=" + id);
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+            $("#Search").click(function () {
+                $.ajax({
+                    url: '/Search_Letter2/Search',
+                    type: 'get',
+                    datatype: 'json',
+                    data: {
+                        OrderId: $('#txtOrderId').val(),
+                        Subject: $('#txtSubject').val(),
+                        LetterNumber: $('#txtLetterNumber').val(),
+                        LetterDate: $('#txtLetterDate').val(),
+                        SenderName: $('#txtSender').val(),
+                        StartCreatedDate: $('#txtStartDate').val(),
+                        EndCreatedDate: $('#txtEndDate').val(),
+                        SecurityType: $('#cboSecurityType').val(),
+                        ImmediacyName: $('#cboImmediacyType').val(),
+                        Keywords: $('#txtKeywords').val(),
+                        Desc: $('#txtDesc').val(),
+                        ReciverName: $('#txtReciver').val()
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#Grid").data("kendoGrid").dataSource.data(result);
+                    }
+                });
+            });
+            $('#Grid table tr').live('dblclick', function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    if (WinOpen == false) {
+                        WinOpen = true;
+                        var URL = '@Url.Content("~/Draft/Details")';
+                        URL = URL + "?id=" + selectedItem.fldId;
+                        $.ajax({
+                            type: "GET",
+                            url: URL,
+                            success: function (data) {
+                                if (data.fldLetterTypeId == '1') {
+                                    var URL = '@Url.Content("~/Letter/Details")';
+                                    URL = URL + "/" + selectedItem.fldId;
+                                    $.ajax({
+                                        type: "GET",
+                                        url: URL,
+                                        success: function (data) {
+                                            WinOpen = false;
+
+                                            windowAppend('body', '/Letter');
+                                            $('#Date').val(data.fldCreatedDate);
+                                            $('#LetterNum').val(data.fldLetterNumber);
+                                            $('#LetterDate').val(data.fldLetterDate);
+                                            $('#LetterNumComp').val(data.fldOrderId);
+                                            LetterID = data.fldID;
+                                            creatorId = data.fldComisionID;
+                                            $('#Attach').attr('style', '');
+                                            $('#LetterAttach').attr('style', '');
+                                            $('#History').attr('style', '');
+                                            $('#Inf').attr('style', '');
+                                            $('#StatusFinish').attr('style', '');
+                                            $("#fldID").val(data.fldID);
+                                            girandeID = data.fldGirandeId;
+                                            girandeName = data.fldGirandeName
+                                            $('#Girandegan').html(data.fldGirandeName);
+                                            $("#txtSubject").val(data.fldSubject);
+                                            AssignmentSId = 0;
+                                            SignID = data.fldSignerId;
+                                            SignName = data.fldSignerName;
+                                            $('#lblSigner').html(data.fldSignerName);
+                                            rooneveshtID = data.RoneveshtId
+                                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                                            AssignmentDesc = data.RoneveshtText;
+                                            $('#Roonevesht').html(data.RoneveshtName);
+                                            rooneveshtName = data.RoneveshtName;
+                                            var creator = $('#cboCreator').data('kendoDropDownList');
+                                            creator.value(data.fldComisionID);
+                                            creator.enable(false);
+                                            $('#txtKeywords').val(data.fldKeywords);
+                                            $('#txtDesc').val(data.fldDesc);
+                                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                                            security.value(data.fldSecurityTypeID);
+                                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                                            Immediacy.value(data.fldImmediacyID);
+                                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "Letter")';
+                                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                                            var url = '@Url.Action("ReloadLetterAttach", "Letter")';
+                                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                                            var url = '@Url.Action("ReloadStatusFinish", "Letter")';
+                                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                                            var CboSign = $('#CboSignType').data('kendoDropDownList');
+                                            CboSign.value(data.fldSignType);
+                                            $('#PreviewImage').attr('src', '');
+                                            $.ajax({
+                                                type: "GET",
+                                                url: '/LetterContent/CheckHaveFile',
+                                                data: {
+                                                    LetterID: LetterID
+                                                },
+                                                success: function (data) {
+                                                    var have = data.have;
+                                                    if (have == 1) {
+                                                        var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                                                        $('#PreviewImage').attr('src', g);
+                                                    }
+                                                }
+                                            });
+                                        },
+                                        failure: function (data) {
+                                            alert(data.data);
+                                        }
+                                    });
+                                }
+                                else if (data.fldLetterTypeId == '2') {
+                                    var URL = '@Url.Content("~/ExternalLetter/Details")';
+                                    URL = URL + "/" + selectedItem.fldId;
+                                    $.ajax({
+                                        type: "GET",
+                                        url: URL,
+                                        success: function (data) {
+                                            WinOpen = false;
+                                            windowAppend('body', '/ExternalLetter/Index/1');
+                                            $('#Date').val(data.fldCreatedDate);
+                                            $('#LetterNumber').val(data.fldLetterNumber);
+                                            $('#ExLetterDate').val(data.fldLetterDate);
+                                            $('#LetterNumComp').val(data.fldOrderId);
+                                            LetterID = data.fldID;
+                                            creatorId = data.fldComisionID;
+                                            $('#Attach').attr('style', '');
+                                            $('#LetterAttach').attr('style', '');
+                                            $('#History').attr('style', '');
+                                            $('#Inf').attr('style', '');
+                                            $('#StatusFinish').attr('style', '');
+                                            $("#fldID").val(data.fldID);
+                                            ReceiverID = data.fldGirandeId;
+                                            ReceiverName = data.fldGirandeName
+                                            $('#Girandegan').html(data.fldGirandeName);
+                                            $("#txtSubject").val(data.fldSubject);
+                                            AssignmentSId = 0;
+                                            SenderID = data.fldSenderId;
+                                            SenderName = data.fldSenderName;
+                                            $('#SenderOragan').html(data.fldSenderName);
+                                            rooneveshtID = data.RoneveshtId
+                                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                                            AssignmentDesc = data.RoneveshtText;
+                                            $('#Roonevesht').html(data.RoneveshtName);
+                                            rooneveshtName = data.RoneveshtName;
+                                            var creator = $('#cboCreator').data('kendoDropDownList');
+                                            creator.value(data.fldComisionID);
+                                            creator.enable(false);
+                                            $('#txtKeywords').val(data.fldKeywords);
+                                            $('#txtDesc').val(data.fldDesc);
+                                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                                            security.value(data.fldSecurityTypeID);
+                                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                                            Immediacy.value(data.fldImmediacyID);
+                                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "ExternalLetter")';
+                                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                                            var url = '@Url.Action("ReloadLetterAttach", "Letter")';
+                                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                                            var url = '@Url.Action("ReloadStatusFinish", "ExternalLetter")';
+                                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                                            var t = '@Url.Content("~/ExternalLetter/GeneratePDF/")' + LetterID;
+                                            //$('#pdf').html("<br/><br/><br/><object id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                                        },
+                                        failure: function (data) {
+                                            alert(data.data);
+                                        }
+                                    });
+                                }
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        
+        
+    </script>
+</div>

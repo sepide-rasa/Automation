@@ -1,0 +1,129 @@
+﻿<div id="Inbox">
+    @using Kendo.Mvc.UI;
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    
+        <table>
+            <tr>
+                <td align="left">
+                    مرتب سازی بر اساس:
+                </td>
+                <td align="right">
+                    @(Html.Kendo().DropDownList()
+                          .Name("CboFilterType")
+                          .DataTextField("Text")
+                          .DataValueField("Value")
+                          .HtmlAttributes(new { @style = "width:100px;" })
+                          .BindTo(new List<SelectListItem>() {
+                              new SelectListItem() {
+                                  Text = "جدیدترین ها",
+                                  Value = "DateDESC"
+                              },
+                              new SelectListItem() {
+                                  Text = "قدیمی ترین ها",
+                                  Value = "DateASC"
+                              },
+                              new SelectListItem() {
+                                  Text = "خوانده شده ها",
+                                  Value = "StatusRead"
+                              },
+                              new SelectListItem() {
+                                  Text = "خوانده نشده ها",
+                                  Value = "StatusUnRead"
+                              },
+                              new SelectListItem() {
+                                  Text = "نامه های صادره",
+                                  Value = "LetterType_Sadere"
+                              },
+                              new SelectListItem() {
+                                  Text = "نامه های وارده",
+                                  Value = "LetterType_Varede"
+                              }
+                          })
+                    )
+                </td>
+            </tr>
+        </table>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_LetterSelectInboxDate>()
+                    .Name("InboxGrid")
+                    .Scrollable(scrollable => scrollable.Virtual(true).Height(497))
+                    .HtmlAttributes(new { @Class = "KartablGrid" })
+                    .Columns(columns =>
+                    {
+                        columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' value='#=fldID#' name='selectedLetter'/>").Width(35).HeaderTemplate(@<input type="checkbox" id="selectAll" />);
+                        columns.Template(@<text></text>).ClientTemplate("<img src='" + Url.Content("~/content/images/Attach#=HaveAttach#.png") + "' style='width: 20px;'/>").Width(35);
+                        columns.Template(@<text></text>).ClientTemplate("<img src='" + Url.Content("~/content/images/Im#=fldImmediacyID#.png") + "' style='width: 16px' title='#=fldImmediacyName#'/>").Width(35);
+                        columns.Template(@<text></text>).ClientTemplate("<img src='" + Url.Content("~/content/images/read#=AssimentLetterStatusId#.png") + "' style='width: 20px;' title='#=AssimentLetterStatus#'/>").Width(35);
+                        columns.Template(@<text></text>).ClientTemplate("<img src='" + Url.Content("~/content/images/Archiv#=HaveArchiv#.png") + "' style='width: 20px;' title='#=ArchivState#'/>").Width(35);
+                        columns.Bound(p => p.fldSubject).Title("عنوان نامه").Width(200);
+                        columns.Bound(p => p.fldOrderId).Title("ش ثبت نامه").Width(80);
+                        columns.Bound(p => p.fldID).Title("کد").Hidden();
+                        columns.Bound(p => p.fldLetterNumber).Title("ش نامه").Width(100);
+                        columns.Bound(p => p.fldLetterDate).Title("تاریخ نامه").Width(90);
+                        columns.Bound(p => p.fldCommision).Title("ارسال کننده").Width(200);
+                        columns.Bound(p => p.AssimentLetterStatus).Title("وضعیت ارجاع").Width(100);
+                        columns.Bound(p => p.fldLetterstatus).Title("وضعیت نامه").Width(100);
+                        columns.Bound(p => p.fldAssigmentDate).Title("تاریخ ارجاع").Width(90);
+                        columns.Bound(p => p.fldType).Title("نوع نامه").Width(150);
+                        //columns.Bound(p => p.LetterRecievers).Title("گیرنده").Width(200);
+                        columns.Bound(p => p.assigmentid).Hidden();
+                        columns.Bound(p => p.fldReceiverComisionID).Hidden();
+                        columns.Bound(p => p.fldArchivID).Title("ArchivID").Width(200).Hidden();
+                        columns.Bound(p => p.ArchivState).Title("ArchivState").Width(200).Hidden();
+                    })
+                                        .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                                        .Scrollable(scrol => scrol.Enabled(true))
+                                        .Resizable(resize => resize.Columns(true))
+                                        .DataSource(data =>
+                                            data.Ajax()
+                                                    .Read("Fill", "Inbox")
+                                        )
+                    //.ClientRowTemplate("<table role='grid'><tr><td></td><td></td><td></td><td></td></tr></table>")
+            )
+        </div>
+    <script type="text/javascript">
+    var AssignmentStatus;
+    var BoxId;
+    var WinOpen = false;
+    var LetterIDAssignment = 0;
+    $(document).ready(function () {
+        BoxId = '@ViewBag.BoxId';
+        $('#selectAll').click(function () {
+            $("#InboxGrid tbody input:checkbox").attr("checked", this.checked);
+        });
+
+        var URL = '@Url.Content("~/Sent/loadTarikh")';
+        URL = URL + "/?Start=" + $('#txtFromDate').val() + "&End=" + $('#txtToDate').val();
+        $.ajax({
+            type: "GET",
+            url: URL,
+            success: function (data) {
+                if (data.Ischange)
+                    ReloadInboxGrid();
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+
+        $('#CboFilterType').change(function () {
+            ReloadInboxGrid();
+        });
+    });
+        function ReloadInboxGrid() {
+            $.ajax({
+                url: '/Inbox/Reload',
+                type: 'get',
+                datatype: 'json',
+                data: { Type: $('#CboFilterType').val(), BoxId: BoxId, Start: $('#txtFromDate').val(), End: $('#txtToDate').val() },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#InboxGrid").data("kendoGrid").dataSource.data(result);
+                }
+            });
+        }
+    </script>
+
+    </div>

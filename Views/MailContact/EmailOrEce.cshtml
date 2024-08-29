@@ -1,0 +1,52 @@
+﻿<div id="EmailOrEce">
+    @Automation.Helper.winClass.windowHeader("", "ارسال", 250, 180)
+    <br />
+    
+    ارسال نامه توسط:
+    <br />
+    <br />
+    <br />
+    @Automation.Helper.winClass.Buttons("ECE", "ECE", "yes")
+    @Automation.Helper.winClass.Buttons("Email", "Email", "yes")
+
+    @Automation.Helper.winClass.windowFother()
+    <script type="text/javascript">
+    var state = 0;
+    $(document).ready(function () {
+        $("#Email").button();
+        $("#ECE").button();
+        state = '@ViewBag.state';
+        ID = '@ViewBag.ID';
+
+        if (state == 1) {
+            $('#ECE').click(function () {
+                $("#EmailOrEce").remove();
+                // window.location.href = '@Url.Content("~/MailContact/Index/")' + '?State=4' + '&LetterID=' + LetterID + '&Name=' + "" + '&Email=' + "";
+                    windowAppend('body', '/Home/EmailOrDownload?LetterID=' + LetterID);
+                });
+
+                $('#Email').click(function () {
+                    $("#EmailOrEce").remove();
+                    windowAppend('body', '/MailContact/Index?State=1&LetterID=' + LetterID + '&Name=' + "" + '&Email=' + "");
+                });
+            }
+            else if (state == 2) {
+                $('#ECE').click(function () {
+                    $("#EmailOrEce").remove();
+                    // window.location.href = '@Url.Content("~/MailContact/Index/")' + '?State=4' + '&LetterID=' + LetterID + '&Name=' + "" + '&Email=' + "";
+                    windowAppend('body', '/Home/EmailOrDownload?LetterID=' + ID);
+                });
+
+                $('#Email').click(function () {
+                    $("#EmailOrEce").remove();
+                    windowAppend('body', '/MailContact/Index?State=1&LetterID=' + ID + '&Name=' + "" + '&Email=' + "");
+                });
+            }
+
+            $('#EmailOrEce #btnClose').click(function () {
+                $("#EmailOrEce").remove();
+                isWinOpen = false;
+            });
+        });
+    </script>
+</div>

@@ -1,0 +1,279 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="AddFriend">
+    @Automation.Helper.winClass.windowHeader("", "کاربران", 400, 600)
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <center>
+            <table>
+                @Html.Hidden("fldGID")
+                <tr>
+                    <td align="center" colspan="6">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("SelectVorudi", "انتخاب", "Next")
+                            @Automation.Helper.winClass.Buttons("exitVorudi", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        جستجو:
+                        @Automation.Helper.winClass.textbox("txtSearch")
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblUserSelect>()
+                .Name("GridVorudi")
+                .Scrollable(scrollable => scrollable.Virtual(true).Height(497))
+                .Columns(columns =>
+                {
+                    columns.Template(@<text></text>).ClientTemplate("<input type='checkbox' value='#=fldID#' name='selected'/>").Width(35).HeaderTemplate(@<input type="checkbox" id="selectAll1" />);
+                    columns.Bound(p => p.fldID).Title("کد شخص").Hidden();
+                    columns.Bound(p => p.fldStaffName).Title("نام و نام خانوادگی");
+
+                })
+                        .Editable(editable => editable.Mode(GridEditMode.InCell))
+                        .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                        .Scrollable(scrol => scrol.Enabled(true))
+                        .Resizable(resize => resize.Columns(true))
+                        .DataSource(data =>
+                                data.Ajax()
+                                        .PageSize(100000)   
+                                .Read("Fill", "Chat")
+                        .Model(m =>
+                        {
+                            m.Id(p => p.fldID);
+                            m.Field(p => p.fldStaffName).Editable(false);
+                        })
+                        )
+            )
+        </div>
+    </div>
+    <script type="text/javascript">
+    var State = '@ViewBag.State';
+    var Nods = new Array();
+    $("document").ready(function () {
+        State = '@ViewBag.State';
+
+        $("#SelectVorudi").button();
+        $("#exitVorudi").button();
+
+        $("#exitVorudi").click(function () {
+            $("#AddFriend").remove();
+            isWinOpen = false;
+        });
+
+        $('#txtSearch').keyup(function () {
+            var url = '@Url.Action("Reload", "Chat")';
+            ReloadSearch(url, 'GridVorudi', $("#txtSearch").val());
+        });
+
+        $('#AddFriend #btnClose').click(function () {
+            $("#AddFriend").remove();
+            isWinOpen = false;
+        });
+
+        $(document).keyup(function (e) {
+            if (e.keyCode == 27) {
+                $("#AddFriend").remove();
+                isWinOpen = false;
+            }
+        });
+
+        $('#selectAll1').click(function () {
+            $("#GridVorudi tbody input:checkbox").attr("checked", this.checked);
+
+        });
+
+        if (State == 3) {
+            var URL = '@Url.Content("~/Chat/Details")';
+            URL = URL + "/Gid=?" + '@ViewBag.Gid';
+            $.ajax({
+                type: "GET",
+                url: URL,
+                success: function (data) {
+                    var checked = $('input[type=checkbox]');
+                    for (var i = 0; i < checked.length; i++) {
+                        var f = checked.valueOf()[i];
+                        f.checked = false;
+                        for (var k = 0; k < data.checkedNodes.length; k++) {
+                            if (f.value == data.checkedNodes[k])
+                                f.checked = true;
+                        }
+                    }
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+            $("#SelectVorudi").click(function () {
+                var entityGrid = $("#GridVorudi").data("kendoGrid");
+                var row = entityGrid.items();
+                var t = $('#AddFriend input[type=checkbox]');
+                var Id = 0;
+                var select = "";
+                for (var i = 0; i < t.length - 1; i++) {
+                    var Id = row[i].cells[1].innerText;
+                    if (t.valueOf()[i + 1].checked) {
+                        select = select + Id + ';';
+                    }
+                }
+
+                if (State == 3)
+                    Id = $('#fldGID').val();
+                if (State == 1)
+                    var URL = '/Chat/Submit';
+                if (State == 2 || State == 3)
+                    var URL = '/Chat/SubmitGroup';
+
+                var data = {
+                    selection: select,
+                    GroupName: $('#txtGroupName').val(),
+                    fldId: Id
+                };
+                if (data != '') {
+                    PostFormVorudi(data, URL, "#win");
+                }
+            });
+        });
+        @*function LoadGrid() {
+            if (State == 3) {
+                Ext.net.DirectMethod.request({
+                    url: '/Chat/Details',
+                    params: {
+                        Gid: '@ViewBag.Gid'
+                },
+                success: function (data) {
+                    var txtName = App.AddFriends.queryById('txtGroupName');
+                    txtName.setValue(data.fldName);
+                    var Id = App.AddFriends.queryById('fldId');
+                    Id.setValue(data.fldId);
+                    Nods = data.checkedNodes;
+
+                    var SelectedRow = App.AddFriends.queryById('Grid');
+                    for (var i = 0; i < Nods.length ; i++) {
+                        for (var _i = 0; _i < SelectedRow.selModel.store.count() ; _i++)
+                            if (SelectedRow.selModel.store.data.items[_i].data.fldID == Nods[i])
+                                SelectedRow.getSelectionModel().select(_i, true);
+                    }
+                }
+            });
+        }
+    }
+    function Load() {
+        if (State == 1)
+            App.AddFriends.queryById('txtGroupName').setDisabled(true);
+        else
+            App.AddFriends.queryById('txtGroupName').setDisabled(false);
+    }
+    function Save() {
+        var SelectedRow = App.AddFriends.queryById('Grid');
+        var Id = 0;
+        if (State == 3)
+            Id = App.AddFriends.queryById('fldId').getValue();
+        if (State == 1)
+            var URL = '/Chat/Submit';
+        if (State == 2 || State == 3)
+            var URL = '/Chat/SubmitGroup';
+
+        Ext.net.DirectMethod.request({
+            url: URL,
+            params: {
+                selection: SelectedRow.getSelectionSubmit().getSelectionModelField().getValue(),
+                GroupName: App.AddFriends.queryById('txtGroupName').getValue(),
+                fldId: Id
+            },
+            success: function (data) {
+                Ext.MessageBox.show({
+                    title: data.MsgTitle,
+                    msg: data.Msg,
+                    icon: Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+                App.AddFriends.destroy();
+                reloadTree();
+
+            }
+
+        });
+    }*@
+    function Clear() {
+        $("#fldStopTime").val('');
+        $("#txtDesc").val('');
+        $('#fldId').val(0)
+    }
+    function ReloadSearch(Url, gridname, value) {
+        var grid = $('#' + gridname).data('kendoGrid');
+        $.ajax({
+            url: Url,
+            type: 'get',
+            datatype: 'json',
+            data: {value: value},
+            error: function (xhr, status, error) {
+                alert(xhr + status);
+            },
+            success: function (result) {
+                $("#" + gridname).data("kendoGrid").dataSource.data(result);
+            }
+
+        });
+    }
+    function ReloadVorudi(Url, gridname, Reciver_sender, Reciver_senderId) {
+        var grid = $('#' + gridname).data('kendoGrid');
+        $.ajax({
+            url: Url,
+            type: 'post',
+            datatype: 'json',
+            data: { Reciver_sender: Reciver_sender, Reciver_senderId: Reciver_senderId },
+            error: function (xhr, status, error) {
+                alert(xhr + status);
+            },
+            success: function (result) {
+                $("#" + gridname).data("kendoGrid").dataSource.data(result);
+            }
+        });
+    }
+
+    function PostFormVorudi(datas, url, id) {
+        var sendInfo = datas;
+        $('#Lock').show();
+        $.ajax({
+            type: "POST",
+            url: url,
+            datatype: "json",
+            data: JSON.stringify(sendInfo),
+            contentType: 'application/json',
+            success: function (data) {
+                var m = data;
+                windowAppend("body", "/metro/error");
+                $("#message").html(m.data);
+                switch (m.state) {
+                    case 0:
+                        $("#error .wintitle").html("ذخیره موفق");
+                        break;
+                    case 1:
+                        $("#error .wintitle").html("خطا");
+                        break;
+                }
+                $("#AddFriend").remove();
+                var tree = $('#chattreeview').data("kendoTreeView");
+                tree.dataSource.read();
+                isWinOpen = false;
+                $('#Lock').hide();
+
+            },
+            failure: function (data) {
+                alert(data.data);
+            }
+        });
+    }
+
+    </script>
+    @Automation.Helper.winClass.windowFother();
+</div>
+
+

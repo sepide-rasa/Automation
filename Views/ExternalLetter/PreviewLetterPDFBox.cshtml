@@ -1,0 +1,15 @@
+﻿<div id="PreviewLetterPDFBox">
+    @Automation.Helper.winClass.windowHeader("", "نمایش متن نامه",850, 620)
+    <br />
+    <div id="pdf"></div>
+    @Automation.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+            $('#PreviewLetterPDFBox #btnClose').click(function () {
+                $("#PreviewLetterPDFBox").remove();
+                isWinOpen = false;
+            });
+        });
+    </script>
+</div>

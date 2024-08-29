@@ -1,0 +1,352 @@
+﻿@{@using Kendo.Mvc.UI;
+<div class="modal" id="SearchSecretariatLetter">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <center>
+           <table>
+                <tr>
+                    @Html.Hidden("fldID")
+                    <td align="left">
+                        شماره ثبت رایانه:
+                    </td>
+                    <td>
+                        @Html.TextBox("Date", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                     </tr>
+                    <tr>
+                    <td align="left">
+                        موضوع  نامه:
+                    </td>
+                    <td>
+                        @Html.TextBox("LetterNum", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                    </tr>
+                    <tr>
+                    <td align="left">
+                        فرستنده یا گیرنده:
+                    </td>
+                    <td>
+                        @Html.TextBox("LetterDate", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                </tr>
+                <tr>   
+                    <td align="left">ازتاریخ :
+                    </td>
+                    <td align="right">
+                         @Html.TextBox("txtStartDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })                         
+                    </td>
+                </tr>
+                <tr>   
+                    <td align="left">تاتاریخ :
+                    </td>
+                    <td align="right">
+                         @Html.TextBox("txtEndDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })                         
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                       شماره نامه:
+                    </td>
+                    <td>
+                        @Html.TextBox("LetterDate", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> محرمانگی:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboSecurityType")
+                                  .OptionLabel("نام گروه...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetSecurityTypes", "SearchSecretariatLetter");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                        <span id="lblSecurityTypeError" style="color: Red;"></span>
+                    </td>
+                    </tr>
+                 <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> نوع نامه:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                .Name("cboImmediacyType")
+                                  .OptionLabel("فوریت...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetImmediacyTypes", "SearchSecretariatLetter");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                        <span id="lblImmediacyTypeError" style="color: Red;"></span>
+                    </td>
+                </tr>            
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>کلید واژه:
+                    </td>
+                    <td colspan="5" align="right">
+                        @Html.TextBox("txtKeywords", null, new { @style = "direction:rtl;font-family:tornado tahoma;width: 500px;height: 23px;" })
+                        <span id="lblKeywordsError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td colspan="5">
+                        @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("Next", "جست وجو", "Next")
+              @Automation.Helper.winClass.Buttons("DelLink", "لغو جست وجو", "Del")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "موضوع نامه " } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblLetterSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldSubject).Title("موضوع");
+                    columns.Bound(p => p.fldLetterNumber).Title("شماره نامه");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                                .Read("Fill", "SearchSecretariatLetter")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var girandeName = '';
+        var girandeID = '';
+        var rooneveshtName = '';
+        var rooneveshtID = '';
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#SaveNew").button();
+            $("#okLetter").button();
+            $("#postage_stamp").button();
+            $("#saere").button();
+            $("#mail_send").button();
+            $("#exit").button();
+
+            $("#exit").click(function () {
+                $("#Letter").remove();
+            });
+
+            $('#txtReciver').keyup(function () {
+                windowAppend("body", "/SearchAssignmntRole/index/1");
+            });
+
+            $('#txtCopy').keyup(function () {
+                windowAppend("body", "/SearchAssignmntRole/index/2");
+            });
+
+            jQuery("#EditLink").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/SearchSecretariatLetter/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#Date').val(data.fldCreatedDate);
+                            $('#LetterDate').val(data.fldLetterDate);
+                            $('#LetterNum').val(data.fldLetterNumber);
+                            $('#txtSubject').val(data.fldSubject);
+                            $('#fldID').val(data.fldID);
+                            $('#txtDesc').val(data.fldDesc);
+                            $('#txtKeywords').val(data.fldKeywords);
+
+                            var model = $("#cboImmediacyType").data("kendoDropDownList");
+                            model.value(data.fldImmediacyID);
+                            var model = $("#cboSecurityType").data("kendoDropDownList");
+                            model.value(data.fldSecurityTypeID);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "SearchSecretariatLetter")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $('#DelLink').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/SearchSecretariatLetter/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            });
+
+            $("#AddLink").click(function () {
+                var er = false;
+
+                if ($("#cboGroupType").val() == '') {
+                    $("#cboGroupType").addClass("input-validation-error");
+                    $('#lblGroupTypeError').html('لطفاعنوان ملک را انتخاب کنید.');
+                    er = true;
+                }
+                else {
+                    $("#cboGroupType").removeClass("input-validation-error");
+                    $('#lblGroupTypeError').html('');
+                }
+
+                if (er)
+                    return;
+
+                var data = {
+                    fldSubject: $('#txtSubject').val(),
+                    fldLetterNumber: $('#LetterNum').val(),
+                    fldLetterDate: $('#LetterDate').val(),
+                    fldKeywords: $('#txtKeywords').val(),
+                    fldCreatedDate: $('#Date').val(),
+                    fldImmediacyID: $('#cboImmediacyType').val(),
+                    fldSecurityTypeID: $('#cboSecurityType').val(),
+                    fldSecurityTypeID: $('#cboCreator').val(),
+                    fldDesc: $("#txtDesc").val(),
+                    fldID: $("#fldID").val()
+                };
+
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/SearchSecretariatLetter/Save")', "#win");
+                }
+                Clear();
+            });
+
+        });
+        function Clear() {
+            $('#Date').val('');
+            $('#LetterDate').val('');
+            $('#LetterNum').val('');
+            $('#txtSubject').val('');
+            $('#fldID').val(0);
+            $('#txtDesc').val('');
+            $('#txtKeywords').val('');
+
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "Letter")';
+                    Reload(url, 'Grid', '0', '', 30, 1);
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+</div>

@@ -1,0 +1,143 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SearchComision">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <a href="@Url.Content("~/Helps/مدیریت قوانین ارجاع.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+       
+        <div>
+            <center>
+                <table>
+                    <tr>
+                        <td> فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام و نام خانوادگی کارمند" } }, "ID", "Name"))
+                        </td>
+                        <td>نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                        </td>
+                        <td>نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                        </td>
+                    </tr>
+                </table>
+            </center>
+            <br />
+        </div>
+        <center>
+            <p>
+                @Automation.Helper.winClass.Buttons("Next", "ادامه", "Next")
+                @Automation.Helper.winClass.Buttons("New", "جدید", "yes")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblCommisionSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldStaffName).Title("نام کارمند");
+                    columns.Bound(p => p.fldOrganicRoleName).Title("عنوان پست");
+                    columns.Bound(p => p.fldOrganicRoleID).Title("کد پست سازمانی");
+                    columns.Bound(p => p.fldStartDate).Title("تاریخ شروع");
+                    columns.Bound(p => p.fldEndDate).Title("تاریخ پایان");
+                    columns.Bound(p => p.fldOraganicNumber).Title("پست الکترونیک");
+                  columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                .Read("Fill", "SearchComision")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#Next").button();
+            $("#New").button();
+            $("#Help").button();
+            $("#exit").button();
+
+            $("#exit").click(function () {
+                $("#SearchComision").remove();
+            });
+            $('#New').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldStaffID;
+                    windows("#win", "/Comision/Index?idStaff=" + id+ "&S="+1);
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "SearchComision")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+            $('#SearchComision').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#SearchComision').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $('#Next').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    windows("#win", "/AssignmentRole/Index?idComision=" + id);
+
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+            var StaffId;
+            $("document").ready(function () {
+               /* StaffId = 'ViewBag.Staffid';
+                $.ajax({
+                    type: "GET",
+                    url: '/Comision/GetInf',
+                    datatype: 'json',
+                    data: { idStaff: StaffId },
+                    success: function (data) {
+                        $('#StaffName').val(data.StaffName);
+                    }
+                    , failure: function (data) {
+                        alert(data.data);
+                    }
+                });*/
+            });
+        });
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+
+    </script>
+</div>

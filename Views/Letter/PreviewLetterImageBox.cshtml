@@ -1,0 +1,16 @@
+﻿<div id="PreviewLetterImageBox">
+    @Automation.Helper.winClass.windowHeader("", "نمایش متن نامه", 600, 530)
+    <br />
+    <img id="PreviewImageBox" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" width="550px" style="border-style: double;"/>
+    @Automation.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        var isWinOpen = false;
+        $(document).ready(function () {
+
+            $('#PreviewLetterImageBox #btnClose').click(function () {
+                $("#PreviewLetterImageBox").remove();
+                isWinOpen = false;
+            });
+        });
+    </script>
+</div>

@@ -1,0 +1,1827 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AutomationModelStoreContainer" CdmEntityContainer="AutomationEntities">
+    <FunctionImportMapping FunctionImportName="sp_tblOrganizationUnitSelect" FunctionName="AutomationModel.Store.sp_tblOrganizationUnitSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblOrganizationUnitSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblOrganizationUnitDelete" FunctionName="AutomationModel.Store.sp_tblOrganizationUnitDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblOrganizationUnitInsert" FunctionName="AutomationModel.Store.sp_tblOrganizationUnitInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblOrganizationUnitUpdate" FunctionName="AutomationModel.Store.sp_tblOrganizationUnitUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentTypeDelete" FunctionName="AutomationModel.Store.sp_tblAssignmentTypeDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentTypeInsert" FunctionName="AutomationModel.Store.sp_tblAssignmentTypeInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentTypeSelect" FunctionName="AutomationModel.Store.sp_tblAssignmentTypeSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignmentTypeSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentTypeUpdate" FunctionName="AutomationModel.Store.sp_tblAssignmentTypeUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecurityTypeDelete" FunctionName="AutomationModel.Store.sp_tblSecurityTypeDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecurityTypeInsert" FunctionName="AutomationModel.Store.sp_tblSecurityTypeInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecurityTypeSelect" FunctionName="AutomationModel.Store.sp_tblSecurityTypeSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSecurityTypeSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSecurityTypeUpdate" FunctionName="AutomationModel.Store.sp_tblSecurityTypeUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblStaffDelete" FunctionName="AutomationModel.Store.sp_tblStaffDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblStaffInsert" FunctionName="AutomationModel.Store.sp_tblStaffInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblStaffUpdate" FunctionName="AutomationModel.Store.sp_tblStaffUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblOrganicRoleDelete" FunctionName="AutomationModel.Store.sp_tblOrganicRoleDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblOrganicRoleInsert" FunctionName="AutomationModel.Store.sp_tblOrganicRoleInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblOrganicRoleSelect" FunctionName="AutomationModel.Store.sp_tblOrganicRoleSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblOrganicRoleSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldOrganizationUnitID" ColumnName="fldOrganizationUnitID" />
+          <ScalarProperty Name="fldOrganizationUnitName" ColumnName="fldOrganizationUnitName" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblOrganicRoleUpdate" FunctionName="AutomationModel.Store.sp_tblOrganicRoleUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblCommisionDelete" FunctionName="AutomationModel.Store.sp_tblCommisionDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblCommisionInsert" FunctionName="AutomationModel.Store.sp_tblCommisionInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblCommisionSelect" FunctionName="AutomationModel.Store.sp_tblCommisionSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblCommisionSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldStaffID" ColumnName="fldStaffID" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldOrganicRoleID" ColumnName="fldOrganicRoleID" />
+          <ScalarProperty Name="fldOrganicRoleName" ColumnName="fldOrganicRoleName" />
+          <ScalarProperty Name="fldStartDate" ColumnName="fldStartDate" />
+          <ScalarProperty Name="fldEndDate" ColumnName="fldEndDate" />
+          <ScalarProperty Name="fldOraganicNumber" ColumnName="fldOraganicNumber" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldSign" ColumnName="fldSign" />
+          <ScalarProperty Name="StaffUserId" ColumnName="StaffUserId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblCommisionUpdate" FunctionName="AutomationModel.Store.sp_tblCommisionUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblStaffSelect" FunctionName="AutomationModel.Store.sp_tblStaffSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblStaffSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldFamily" ColumnName="fldFamily" />
+          <ScalarProperty Name="fldMelliCode" ColumnName="fldMelliCode" />
+          <ScalarProperty Name="fldBirthDate" ColumnName="fldBirthDate" />
+          <ScalarProperty Name="fldEmailAddress" ColumnName="fldEmailAddress" />
+          <ScalarProperty Name="fldMobile" ColumnName="fldMobile" />
+          <ScalarProperty Name="fldAddress" ColumnName="fldAddress" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldNameFather" ColumnName="fldNameFather" />
+          <ScalarProperty Name="fldSign" ColumnName="fldSign" />
+          <ScalarProperty Name="fldNotify" ColumnName="fldNotify" />
+          <ScalarProperty Name="fldLetterLoadNum" ColumnName="fldLetterLoadNum" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblPatternDelete" FunctionName="AutomationModel.Store.sp_tblPatternDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblPatternInsert" FunctionName="AutomationModel.Store.sp_tblPatternInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblPatternSelect" FunctionName="AutomationModel.Store.sp_tblPatternSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblPatternSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblPatternUpdate" FunctionName="AutomationModel.Store.sp_tblPatternUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblArchiveDelete" FunctionName="AutomationModel.Store.sp_tblArchiveDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblArchiveInsert" FunctionName="AutomationModel.Store.sp_tblArchiveInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblArchiveSelect" FunctionName="AutomationModel.Store.sp_tblArchiveSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblArchiveSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblArchiveUpdate" FunctionName="AutomationModel.Store.sp_tblArchiveUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblProgramSettingSelect" FunctionName="AutomationModel.Store.sp_tblProgramSettingSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblProgramSettingSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldEmailAddress" ColumnName="fldEmailAddress" />
+          <ScalarProperty Name="fldEmailPassword" ColumnName="fldEmailPassword" />
+          <ScalarProperty Name="fldLogo" ColumnName="fldLogo" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldRecieveServer" ColumnName="fldRecieveServer" />
+          <ScalarProperty Name="fldRecievePort" ColumnName="fldRecievePort" />
+          <ScalarProperty Name="fldSendServer" ColumnName="fldSendServer" />
+          <ScalarProperty Name="fldSendPort" ColumnName="fldSendPort" />
+          <ScalarProperty Name="fldSSL" ColumnName="fldSSL" />
+          <ScalarProperty Name="fldDelFax" ColumnName="fldDelFax" />
+          <ScalarProperty Name="fldIsSigner" ColumnName="fldIsSigner" />
+          <ScalarProperty Name="fldFaxPath" ColumnName="fldFaxPath" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblProgramSettingDelete" FunctionName="AutomationModel.Store.sp_tblProgramSettingDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblProgramSettingInsert" FunctionName="AutomationModel.Store.sp_tblProgramSettingInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblProgramSettingUpdate" FunctionName="AutomationModel.Store.sp_tblProgramSettingUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalPartnerDelete" FunctionName="AutomationModel.Store.sp_tblExternalPartnerDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalPartnerInsert" FunctionName="AutomationModel.Store.sp_tblExternalPartnerInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalPartnerSelect" FunctionName="AutomationModel.Store.sp_tblExternalPartnerSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblExternalPartnerSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldAddress" ColumnName="fldAddress" />
+          <ScalarProperty Name="fldTel" ColumnName="fldTel" />
+          <ScalarProperty Name="fldEmailAddress" ColumnName="fldEmailAddress" />
+          <ScalarProperty Name="fldSmsOrder" ColumnName="fldSmsOrder" />
+          <ScalarProperty Name="fldWebsite" ColumnName="fldWebsite" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblExternalPartnerUpdate" FunctionName="AutomationModel.Store.sp_tblExternalPartnerUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPatternDelete" FunctionName="AutomationModel.Store.sp_tblLetterPatternDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPatternInsert" FunctionName="AutomationModel.Store.sp_tblLetterPatternInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPatternSelect" FunctionName="AutomationModel.Store.sp_tblLetterPatternSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterPatternSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldPatternID" ColumnName="fldPatternID" />
+          <ScalarProperty Name="fldPatternName" ColumnName="fldPatternName" />
+          <ScalarProperty Name="fldPatternFile" ColumnName="fldPatternFile" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPatternUpdate" FunctionName="AutomationModel.Store.sp_tblLetterPatternUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatSelect" FunctionName="AutomationModel.Store.sp_tblSecretariatSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSecretariatSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldOrgUnitId" ColumnName="fldOrgUnitId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatInsert" FunctionName="AutomationModel.Store.sp_tblSecretariatInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatDelete" FunctionName="AutomationModel.Store.sp_tblSecretariatDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatUpdate" FunctionName="AutomationModel.Store.sp_tblSecretariatUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariat_OrganizationUnitDelete" FunctionName="AutomationModel.Store.sp_tblSecretariat_OrganizationUnitDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariat_OrganizationUnitInsert" FunctionName="AutomationModel.Store.sp_tblSecretariat_OrganizationUnitInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariat_OrganizationUnitUpdate" FunctionName="AutomationModel.Store.sp_tblSecretariat_OrganizationUnitUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariat_OrganizationUnitSelect" FunctionName="AutomationModel.Store.sp_tblSecretariat_OrganizationUnitSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSecretariat_OrganizationUnitSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldSecretariatID" ColumnName="fldSecretariatID" />
+          <ScalarProperty Name="fldOrganizationUnitID" ColumnName="fldOrganizationUnitID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSubstituteSelect" FunctionName="AutomationModel.Store.sp_tblSubstituteSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSubstituteSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldStartDate" ColumnName="fldStartDate" />
+          <ScalarProperty Name="fldEndDate" ColumnName="fldEndDate" />
+          <ScalarProperty Name="fldStartTime" ColumnName="fldStartTime" />
+          <ScalarProperty Name="fldEndTime" ColumnName="fldEndTime" />
+          <ScalarProperty Name="fldIsSigner" ColumnName="fldIsSigner" />
+          <ScalarProperty Name="fldShowReceiverName" ColumnName="fldShowReceiverName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSubstituteDelete" FunctionName="AutomationModel.Store.sp_tblSubstituteDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblSubstituteInsert" FunctionName="AutomationModel.Store.sp_tblSubstituteInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblSubstituteUpdate" FunctionName="AutomationModel.Store.sp_tblSubstituteUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSubstituteِDelete" FunctionName="AutomationModel.Store.sp_tblSubstituteDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssinmentRoleInsert" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssinmentRoleUpdate" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssinmentRoleDelete" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssinmentRoleSelect" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssinmentRoleSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldSenderComisionName" ColumnName="fldSenderComisionName" />
+          <ScalarProperty Name="fldReceiverComisionName" ColumnName="fldReceiverComisionName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_SelectCommisionTree" FunctionName="AutomationModel.Store.sp_SelectCommisionTree">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_SelectCommisionTree">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="KarmandName" ColumnName="KarmandName" />
+          <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblPictureSelect" FunctionName="AutomationModel.Store.sp_tblPictureSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblPictureSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldStaffID" ColumnName="fldStaffID" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldStaffPicture" ColumnName="fldStaffPicture" />
+          <ScalarProperty Name="fldSignPicture" ColumnName="fldSignPicture" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblPictureDelete" FunctionName="AutomationModel.Store.sp_tblPictureDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblPictureInsert" FunctionName="AutomationModel.Store.sp_tblPictureInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblPictureUpdate" FunctionName="AutomationModel.Store.sp_tblPictureUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblPermissionSelect" FunctionName="AutomationModel.Store.sp_tblPermissionSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblPermissionSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldUserGroupID" ColumnName="fldUserGroupID" />
+          <ScalarProperty Name="fldApplicationPartID" ColumnName="fldApplicationPartID" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblPermissionDelete" FunctionName="AutomationModel.Store.sp_tblPermissionDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblPermissionInsert" FunctionName="AutomationModel.Store.sp_tblPermissionInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblPermissionUpdate" FunctionName="AutomationModel.Store.sp_tblPermissionUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblUserGroupSelect" FunctionName="AutomationModel.Store.sp_tblUserGroupSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblUserGroupSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldTitle" ColumnName="fldTitle" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblUserGroupDelete" FunctionName="AutomationModel.Store.sp_tblUserGroupDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblUserGroupInsert" FunctionName="AutomationModel.Store.sp_tblUserGroupInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblUserGroupUpdate" FunctionName="AutomationModel.Store.sp_tblUserGroupUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblApplicationPartSelect" FunctionName="AutomationModel.Store.sp_tblApplicationPartSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblApplicationPartSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldTitle" ColumnName="fldTitle" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblApplicationPartInsert" FunctionName="AutomationModel.Store.sp_tblApplicationPartInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblApplicationPartDelete" FunctionName="AutomationModel.Store.sp_tblApplicationPartDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblApplicationPartUpdate" FunctionName="AutomationModel.Store.sp_tblApplicationPartUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblUserUpdate" FunctionName="AutomationModel.Store.sp_tblUserUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblUserInsert" FunctionName="AutomationModel.Store.sp_tblUserInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblUserSelect" FunctionName="AutomationModel.Store.sp_tblUserSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblUserSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldStaffID" ColumnName="fldStaffID" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldPassword" ColumnName="fldPassword" />
+          <ScalarProperty Name="fldActive_Deactive" ColumnName="fldActive_Deactive" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldNameUser" ColumnName="fldNameUser" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblUserDelete" FunctionName="AutomationModel.Store.sp_tblUserDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblUser_GroupSelect" FunctionName="AutomationModel.Store.sp_tblUser_GroupSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblUser_GroupSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldUserGroupID" ColumnName="fldUserGroupID" />
+          <ScalarProperty Name="fldUserSelectID" ColumnName="fldUserSelectID" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldUeserGroup" ColumnName="fldUeserGroup" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblUser_GroupDelete" FunctionName="AutomationModel.Store.sp_tblUser_GroupDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblUser_GroupInsert" FunctionName="AutomationModel.Store.sp_tblUser_GroupInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblUser_GroupUpdate" FunctionName="AutomationModel.Store.sp_tblUser_GroupUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterSelect" FunctionName="AutomationModel.Store.sp_tblLetterSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldCreatedDate" ColumnName="fldCreatedDate" />
+          <ScalarProperty Name="fldCreatedDateEn" ColumnName="fldCreatedDateEn" />
+          <ScalarProperty Name="fldKeywords" ColumnName="fldKeywords" />
+          <ScalarProperty Name="fldLetterStatusID" ColumnName="fldLetterStatusID" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldSecurityTypeID" ColumnName="fldSecurityTypeID" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldLetterStatusName" ColumnName="fldLetterStatusName" />
+          <ScalarProperty Name="fldImmediacyName" ColumnName="fldImmediacyName" />
+          <ScalarProperty Name="fldLetterTypeName" ColumnName="fldLetterTypeName" />
+          <ScalarProperty Name="fldSecurityTypeName" ColumnName="fldSecurityTypeName" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldYear" ColumnName="fldYear" />
+          <ScalarProperty Name="fldOrderId" ColumnName="fldOrderId" />
+          <ScalarProperty Name="fldSignType" ColumnName="fldSignType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterDelete" FunctionName="AutomationModel.Store.sp_tblLetterDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterInsert" FunctionName="AutomationModel.Store.sp_tblLetterInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterUpdate" FunctionName="AutomationModel.Store.sp_tblLetterUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblImmediacySelect" FunctionName="AutomationModel.Store.sp_tblImmediacySelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblImmediacySelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldPicture" ColumnName="fldPicture" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblImmediacyDelete" FunctionName="AutomationModel.Store.sp_tblImmediacyDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblImmediacyInsert" FunctionName="AutomationModel.Store.sp_tblImmediacyInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblImmediacyUpdate" FunctionName="AutomationModel.Store.sp_tblImmediacyUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxSelect" FunctionName="AutomationModel.Store.sp_tblBoxSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblBoxSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldBoxTypeID" ColumnName="fldBoxTypeID" />
+          <ScalarProperty Name="fldBoxTypeName" ColumnName="fldBoxTypeName" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_LetterSelectInboxDate" FunctionName="AutomationModel.Store.sp_LetterSelectInboxDate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_LetterSelectInboxDate">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldOrderId" ColumnName="fldOrderId" />
+          <ScalarProperty Name="fldCommision" ColumnName="fldCommision" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterstatus" ColumnName="fldLetterstatus" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="HaveAttach" ColumnName="HaveAttach" />
+          <ScalarProperty Name="LetterRecievers" ColumnName="LetterRecievers" />
+          <ScalarProperty Name="fldAssigmentDate" ColumnName="fldAssigmentDate" />
+          <ScalarProperty Name="assigmentid" ColumnName="assigmentid" />
+          <ScalarProperty Name="fldAnswerDate" ColumnName="fldAnswerDate" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldAssignmentStatusID" ColumnName="fldAssignmentStatusID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldArchiv" ColumnName="fldArchiv" />
+          <ScalarProperty Name="HaveArchiv" ColumnName="HaveArchiv" />
+          <ScalarProperty Name="AssimentLetterStatus" ColumnName="AssimentLetterStatus" />
+          <ScalarProperty Name="AssimentLetterStatusId" ColumnName="AssimentLetterStatusId" />
+          <ScalarProperty Name="fldImmediacyName" ColumnName="fldImmediacyName" />
+          <ScalarProperty Name="ArchivState" ColumnName="ArchivState" />
+          <ScalarProperty Name="fldArchivID" ColumnName="fldArchivID" />
+          <ScalarProperty Name="InternalAssignmentReceiverID" ColumnName="InternalAssignmentReceiverID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterAttachmentSelect" FunctionName="AutomationModel.Store.sp_tblLetterAttachmentSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterAttachmentSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldContentFileID" ColumnName="fldContentFileID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterAttachmentDelete" FunctionName="AutomationModel.Store.sp_tblLetterAttachmentDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterAttachmentInsert" FunctionName="AutomationModel.Store.sp_tblLetterAttachmentInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterAttachmentUpdate" FunctionName="AutomationModel.Store.sp_tblLetterAttachmentUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblContentFileSelect" FunctionName="AutomationModel.Store.sp_tblContentFileSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblContentFileSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldLetterText" ColumnName="fldLetterText" />
+          <ScalarProperty Name="fldLetterPatternID" ColumnName="fldLetterPatternID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldExt" ColumnName="fldExt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblContentFileDelete" FunctionName="AutomationModel.Store.sp_tblContentFileDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblContentFileInsert" FunctionName="AutomationModel.Store.sp_tblContentFileInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblContentFileUpdate" FunctionName="AutomationModel.Store.sp_tblContentFileUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentRoleSelectRecivers" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleSelectRecivers">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignmentRoleSelectRecivers">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldReceiverComisionName" ColumnName="fldReceiverComisionName" />
+          <ScalarProperty Name="fldtype" ColumnName="fldtype" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterReceiverSelect" FunctionName="AutomationModel.Store.sp_tblExternalLetterReceiverSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblExternalLetterReceiverSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldExternalPartnerID" ColumnName="fldExternalPartnerID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldEmailAddress" ColumnName="fldEmailAddress" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterReceiverInsert" FunctionName="AutomationModel.Store.sp_tblExternalLetterReceiverInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterReceiverDelete" FunctionName="AutomationModel.Store.sp_tblExternalLetterReceiverDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterReceiverUpdate" FunctionName="AutomationModel.Store.sp_tblExternalLetterReceiverUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterBoxSelect" FunctionName="AutomationModel.Store.sp_tblLetterBoxSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterBoxSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldBoxID" ColumnName="fldBoxID" />
+          <ScalarProperty Name="fldBoxName" ColumnName="fldBoxName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterBoxDelete" FunctionName="AutomationModel.Store.sp_tblLetterBoxDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterBoxInsert" FunctionName="AutomationModel.Store.sp_tblLetterBoxInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterBoxUpdate" FunctionName="AutomationModel.Store.sp_tblLetterBoxUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxTypeSelect" FunctionName="AutomationModel.Store.sp_tblBoxTypeSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblBoxTypeSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblBoxTypeDelete" FunctionName="AutomationModel.Store.sp_tblBoxTypeDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxTypeInsert" FunctionName="AutomationModel.Store.sp_tblBoxTypeInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxTypeUpdate" FunctionName="AutomationModel.Store.sp_tblBoxTypeUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxDelete" FunctionName="AutomationModel.Store.sp_tblBoxDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxInsert" FunctionName="AutomationModel.Store.sp_tblBoxInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblBoxUpdate" FunctionName="AutomationModel.Store.sp_tblBoxUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSignerSelect" FunctionName="AutomationModel.Store.sp_tblSignerSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSignerSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldSignerComisionID" ColumnName="fldSignerComisionID" />
+          <ScalarProperty Name="fldIndexerID" ColumnName="fldIndexerID" />
+          <ScalarProperty Name="fldFirstSigner" ColumnName="fldFirstSigner" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSignerDelete" FunctionName="AutomationModel.Store.sp_tblSignerDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblSignerUpdate" FunctionName="AutomationModel.Store.sp_tblSignerUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSignerInsert" FunctionName="AutomationModel.Store.sp_tblSignerInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentAttachmentSelect" FunctionName="AutomationModel.Store.sp_tblAssignmentAttachmentSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignmentAttachmentSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldAssignmentID" ColumnName="fldAssignmentID" />
+          <ScalarProperty Name="fldContentFile" ColumnName="fldContentFile" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentAttachmentDelete" FunctionName="AutomationModel.Store.sp_tblAssignmentAttachmentDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentAttachmentInsert" FunctionName="AutomationModel.Store.sp_tblAssignmentAttachmentInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentAttachmentUpdate" FunctionName="AutomationModel.Store.sp_tblAssignmentAttachmentUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentSelect" FunctionName="AutomationModel.Store.sp_tblAssignmentSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignmentSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldAssignmentDate" ColumnName="fldAssignmentDate" />
+          <ScalarProperty Name="fldAnswerDate" ColumnName="fldAnswerDate" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldSourceAssId" ColumnName="fldSourceAssId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentDelete" FunctionName="AutomationModel.Store.sp_tblAssignmentDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentInsert" FunctionName="AutomationModel.Store.sp_tblAssignmentInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentUpdate" FunctionName="AutomationModel.Store.sp_tblAssignmentUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_LetterSelectDraftDate" FunctionName="AutomationModel.Store.sp_LetterSelectDraftDate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_LetterSelectDraftDate">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldOrderID" ColumnName="fldOrderID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldCreatedDate" ColumnName="fldCreatedDate" />
+          <ScalarProperty Name="fldLetterStatus" ColumnName="fldLetterStatus" />
+          <ScalarProperty Name="fldImmediacy" ColumnName="fldImmediacy" />
+          <ScalarProperty Name="fldLetterType" ColumnName="fldLetterType" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldArchiv" ColumnName="fldArchiv" />
+          <ScalarProperty Name="HaveArchiv" ColumnName="HaveArchiv" />
+          <ScalarProperty Name="fldArchivID" ColumnName="fldArchivID" />
+          <ScalarProperty Name="ArchivState" ColumnName="ArchivState" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentRoleSelect" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignmentRoleSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldSenderComisionName" ColumnName="fldSenderComisionName" />
+          <ScalarProperty Name="fldReceiverComisionName" ColumnName="fldReceiverComisionName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentRoleDelete" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentRoleInsert" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentRoleUpdate" FunctionName="AutomationModel.Store.sp_tblAssignmentRoleUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentSenderSelect" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentSenderSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblInternalAssignmentSenderSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldAssignmentID" ColumnName="fldAssignmentID" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldBoxID" ColumnName="fldBoxID" />
+          <ScalarProperty Name="fldBoxName" ColumnName="fldBoxName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentSenderDelete" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentSenderDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentSenderInsert" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentSenderInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentSenderUpdate" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentSenderUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentReceiverSelect" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentReceiverSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblInternalAssignmentReceiverSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldAssignmentID" ColumnName="fldAssignmentID" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldAssignmentStatusID" ColumnName="fldAssignmentStatusID" />
+          <ScalarProperty Name="fldAssignmentStatusName" ColumnName="fldAssignmentStatusName" />
+          <ScalarProperty Name="fldAssignmentTypeID" ColumnName="fldAssignmentTypeID" />
+          <ScalarProperty Name="fldAssignmentTypeName" ColumnName="fldAssignmentTypeName" />
+          <ScalarProperty Name="fldBoxID" ColumnName="fldBoxID" />
+          <ScalarProperty Name="fldBoxName" ColumnName="fldBoxName" />
+          <ScalarProperty Name="fldLetterReadDate" ColumnName="fldLetterReadDate" />
+          <ScalarProperty Name="fldShowTypeT_F" ColumnName="fldShowTypeT_F" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentReceiverDelete" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentReceiverDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentReceiverInsert" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentReceiverInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentReceiverUpdate" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentReceiverUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterTypeSelect" FunctionName="AutomationModel.Store.sp_tblLetterTypeSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterTypeSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterTypeDelete" FunctionName="AutomationModel.Store.sp_tblLetterTypeDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterTypeInsert" FunctionName="AutomationModel.Store.sp_tblLetterTypeInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterTypeUpdate" FunctionName="AutomationModel.Store.sp_tblLetterTypeUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterArchiveSelect" FunctionName="AutomationModel.Store.sp_tblLetterArchiveSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterArchiveSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldArchiveID" ColumnName="fldArchiveID" />
+          <ScalarProperty Name="fldArchiveName" ColumnName="fldArchiveName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterArchiveDelete" FunctionName="AutomationModel.Store.sp_tblLetterArchiveDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterArchiveUpdate" FunctionName="AutomationModel.Store.sp_tblLetterArchiveUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterArchiveInsert" FunctionName="AutomationModel.Store.sp_tblLetterArchiveInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryTypeSelect" FunctionName="AutomationModel.Store.sp_tblHistoryTypeSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblHistoryTypeSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryTypeDelete" FunctionName="AutomationModel.Store.sp_tblHistoryTypeDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryTypeInsert" FunctionName="AutomationModel.Store.sp_tblHistoryTypeInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryTypeUpdate" FunctionName="AutomationModel.Store.sp_tblHistoryTypeUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_SelectLetterNoAndicator" FunctionName="AutomationModel.Store.sp_SelectLetterNoAndicator">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_SelectLetterNoAndicator">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldCommision" ColumnName="fldCommision" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterstatus" ColumnName="fldLetterstatus" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="HaveAttach" ColumnName="HaveAttach" />
+          <ScalarProperty Name="LetterRecievers" ColumnName="LetterRecievers" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldImmediacyName" ColumnName="fldImmediacyName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_GetDate" FunctionName="AutomationModel.Store.sp_GetDate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_GetDate">
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterFollowSelect" FunctionName="AutomationModel.Store.sp_tblLetterFollowSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterFollowSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterText" ColumnName="fldLetterText" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterFollowDelete" FunctionName="AutomationModel.Store.sp_tblLetterFollowDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterFollowInsert" FunctionName="AutomationModel.Store.sp_tblLetterFollowInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterFollowUpdate" FunctionName="AutomationModel.Store.sp_tblLetterFollowUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalLetterReceiverSelect" FunctionName="AutomationModel.Store.sp_tblInternalLetterReceiverSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblInternalLetterReceiverSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldAssignmentStatusID" ColumnName="fldAssignmentStatusID" />
+          <ScalarProperty Name="fldAssignmentStatusName" ColumnName="fldAssignmentStatusName" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldEmailAddress" ColumnName="fldEmailAddress" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalLetterReceiverDelete" FunctionName="AutomationModel.Store.sp_tblInternalLetterReceiverDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalLetterReceiverInsert" FunctionName="AutomationModel.Store.sp_tblInternalLetterReceiverInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalLetterReceiverUpdate" FunctionName="AutomationModel.Store.sp_tblInternalLetterReceiverUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryLetterSelect" FunctionName="AutomationModel.Store.sp_tblHistoryLetterSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblHistoryLetterSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldCurrentLetter_Id" ColumnName="fldCurrentLetter_Id" />
+          <ScalarProperty Name="fldHistoryType_Id" ColumnName="fldHistoryType_Id" />
+          <ScalarProperty Name="fldHistoryLetter_Id" ColumnName="fldHistoryLetter_Id" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldCreatedLetterId" ColumnName="fldCreatedLetterId" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldHistoryName" ColumnName="fldHistoryName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryLetterDelete" FunctionName="AutomationModel.Store.sp_tblHistoryLetterDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryLetterInsert" FunctionName="AutomationModel.Store.sp_tblHistoryLetterInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryLetterUpdate" FunctionName="AutomationModel.Store.sp_tblHistoryLetterUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblMindUpdate" FunctionName="AutomationModel.Store.sp_tblMindUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblMindDelete" FunctionName="AutomationModel.Store.sp_tblMindDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblMindInsert" FunctionName="AutomationModel.Store.sp_tblMindInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblMindSelect" FunctionName="AutomationModel.Store.sp_tblMindSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblMindSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldCreatedComisionID" ColumnName="fldCreatedComisionID" />
+          <ScalarProperty Name="fldMindDate" ColumnName="fldMindDate" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldText" ColumnName="fldText" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="organicName" ColumnName="organicName" />
+          <ScalarProperty Name="StaffName" ColumnName="StaffName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblRoneveshtSelect" FunctionName="AutomationModel.Store.sp_tblRoneveshtSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblRoneveshtSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldExternalPartnerId" ColumnName="fldExternalPartnerId" />
+          <ScalarProperty Name="fldComID" ColumnName="fldComID" />
+          <ScalarProperty Name="fldAssignmentTypeId" ColumnName="fldAssignmentTypeId" />
+          <ScalarProperty Name="fldText" ColumnName="fldText" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldFamily" ColumnName="fldFamily" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldGirande" ColumnName="fldGirande" />
+          <ScalarProperty Name="fldEmailAddress" ColumnName="fldEmailAddress" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblRoneveshtDelete" FunctionName="AutomationModel.Store.sp_tblRoneveshtDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblRoneveshtInsert" FunctionName="AutomationModel.Store.sp_tblRoneveshtInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblRoneveshtUpdate" FunctionName="AutomationModel.Store.sp_tblRoneveshtUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_SendToSecretariat" FunctionName="AutomationModel.Store.sp_SendToSecretariat">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_SendToSecretariat">
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="CommisionId" ColumnName="CommisionId" />
+          <ScalarProperty Name="SecretariatId" ColumnName="SecretariatId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblEmailSelect" FunctionName="AutomationModel.Store.sp_tblEmailSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblEmailSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldStaffID" ColumnName="fldStaffID" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldSendTrue_False" ColumnName="fldSendTrue_False" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblEmailInsert" FunctionName="AutomationModel.Store.sp_tblEmailInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblEmailDelete" FunctionName="AutomationModel.Store.sp_tblEmailDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblEmailUpdate" FunctionName="AutomationModel.Store.sp_tblEmailUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblStaffUpdateEmail" FunctionName="AutomationModel.Store.sp_tblStaffUpdateEmail" />
+    <FunctionImportMapping FunctionImportName="sp_Charkhe" FunctionName="AutomationModel.Store.sp_Charkhe">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_Charkhe">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="sender" ColumnName="sender" />
+          <ScalarProperty Name="pid" ColumnName="pid" />
+          <ScalarProperty Name="AssId" ColumnName="AssId" />
+          <ScalarProperty Name="C_SID" ColumnName="_SID" />
+          <ScalarProperty Name="SenderName" ColumnName="SenderName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_SignLetter" FunctionName="AutomationModel.Store.sp_SignLetter" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterStatusIdUpdate" FunctionName="AutomationModel.Store.sp_tblLetterStatusIdUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatFormatSelect" FunctionName="AutomationModel.Store.sp_tblSecretariatFormatSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSecretariatFormatSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldYear" ColumnName="fldYear" />
+          <ScalarProperty Name="fldSecretariatId" ColumnName="fldSecretariatId" />
+          <ScalarProperty Name="fldNumeralFormat" ColumnName="fldNumeralFormat" />
+          <ScalarProperty Name="fldStartNumber" ColumnName="fldStartNumber" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatFormatDelete" FunctionName="AutomationModel.Store.sp_tblSecretariatFormatDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatFormatInsert" FunctionName="AutomationModel.Store.sp_tblSecretariatFormatInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariatFormatUpdate" FunctionName="AutomationModel.Store.sp_tblSecretariatFormatUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_SelectLettersInCartabl" FunctionName="AutomationModel.Store.sp_SelectLettersInCartabl">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_SelectLettersInCartabl">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldYear" ColumnName="fldYear" />
+          <ScalarProperty Name="fldOrderId" ColumnName="fldOrderId" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldCreatedDate" ColumnName="fldCreatedDate" />
+          <ScalarProperty Name="fldCreatedDateEn" ColumnName="fldCreatedDateEn" />
+          <ScalarProperty Name="fldKeywords" ColumnName="fldKeywords" />
+          <ScalarProperty Name="fldLetterStatusID" ColumnName="fldLetterStatusID" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldSecurityTypeID" ColumnName="fldSecurityTypeID" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="LetterSender" ColumnName="LetterSender" />
+          <ScalarProperty Name="LetterRecievers" ColumnName="LetterRecievers" />
+          <ScalarProperty Name="fldLetterType" ColumnName="fldLetterType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterReciversSelect" FunctionName="AutomationModel.Store.sp_tblLetterReciversSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterReciversSelect">
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldReceiverComisionName" ColumnName="fldReceiverComisionName" />
+          <ScalarProperty Name="fldtype" ColumnName="fldtype" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_LetterSignerSelect" FunctionName="AutomationModel.Store.sp_LetterSignerSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_LetterSignerSelect">
+          <ScalarProperty Name="fldSignerName" ColumnName="fldSignerName" />
+          <ScalarProperty Name="fldSignerComisionID" ColumnName="fldSignerComisionID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterRoneveshtSelect" FunctionName="AutomationModel.Store.sp_tblLetterRoneveshtSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterRoneveshtSelect">
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldNameStaff" ColumnName="fldNameStaff" />
+          <ScalarProperty Name="fldComID" ColumnName="fldComID" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldAssignmentTypeId" ColumnName="fldAssignmentTypeId" />
+          <ScalarProperty Name="fldText" ColumnName="fldText" />
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentReceiverStatusUpdate" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentReceiverStatusUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterSenderSelect" FunctionName="AutomationModel.Store.sp_tblExternalLetterSenderSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblExternalLetterSenderSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldLetterID" ColumnName="fldLetterID" />
+          <ScalarProperty Name="fldExternalPartnerID" ColumnName="fldExternalPartnerID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterSenderDelete" FunctionName="AutomationModel.Store.sp_tblExternalLetterSenderDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterSenderInsert" FunctionName="AutomationModel.Store.sp_tblExternalLetterSenderInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterSenderUpdate" FunctionName="AutomationModel.Store.sp_tblExternalLetterSenderUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_LetterSelectInboxNotRead" FunctionName="AutomationModel.Store.sp_LetterSelectInboxNotRead">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_LetterSelectInboxNotRead">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldOrderId" ColumnName="fldOrderId" />
+          <ScalarProperty Name="fldCommision" ColumnName="fldCommision" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterstatus" ColumnName="fldLetterstatus" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="HaveAttach" ColumnName="HaveAttach" />
+          <ScalarProperty Name="LetterRecievers" ColumnName="LetterRecievers" />
+          <ScalarProperty Name="fldAssigmentDate" ColumnName="fldAssigmentDate" />
+          <ScalarProperty Name="assigmentid" ColumnName="assigmentid" />
+          <ScalarProperty Name="fldAnswerDate" ColumnName="fldAnswerDate" />
+          <ScalarProperty Name="fldReceiverComisionID" ColumnName="fldReceiverComisionID" />
+          <ScalarProperty Name="fldAssignmentStatusID" ColumnName="fldAssignmentStatusID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldArchiv" ColumnName="fldArchiv" />
+          <ScalarProperty Name="AssimentLetterStatus" ColumnName="AssimentLetterStatus" />
+          <ScalarProperty Name="AssimentLetterStatusId" ColumnName="AssimentLetterStatusId" />
+          <ScalarProperty Name="fldImmediacyName" ColumnName="fldImmediacyName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_UserPassUpdate" FunctionName="AutomationModel.Store.sp_UserPassUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterNumberInsert" FunctionName="AutomationModel.Store.sp_tblLetterNumberInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterUpdateNumDate" FunctionName="AutomationModel.Store.sp_tblLetterUpdateNumDate" />
+    <FunctionImportMapping FunctionImportName="sp_LetterSelectSentDate" FunctionName="AutomationModel.Store.sp_LetterSelectSentDate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_LetterSelectSentDate">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldOrderId" ColumnName="fldOrderId" />
+          <ScalarProperty Name="fldCommision" ColumnName="fldCommision" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterstatus" ColumnName="fldLetterstatus" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="HaveAttach" ColumnName="HaveAttach" />
+          <ScalarProperty Name="LetterRecievers" ColumnName="LetterRecievers" />
+          <ScalarProperty Name="fldAssigmentDate" ColumnName="fldAssigmentDate" />
+          <ScalarProperty Name="assigmentid" ColumnName="assigmentid" />
+          <ScalarProperty Name="fldAnswerDate" ColumnName="fldAnswerDate" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldArchiv" ColumnName="fldArchiv" />
+          <ScalarProperty Name="HaveArchiv" ColumnName="HaveArchiv" />
+          <ScalarProperty Name="fldImmediacyName" ColumnName="fldImmediacyName" />
+          <ScalarProperty Name="ArchivState" ColumnName="ArchivState" />
+          <ScalarProperty Name="fldArchivID" ColumnName="fldArchivID" />
+          <ScalarProperty Name="fldAssignmentTypeID" ColumnName="fldAssignmentTypeID" />
+          <ScalarProperty Name="InternalAssignmentReceiverID" ColumnName="InternalAssignmentReceiverID" />
+          <ScalarProperty Name="fldLetterStatusID" ColumnName="fldLetterStatusID" />
+          <ScalarProperty Name="fldAssignmentStatusID" ColumnName="fldAssignmentStatusID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_GetBoxTypeId" FunctionName="AutomationModel.Store.sp_GetBoxTypeId">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_GetBoxTypeId">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldPID" ColumnName="fldPID" />
+          <ScalarProperty Name="fldBoxType" ColumnName="fldBoxType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentSenderBoxUpdate" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentSenderBoxUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentReceiverBoxUpdate" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentReceiverBoxUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblInputInfoInsert" FunctionName="AutomationModel.Store.sp_tblInputInfoInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblInputInfoSelect" FunctionName="AutomationModel.Store.sp_tblInputInfoSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblInputInfoSelect">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldStaffID" ColumnName="fldStaffID" />
+          <ScalarProperty Name="fldStaffName" ColumnName="fldStaffName" />
+          <ScalarProperty Name="fldDateTime" ColumnName="fldDateTime" />
+          <ScalarProperty Name="fldTime" ColumnName="fldTime" />
+          <ScalarProperty Name="fldIP" ColumnName="fldIP" />
+          <ScalarProperty Name="fldMACAddress" ColumnName="fldMACAddress" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldUserName" ColumnName="fldUserName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_LetterSelectTrashDate" FunctionName="AutomationModel.Store.sp_LetterSelectTrashDate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_LetterSelectTrashDate">
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+          <ScalarProperty Name="fldOrderId" ColumnName="fldOrderId" />
+          <ScalarProperty Name="fldCommision" ColumnName="fldCommision" />
+          <ScalarProperty Name="fldComisionID" ColumnName="fldComisionID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterstatus" ColumnName="fldLetterstatus" />
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="HaveAttach" ColumnName="HaveAttach" />
+          <ScalarProperty Name="LetterRecievers" ColumnName="LetterRecievers" />
+          <ScalarProperty Name="fldAssigmentDate" ColumnName="fldAssigmentDate" />
+          <ScalarProperty Name="assigmentid" ColumnName="assigmentid" />
+          <ScalarProperty Name="fldAnswerDate" ColumnName="fldAnswerDate" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldArchiv" ColumnName="fldArchiv" />
+          <ScalarProperty Name="HaveArchiv" ColumnName="HaveArchiv" />
+          <ScalarProperty Name="fldImmediacyName" ColumnName="fldImmediacyName" />
+          <ScalarProperty Name="ArchivState" ColumnName="ArchivState" />
+          <ScalarProperty Name="fldTrashType" ColumnName="fldTrashType" />
+          <ScalarProperty Name="fldDelDate" ColumnName="fldDelDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_VaziatYekMahe" FunctionName="AutomationModel.Store.sp_VaziatYekMahe">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_VaziatYekMahe">
+          <ScalarProperty Name="sent" ColumnName="sent" />
+          <ScalarProperty Name="recive" ColumnName="recive" />
+          <ScalarProperty Name="CountSent" ColumnName="CountSent" />
+          <ScalarProperty Name="countRecive" ColumnName="countRecive" />
+          <ScalarProperty Name="sentPerccent" ColumnName="sentPerccent" />
+          <ScalarProperty Name="RecivePerccent" ColumnName="RecivePerccent" />
+          <ScalarProperty Name="Takhirtime" ColumnName="Takhirtime" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_ManagerVaziatYekMahe" FunctionName="AutomationModel.Store.sp_ManagerVaziatYekMahe">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_ManagerVaziatYekMahe">
+          <ScalarProperty Name="StaffName" ColumnName="StaffName" />
+          <ScalarProperty Name="sent" ColumnName="sent" />
+          <ScalarProperty Name="Recive" ColumnName="Recive" />
+          <ScalarProperty Name="Takhirtime" ColumnName="Takhirtime" />
+          <ScalarProperty Name="UnReadLetters" ColumnName="UnReadLetters" />
+          <ScalarProperty Name="fldCommisionId" ColumnName="fldCommisionId" />
+          <ScalarProperty Name="sentPercent" ColumnName="sentPercent" />
+          <ScalarProperty Name="recivePercent" ColumnName="recivePercent" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblEmailAttachement_TempSelect" FunctionName="AutomationModel.Store.sp_tblEmailAttachement_TempSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblEmailAttachement_TempSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldEmail_TempId" ColumnName="fldEmail_TempId" />
+          <ScalarProperty Name="fldAttachementName" ColumnName="fldAttachementName" />
+          <ScalarProperty Name="fldAttachementBody" ColumnName="fldAttachementBody" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblEmailAttachement_TempDelete" FunctionName="AutomationModel.Store.sp_tblEmailAttachement_TempDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblEmailAttachement_TempInsert" FunctionName="AutomationModel.Store.sp_tblEmailAttachement_TempInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblEmailAttachement_TempUpdate" FunctionName="AutomationModel.Store.sp_tblEmailAttachement_TempUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_FaxTempSelect" FunctionName="AutomationModel.Store.sp_FaxTempSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_FaxTempSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldTitle" ColumnName="fldTitle" />
+          <ScalarProperty Name="fldFile" ColumnName="fldFile" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_FaxTempDelete" FunctionName="AutomationModel.Store.sp_FaxTempDelete" />
+    <FunctionImportMapping FunctionImportName="sp_FaxTempInsert" FunctionName="AutomationModel.Store.sp_FaxTempInsert" />
+    <FunctionImportMapping FunctionImportName="sp_FaxTempUpdate" FunctionName="AutomationModel.Store.sp_FaxTempUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_Email_TempSelect" FunctionName="AutomationModel.Store.sp_Email_TempSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_Email_TempSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldFrom" ColumnName="fldFrom" />
+          <ScalarProperty Name="fldBody" ColumnName="fldBody" />
+          <ScalarProperty Name="fldMessage_No" ColumnName="fldMessage_No" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_Email_TempDelete" FunctionName="AutomationModel.Store.sp_Email_TempDelete" />
+    <FunctionImportMapping FunctionImportName="sp_Email_TempInsert" FunctionName="AutomationModel.Store.sp_Email_TempInsert" />
+    <FunctionImportMapping FunctionImportName="sp_Email_TempUpdate" FunctionName="AutomationModel.Store.sp_Email_TempUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_Email_InstallConfiguration" FunctionName="AutomationModel.Store.sp_Email_InstallConfiguration" />
+    <FunctionImportMapping FunctionImportName="sp_Email_SendEmail" FunctionName="AutomationModel.Store.sp_Email_SendEmail" />
+    <FunctionImportMapping FunctionImportName="sp_EmailAccount_Update" FunctionName="AutomationModel.Store.sp_EmailAccount_Update" />
+    <FunctionImportMapping FunctionImportName="sp_EmailProfileAndAccount_Create" FunctionName="AutomationModel.Store.sp_EmailProfileAndAccount_Create" />
+    <FunctionImportMapping FunctionImportName="sp_tblECE_TempSelect" FunctionName="AutomationModel.Store.sp_tblECE_TempSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblECE_TempSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldRecieverComision" ColumnName="fldRecieverComision" />
+          <ScalarProperty Name="fldExternalPartner" ColumnName="fldExternalPartner" />
+          <ScalarProperty Name="fldSenderComisionID" ColumnName="fldSenderComisionID" />
+          <ScalarProperty Name="fldSubject" ColumnName="fldSubject" />
+          <ScalarProperty Name="fldLetterNumber" ColumnName="fldLetterNumber" />
+          <ScalarProperty Name="fldLetterDate" ColumnName="fldLetterDate" />
+          <ScalarProperty Name="fldImmediacy" ColumnName="fldImmediacy" />
+          <ScalarProperty Name="fldSecurityType" ColumnName="fldSecurityType" />
+          <ScalarProperty Name="fldrunevesht_AssignmentTypeID" ColumnName="fldrunevesht_AssignmentTypeID" />
+          <ScalarProperty Name="fldrunevesht_Text" ColumnName="fldrunevesht_Text" />
+          <ScalarProperty Name="fldrunevesht_ComisionID" ColumnName="fldrunevesht_ComisionID" />
+          <ScalarProperty Name="fldContentFile" ColumnName="fldContentFile" />
+          <ScalarProperty Name="fldKeyWord" ColumnName="fldKeyWord" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblECE_TempDelete" FunctionName="AutomationModel.Store.sp_tblECE_TempDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblECE_TempInsert" FunctionName="AutomationModel.Store.sp_tblECE_TempInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblECE_TempUpdate" FunctionName="AutomationModel.Store.sp_tblECE_TempUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblECE_Attach_TempSelect" FunctionName="AutomationModel.Store.sp_tblECE_Attach_TempSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblECE_Attach_TempSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldFile" ColumnName="fldFile" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldECE_TempId" ColumnName="fldECE_TempId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblECE_Attach_TempDelete" FunctionName="AutomationModel.Store.sp_tblECE_Attach_TempDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblECE_Attach_TempInsert" FunctionName="AutomationModel.Store.sp_tblECE_Attach_TempInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblECE_Attach_TempUpdate" FunctionName="AutomationModel.Store.sp_tblECE_Attach_TempUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_NameTableSelect" FunctionName="AutomationModel.Store.sp_NameTableSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_NameTableSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentRole_LogSelect" FunctionName="AutomationModel.Store.sp_tblAssignmentRole_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignmentRole_LogSelect_">
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="کاربر_ارجاع_دهنده_" ColumnName="کاربر ارجاع دهنده " />
+          <ScalarProperty Name="کاربر_ارجاع_گیرنده_" ColumnName="کاربر ارجاع گیرنده " />
+          <ScalarProperty Name="C_تاریخ_ایجاد" ColumnName=" تاریخ ایجاد" />
+          <ScalarProperty Name="کاربرایجادکننده" ColumnName="کاربرایجادکننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblArchive_LogSelect" FunctionName="AutomationModel.Store.sp_tblArchive_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblArchive_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="نام" ColumnName="نام" />
+          <ScalarProperty Name="عنوان_سر_شاخه" ColumnName="عنوان سر شاخه" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblCommision_LogSelect" FunctionName="AutomationModel.Store.sp_tblCommision_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblCommision_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="نام_و_نام_خانوادگی" ColumnName="نام و نام خانوادگی" />
+          <ScalarProperty Name="سمت" ColumnName="سمت" />
+          <ScalarProperty Name="تاریخ_شروع_" ColumnName="تاریخ شروع " />
+          <ScalarProperty Name="تاریخ_پایان" ColumnName="تاریخ پایان" />
+          <ScalarProperty Name="شماره_حکم" ColumnName="شماره حکم" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblOrganicRole_LogSelect" FunctionName="AutomationModel.Store.sp_tblOrganicRole_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblOrganicRole_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="سمت" ColumnName="سمت" />
+          <ScalarProperty Name="واحد_سازمانی" ColumnName="واحد سازمانی" />
+          <ScalarProperty Name="عنوان_سر_شاخه" ColumnName="عنوان سر شاخه" />
+          <ScalarProperty Name="تاریخ" ColumnName="تاریخ" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblStaff_LogSelect" FunctionName="AutomationModel.Store.sp_tblStaff_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblStaff_LogSelect">
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="نام_" ColumnName="نام " />
+          <ScalarProperty Name="نام_خانوادگی_" ColumnName="نام خانوادگی " />
+          <ScalarProperty Name="C_تولد_تاریخ" ColumnName=" تولد تاریخ" />
+          <ScalarProperty Name="C_ملی_کد_" ColumnName=" ملی کد " />
+          <ScalarProperty Name="نام_پدر_" ColumnName="نام پدر " />
+          <ScalarProperty Name="آدرس_ایمیل_" ColumnName="آدرس ایمیل " />
+          <ScalarProperty Name="موبایل_" ColumnName="موبایل " />
+          <ScalarProperty Name="آدرس_" ColumnName="آدرس " />
+          <ScalarProperty Name="توضیحات_" ColumnName="توضیحات " />
+          <ScalarProperty Name="C_ایجاد_تاریخ" ColumnName=" ایجاد تاریخ" />
+          <ScalarProperty Name="کاربرایجادکننده" ColumnName="کاربرایجادکننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblOrganizationUnit_LogSelect" FunctionName="AutomationModel.Store.sp_tblOrganizationUnit_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblOrganizationUnit_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="نام_چارت_سازمانی_" ColumnName="نام چارت سازمانی " />
+          <ScalarProperty Name="عنوان_سر_شاخه" ColumnName="عنوان سر شاخه" />
+          <ScalarProperty Name="توضیحات_" ColumnName="توضیحات " />
+          <ScalarProperty Name="C_ایجاد_تاریخ" ColumnName=" ایجاد تاریخ" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربرایجادکننده" ColumnName="کاربرایجادکننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSecretariat_LogSelect" FunctionName="AutomationModel.Store.sp_tblSecretariat_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSecretariat_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="واحد_سازمانی" ColumnName="واحد سازمانی" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSecurityType_LogSelect" FunctionName="AutomationModel.Store.sp_tblSecurityType_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSecurityType_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="نوع_امنیت_" ColumnName="نوع امنیت " />
+          <ScalarProperty Name="توضیحات_" ColumnName="توضیحات " />
+          <ScalarProperty Name="C_ایجاد_تاریخ" ColumnName=" ایجاد تاریخ" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربرایجادکننده" ColumnName="کاربرایجادکننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblProgramSetting_LogSelect" FunctionName="AutomationModel.Store.sp_tblProgramSetting_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblProgramSetting_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="نام" ColumnName="نام" />
+          <ScalarProperty Name="آدرس_ایمیل" ColumnName="آدرس ایمیل" />
+          <ScalarProperty Name="کننده_دریافت_ایمیل_سرور_" ColumnName="کننده دریافت ایمیل سرور " />
+          <ScalarProperty Name="کننده_دریافت_ایمیل_پورت" ColumnName="کننده دریافت ایمیل پورت" />
+          <ScalarProperty Name="سرور_طریق_از_ارسال" ColumnName="سرور طریق از ارسال" />
+          <ScalarProperty Name="پورت_طریق_از_ارسال" ColumnName="پورت طریق از ارسال" />
+          <ScalarProperty Name="موضوع" ColumnName="موضوع" />
+          <ScalarProperty Name="مسیر_فکس" ColumnName="مسیر فکس" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="C_تاریخ_ایجاد" ColumnName=" تاریخ ایجاد" />
+          <ScalarProperty Name="کاربرایجادکننده" ColumnName="کاربرایجادکننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblUser_LogSelect" FunctionName="AutomationModel.Store.sp_tblUser_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblUser_LogSelect">
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="C_نام_و_نام_خانوادگی" ColumnName=" نام و نام خانوادگی" />
+          <ScalarProperty Name="C_نام_کاربری" ColumnName=" نام کاربری" />
+          <ScalarProperty Name="نوع_فعالیت" ColumnName="نوع فعالیت" />
+          <ScalarProperty Name="C_توضیحات" ColumnName=" توضیحات" />
+          <ScalarProperty Name="C_تاریخ_ایجاد" ColumnName=" تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignment_LogSelect" FunctionName="AutomationModel.Store.sp_tblAssignment_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblAssignment_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="موضوع_نامه" ColumnName="موضوع نامه" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="تاریخ_نامه" ColumnName="تاریخ نامه" />
+          <ScalarProperty Name="تاریخ_ارجاع" ColumnName="تاریخ ارجاع" />
+          <ScalarProperty Name="تاریخ_پاسخ" ColumnName="تاریخ پاسخ" />
+          <ScalarProperty Name="کد_منبع" ColumnName="کد منبع" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblContentFile_LogSelect" FunctionName="AutomationModel.Store.sp_tblContentFile_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblContentFile_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="پسوند" ColumnName="پسوند" />
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="نام_نامه" ColumnName="نام نامه" />
+          <ScalarProperty Name="موضوع_نامه" ColumnName="موضوع نامه" />
+          <ScalarProperty Name="متن_نامه" ColumnName="متن نامه" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="الگو_نامه" ColumnName="الگو نامه" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblContentFileAnnex_LogSelect" FunctionName="AutomationModel.Store.sp_tblContentFileAnnex_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblContentFileAnnex_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="نام_فایل_پیوست" ColumnName="نام فایل پیوست" />
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="fldExt" ColumnName="fldExt" />
+          <ScalarProperty Name="موضوع_نامه" ColumnName="موضوع نامه" />
+          <ScalarProperty Name="متن_نامه" ColumnName="متن نامه" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="الگو_نامه" ColumnName="الگو نامه" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalAssignmentSender_LogSelect" FunctionName="AutomationModel.Store.sp_tblInternalAssignmentSender_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblInternalAssignmentSender_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="تاریخ_ارجاع" ColumnName="تاریخ ارجاع" />
+          <ScalarProperty Name="تاریخ_پاسخ" ColumnName="تاریخ پاسخ" />
+          <ScalarProperty Name="نام_ارسال_کننده" ColumnName="نام ارسال کننده" />
+          <ScalarProperty Name="نام_صندوق" ColumnName="نام صندوق" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryLetter_logSelect" FunctionName="AutomationModel.Store.sp_tblHistoryLetter_logSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblHistoryLetter_logSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="موضوع_نامه_جاری" ColumnName="موضوع نامه جاری" />
+          <ScalarProperty Name="شماره_نامه_جاری" ColumnName="شماره نامه جاری" />
+          <ScalarProperty Name="تاریخ_نامه_جاری" ColumnName="تاریخ نامه جاری" />
+          <ScalarProperty Name="ارتباط_نامه" ColumnName="ارتباط نامه" />
+          <ScalarProperty Name="موضوع_نامه_سابقه" ColumnName="موضوع نامه سابقه" />
+          <ScalarProperty Name="شماره_نامه_سابقه" ColumnName="شماره نامه سابقه" />
+          <ScalarProperty Name="تاریخ_نامه_سابقه" ColumnName="تاریخ نامه سابقه" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterFollow_LogSelect" FunctionName="AutomationModel.Store.sp_tblLetterFollow_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterFollow_LogSelect">
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="متن_پیگیری" ColumnName="متن پیگیری" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="تاریخ_نامه" ColumnName="تاریخ نامه" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="کاربرایجادکننده" ColumnName="کاربرایجادکننده" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterExcel_LogSelect" FunctionName="AutomationModel.Store.sp_tblLetterExcel_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterExcel_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="سال" ColumnName="سال" />
+          <ScalarProperty Name="شماره_ثبت_نامه" ColumnName="شماره ثبت نامه" />
+          <ScalarProperty Name="عنوان_نامه" ColumnName="عنوان نامه" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="تاریخ_نامه" ColumnName="تاریخ نامه" />
+          <ScalarProperty Name="تاریخ_ایجاد_نامه" ColumnName="تاریخ ایجاد نامه" />
+          <ScalarProperty Name="کلمه_کلیدی" ColumnName="کلمه کلیدی" />
+          <ScalarProperty Name="وضعیت_نامه" ColumnName="وضعیت نامه" />
+          <ScalarProperty Name="نام_ایجاد_کننده_نامه" ColumnName="نام ایجاد کننده نامه" />
+          <ScalarProperty Name="فوریت" ColumnName="فوریت" />
+          <ScalarProperty Name="محرمانگی" ColumnName="محرمانگی" />
+          <ScalarProperty Name="نوع_نامه" ColumnName="نوع نامه" />
+          <ScalarProperty Name="نوع_امضا" ColumnName="نوع امضا" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetter_LogSelect" FunctionName="AutomationModel.Store.sp_tblLetter_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetter_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldLogID" ColumnName="fldLogID" />
+          <ScalarProperty Name="سال" ColumnName="سال" />
+          <ScalarProperty Name="شماره_ثبت_نامه" ColumnName="شماره ثبت نامه" />
+          <ScalarProperty Name="عنوان_نامه" ColumnName="عنوان نامه" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="تاریخ_نامه" ColumnName="تاریخ نامه" />
+          <ScalarProperty Name="تاریخ_ایجاد_نامه" ColumnName="تاریخ ایجاد نامه" />
+          <ScalarProperty Name="کلمه_کلیدی" ColumnName="کلمه کلیدی" />
+          <ScalarProperty Name="fldSecurityTypeID" ColumnName="fldSecurityTypeID" />
+          <ScalarProperty Name="fldImmediacyID" ColumnName="fldImmediacyID" />
+          <ScalarProperty Name="fldLetterTypeID" ColumnName="fldLetterTypeID" />
+          <ScalarProperty Name="وضعیت_نامه" ColumnName="وضعیت نامه" />
+          <ScalarProperty Name="نام_ایجاد_کننده_نامه" ColumnName="نام ایجاد کننده نامه" />
+          <ScalarProperty Name="فوریت" ColumnName="فوریت" />
+          <ScalarProperty Name="محرمانگی" ColumnName="محرمانگی" />
+          <ScalarProperty Name="نوع_نامه" ColumnName="نوع نامه" />
+          <ScalarProperty Name="نوع_امضا" ColumnName="نوع امضا" />
+          <ScalarProperty Name="fldSignType" ColumnName="fldSignType" />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblExternalLetterReceiver_LogSelect" FunctionName="AutomationModel.Store.sp_tblExternalLetterReceiver_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblExternalLetterReceiver_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldLogTypeID" ColumnName="fldLogTypeID" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="نام_ارگان_خارجی" ColumnName="نام ارگان خارجی" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="C_تاریخ_ایجاد" ColumnName=" تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblInternalLetterReceiver_LogSelect" FunctionName="AutomationModel.Store.sp_tblInternalLetterReceiver_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblInternalLetterReceiver_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldLogTypeID" ColumnName="fldLogTypeID" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="نام_دریافت_کننده" ColumnName="نام دریافت کننده" />
+          <ScalarProperty Name="نوع_ارجاع" ColumnName="نوع ارجاع" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="C_تاریخ_ایجاد" ColumnName=" تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblRonevesht_logSelect" FunctionName="AutomationModel.Store.sp_tblRonevesht_logSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblRonevesht_logSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldLogTypeID" ColumnName="fldLogTypeID" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="تاریخ_نامه" ColumnName="تاریخ نامه" />
+          <ScalarProperty Name="C_نام_ارگان_خارجی" ColumnName=" نام ارگان خارجی" />
+          <ScalarProperty Name="گیرنده_رونوشت" ColumnName="گیرنده رونوشت" />
+          <ScalarProperty Name="نوع_ارجاع" ColumnName="نوع ارجاع" />
+          <ScalarProperty Name="متن_رونوشت" ColumnName="متن رونوشت" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="C_تاریخ_ایجاد" ColumnName=" تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییرات" ColumnName="ساعت تغییرات" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="C_تغییرات_نوع" ColumnName=" تغییرات نوع" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblSigner_LogSelect" FunctionName="AutomationModel.Store.sp_tblSigner_LogSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblSigner_LogSelect">
+          <ScalarProperty Name="کد" ColumnName="کد" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldLogTypeID" ColumnName="fldLogTypeID" />
+          <ScalarProperty Name="شماره_نامه" ColumnName="شماره نامه" />
+          <ScalarProperty Name="تاریخ_نامه" ColumnName="تاریخ نامه" />
+          <ScalarProperty Name="نام_امضا_کننده_نامه" ColumnName="نام امضا کننده نامه" />
+          <ScalarProperty Name="اولویت" ColumnName="اولویت" />
+          <ScalarProperty Name="تایید_کننده_نامه_" ColumnName="تایید کننده نامه " />
+          <ScalarProperty Name="تاریخ_ایجاد" ColumnName="تاریخ ایجاد" />
+          <ScalarProperty Name="ساعت_تغییر" ColumnName="ساعت تغییر" />
+          <ScalarProperty Name="کاربر_ایجاد_کننده" ColumnName="کاربر ایجاد کننده" />
+          <ScalarProperty Name="توضیحات" ColumnName="توضیحات" />
+          <ScalarProperty Name="نوع_تغییرات" ColumnName="نوع تغییرات" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterFollowLetterIDDelete" FunctionName="AutomationModel.Store.sp_tblLetterFollowLetterIDDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblHistoryLetterLetterIDDelete" FunctionName="AutomationModel.Store.sp_tblHistoryLetterLetterIDDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterArchiveLetterIDDelete" FunctionName="AutomationModel.Store.sp_tblLetterArchiveLetterIDDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterAttachmentLetterIDDelete" FunctionName="AutomationModel.Store.sp_tblLetterAttachmentLetterIDDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterBoxLetterIDDelete" FunctionName="AutomationModel.Store.sp_tblLetterBoxLetterIDDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPattern_GroupDelete" FunctionName="AutomationModel.Store.sp_tblLetterPattern_GroupDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPattern_GroupInsert" FunctionName="AutomationModel.Store.sp_tblLetterPattern_GroupInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPattern_GroupSelect" FunctionName="AutomationModel.Store.sp_tblLetterPattern_GroupSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblLetterPattern_GroupSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldPatternId" ColumnName="fldPatternId" />
+          <ScalarProperty Name="fldUserGroupId" ColumnName="fldUserGroupId" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblLetterPattern_GroupUpdate" FunctionName="AutomationModel.Store.sp_tblLetterPattern_GroupUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_UserId_PatternSelect" FunctionName="AutomationModel.Store.sp_UserId_PatternSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_UserId_PatternSelect">
+          <ScalarProperty Name="fldType" ColumnName="fldType" />
+          <ScalarProperty Name="fldID" ColumnName="fldID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblFriendsDelete" FunctionName="AutomationModel.Store.sp_tblFriendsDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblFriendsInsert" FunctionName="AutomationModel.Store.sp_tblFriendsInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblFriendsSelect" FunctionName="AutomationModel.Store.sp_tblFriendsSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblFriendsSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldFriendsUserId" ColumnName="fldFriendsUserId" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblFriendsUpdate" FunctionName="AutomationModel.Store.sp_tblFriendsUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblGroupFriendsDelete" FunctionName="AutomationModel.Store.sp_tblGroupFriendsDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblGroupFriendsInsert" FunctionName="AutomationModel.Store.sp_tblGroupFriendsInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblGroupFriendsSelect" FunctionName="AutomationModel.Store.sp_tblGroupFriendsSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblGroupFriendsSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldGroupId" ColumnName="fldGroupId" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblGroupFriendsUpdate" FunctionName="AutomationModel.Store.sp_tblGroupFriendsUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblGroupsDelete" FunctionName="AutomationModel.Store.sp_tblGroupsDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblGroupsInsert" FunctionName="AutomationModel.Store.sp_tblGroupsInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblGroupsSelect" FunctionName="AutomationModel.Store.sp_tblGroupsSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblGroupsSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldName" ColumnName="fldName" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblGroupsUpdate" FunctionName="AutomationModel.Store.sp_tblGroupsUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblChatSingleDelete" FunctionName="AutomationModel.Store.sp_tblChatSingleDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblChatSingleInsert" FunctionName="AutomationModel.Store.sp_tblChatSingleInsert" />
+    <FunctionImportMapping FunctionImportName="sp_tblChatSingleSelect" FunctionName="AutomationModel.Store.sp_tblChatSingleSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblChatSingleSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldSenderUserID" ColumnName="fldSenderUserID" />
+          <ScalarProperty Name="fldReceiverUserID" ColumnName="fldReceiverUserID" />
+          <ScalarProperty Name="fldGroupReceiverId" ColumnName="fldGroupReceiverId" />
+          <ScalarProperty Name="fldReadDate" ColumnName="fldReadDate" />
+          <ScalarProperty Name="fldMatneMessage" ColumnName="fldMatneMessage" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldSenderName" ColumnName="fldSenderName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblChatSingleUpdate" FunctionName="AutomationModel.Store.sp_tblChatSingleUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_tblChatGroupSelect" FunctionName="AutomationModel.Store.sp_tblChatGroupSelect">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_tblChatGroupSelect">
+          <ScalarProperty Name="fldId" ColumnName="fldId" />
+          <ScalarProperty Name="fldSenderUserID" ColumnName="fldSenderUserID" />
+          <ScalarProperty Name="fldReceiverUserID" ColumnName="fldReceiverUserID" />
+          <ScalarProperty Name="fldGroupReceiverId" ColumnName="fldGroupReceiverId" />
+          <ScalarProperty Name="fldReadDate" ColumnName="fldReadDate" />
+          <ScalarProperty Name="fldMatneMessage" ColumnName="fldMatneMessage" />
+          <ScalarProperty Name="fldDate" ColumnName="fldDate" />
+          <ScalarProperty Name="fldUserID" ColumnName="fldUserID" />
+          <ScalarProperty Name="fldDesc" ColumnName="fldDesc" />
+          <ScalarProperty Name="fldSenderName" ColumnName="fldSenderName" />
+          <ScalarProperty Name="fldReceiverName" ColumnName="fldReceiverName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblAssignmentLetterIDDelete" FunctionName="AutomationModel.Store.sp_tblAssignmentLetterIDDelete" />
+    <FunctionImportMapping FunctionImportName="sp_tblChatSingle_ReadDateUpdate" FunctionName="AutomationModel.Store.sp_tblChatSingle_ReadDateUpdate" />
+    <FunctionImportMapping FunctionImportName="sp_ChatSenderCount" FunctionName="AutomationModel.Store.sp_ChatSenderCount">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AutomationModel.sp_ChatSenderCount">
+          <ScalarProperty Name="fldCount" ColumnName="fldCount" />
+          <ScalarProperty Name="fldSenderName" ColumnName="fldSenderName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_tblFriendsDeleteFriendId" FunctionName="AutomationModel.Store.sp_tblFriendsDeleteFriendId" />
+    <FunctionImportMapping FunctionImportName="sp_UpdateInternalAssignmentReceiver" FunctionName="AutomationModel.Store.sp_UpdateInternalAssignmentReceiver" />
+  </EntityContainerMapping>
+</Mapping>

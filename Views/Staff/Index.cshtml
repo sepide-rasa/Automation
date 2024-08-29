@@ -1,0 +1,584 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Staff">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+
+    <div>
+        <br />
+         <a href="@Url.Content("~/Helps/تعریف%20کارمندان.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldID")
+                        <span style="color: Red;">*</span>نام:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام خانوادگی:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtFamily")
+                        <span id="lblFamilyError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام پدر:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtNameFather")
+                        <span id="lblNameFatherError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span>کد ملی:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtMeliCode")
+                        <span id="lblMeliCodeError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                 <tr>                    
+                    <td align="left">
+                        <span style="color: Red;">*</span>تاریخ تولد:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtBirthDate", null, new { @style = "width: 164px;height: 23px;" })
+                        <span id="lblBirthDateError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        حق امضا:
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                        .Name("CboSign")
+                        .Items(it =>
+                        {
+                            it.Add().Text("دارد").Value("true");
+                            it.Add().Text("ندارد").Value("false");
+                        })
+                        )                   
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        ایمیل:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtEmailAddress")
+                        <span id="lblEmailAddressError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        تلفن همراه:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtMobile")
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td align="left">
+                        آدرس:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textArea("txtAddress",4,30)
+                    </td>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        عکس پرسنلی:
+                    </td>
+                    <td>
+                        <img id="PreviewImage1" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" style="width: 80px; height: 80px; border: 2px;" />
+                        @Automation.Helper.winClass.Buttons("btnBrowse1", "انتخاب عکس", "search")
+                        @Automation.Helper.winClass.Buttons("btnRemove1", "برچیدن عکس", "del")
+                        <input style="display: none;" type="file" accept=".jpg" id="image1" name="image1"
+                            onchange="readURL1(this)" />
+                    </td>
+                    <td align="left">
+                        عکس امضا:
+                    </td>
+                    <td>
+                        <img id="PreviewImage2" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" />
+                        @Automation.Helper.winClass.Buttons("btnBrowse2", "انتخاب عکس", "search")
+                        @Automation.Helper.winClass.Buttons("btnRemove2", "برچیدن عکس", "del")
+                        <input style="display: none;" type="file" accept=".jpg" id="image2" name="image2"
+                            onchange="readURL2(this)" />
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] {new { ID = "0", Name = "نام خانوادگی" }, new { ID = "1", Name = "نام" }, new { ID = "2", Name = "کد ملی" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblStaffSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldName).Title("نام");
+                    columns.Bound(p => p.fldFamily).Title("نام خانوادگی");
+                    columns.Bound(p => p.fldNameFather).Title("نام پدر");
+                    columns.Bound(p => p.fldMelliCode).Title("کدملی");
+                    columns.Bound(p => p.fldBirthDate).Title("تارخ تولد");
+                    columns.Bound(p => p.fldEmailAddress).Title("ایمیل");
+                    columns.Bound(p => p.fldMobile).Title(" تلفن همراه");
+                    columns.Bound(p => p.fldAddress).Title("آدرس");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "Staff")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var Notify = true;
+        var LetterLoadNum = 0;
+        $("document").ready(function () {
+            $('#txtBirthDate').datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Help").button();
+            $("#btnBrowse1").button();
+            $("#btnRemove1").button();
+            $("#btnBrowse2").button();
+            $("#btnRemove2").button();
+            $("#exit").button();
+
+            $("#exit").click(function () {
+                $("#Staff").remove();
+            });
+            $('#Staff').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Staff').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+            $("#btnRemove1").click(function () {
+                $('#PreviewImage1').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+            });
+            $("#btnRemove2").click(function () {
+                $('#PreviewImage2').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+            });
+
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "Staff")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+
+
+            $("#btnBrowse1").click(function () {
+                performClick(document.getElementById('image1'));
+            });
+            $("#btnBrowse2").click(function () {
+                performClick(document.getElementById('image2'));
+            });
+
+            function performClick(node) {
+                var evt = document.createEvent("MouseEvents");
+                evt.initEvent("click", true, false);
+                node.dispatchEvent(evt);
+            }
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام را وارد نمایید.');
+                }
+            });
+
+            $("#txtFamily").keyup(function () {
+                if ($("#txtFamily").val() != '') {
+                    $("#txtFamily").removeClass("input-validation-error");
+                    $("#lblFamilyError").html("");
+                }
+                else {
+                    $("#txtFamily").addClass("input-validation-error");
+                    $('#lblFamilyError').html('لطفا نام خانوادگی را وارد نمایید.');
+                }
+            });
+            $("#txtMeliCode").keyup(function () {
+                if ($("#txtMeliCode").val() != '') {
+                    $("#txtMeliCode").removeClass("input-validation-error");
+                    $("#lblMeliCodeError").html("");
+                }
+                else {
+                    $("#txtMeliCode").addClass("input-validation-error");
+                    $('#lblMeliCodeError').html('لطفا کد ملی را وارد نمایید.');
+                }
+            });
+            $("#txtNameFather").keyup(function () {
+                if ($("#txtNameFather").val() != '') {
+                    $("#txtNameFather").removeClass("input-validation-error");
+                    $("#lblNameFatherError").html("");
+                }
+                else {
+                    $("#txtNameFather").addClass("input-validation-error");
+                    $('#lblNameFatherError').html('لطفا نام پدر را وارد نمایید.');
+                }
+            });
+            
+            $("#txtBirthDate").keyup(function () {
+                if ($("#txtBirthDate").val() != '') {
+                    $("#txtBirthDate").removeClass("input-validation-error");
+                    $("#lblBirthDateError").html("");
+                }
+                else {
+                    $("#txtBirthDate").addClass("input-validation-error");
+                    $('#lblBirthDateError').html('لطفا تاریخ تولد را وارد نمایید.');
+                }
+            });
+            
+
+            $("#txtEmailAddress").keyup(function () {
+                if ($('#txtEmailAddress').val() != "") {
+                    $.ajax({
+                        type: "GET",
+                        url: '/Email/IsValidEmail?strIn=' + $('#txtEmailAddress').val(),
+                        success: function (data) {
+                            if (data.valid == false) {
+                                $('#lblEmailAddressError').html('ایمیل نامعتبر است.');
+                            }
+                            else {
+                                $('#lblEmailAddressError').html('');
+                            }
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+
+
+
+        });
+        function Clear() {
+            $('#fldID').val(0);
+            $('#txtName').val('');
+            $('#txtFamily').val('');
+            $('#txtMeliCode').val('');
+            $('#txtEmailAddress').val('');
+            $('#txtMobile').val('');
+            $('#txtAddress').val('');
+            $('#txtBirthDate').val('');
+            $('#txtDesc').val('');
+            $('#PreviewImage1').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+            $('#PreviewImage2').attr('src', '@Url.Content("~/Content/images/Blank.jpg")');
+        }
+          function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Staff/Delete")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            }
+            function SaveRecord() {
+                var image1 = document.getElementById('PreviewImage1');
+                var image2 = document.getElementById('PreviewImage2');
+                var c = image1.attributes[1];
+                var c = image2.attributes[1];
+                var imgData1 = "";
+                var imgData2 = "";
+                if (c.value != "") {
+                    imgData1 = getBase64Image(image1, 80, 80);
+                    imgData2 = getBase64Image(image2, 120, 120);
+                }
+
+
+                var er = false;
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا نام را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+                
+                if ($("#txtFamily").val() == '') {
+                    $("#txtFamily").addClass("input-validation-error");
+                    $('#lblFamilyError').html('لطفا نام خانوادگی را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblFamilyError').html('');
+
+                if ($("#txtNameFather").val() == '') {
+                    $("#txtNameFather").addClass("input-validation-error");
+                    $('#lblNameFatherError').html('لطفا نام پدر را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameFatherError').html('');
+
+                if ($("#txtBirthDate").val() == '') {
+                    $("#txtBirthDate").addClass("input-validation-error");
+                    $('#lblBirthDateError').html('لطفا تاریخ را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblBirthDateError').html('');
+
+
+                if ($("#txtMeliCode").val() == '') {
+                    $("#txtMeliCode").addClass("input-validation-error");
+                    $('#lblMeliCodeError').html('لطفا کد ملی را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblMeliCodeError').html('');
+
+                if (er)
+                    return;
+
+                var data = {
+                    fldName: $("#txtName").val(), fldFamily: $("#txtFamily").val(), fldMelliCode: $("#txtMeliCode").val(),
+                    fldMobile: $("#txtMobile").val(), fldAddress: $("#txtAddress").val(), fldBirthDate: $("#txtBirthDate").val(),fldLetterLoadNum:LetterLoadNum,
+                    fldEmailAddress: $("#txtEmailAddress").val(), fldDesc: $("#txtDesc").val(), fldID: $("#fldID").val(),fldNotify:Notify,
+                    fldStaffPicture: imgData1,
+                    fldSignPicture: imgData2,
+                    fldNameFather: $('#txtNameFather').val(),
+                    fldSign: $('#CboSign').val()
+                };
+
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/Staff/Save")', "#win");
+                }
+                Clear();
+
+                
+            }
+            function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/Staff/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#fldID').val(data.fldID);
+                            $('#txtName').val(data.fldName);
+                            $('#txtFamily').val(data.fldFamily);
+                            $('#txtNameFather').val(data.fldNameFather);
+                            $('#txtMeliCode').val(data.fldMeliCode);
+                            $('#txtEmailAddress').val(data.fldEmailAddress);
+                            $('#txtMobile').val(data.fldMobile);
+                            $('#txtAddress').val(data.fldAddress);
+                            var Sign = $('#CboSign').data('kendoDropDownList');
+                            Sign.value(data.fldSign); LetterLoadNum
+                            $("#txtBirthDate").val(data.fldBirthDate);
+                            $('#txtDesc').val(data.fldDesc);
+                            Notify = data.fldNotify;
+                            LetterLoadNum=data.fldLetterLoadNum;
+                            var g1 = '@Url.Content("~/Staff/StaffImage/")' + data.fldpicId;
+                            $('#PreviewImage1').attr('src', g1);
+                            var g = '@Url.Content("~/Staff/Signimage/")' + data.fldpicId;
+                            $('#PreviewImage2').attr('src', g);
+
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+
+        function readURL1(input) {
+            if (input.files && input.files[0]) {//Check if input has files.
+                if (input.files[0].size > 25600) {
+                    alert('حجم فایل بزرگتر از 25 کیلو بایت است.');
+                }
+                else {
+                    var reader = new FileReader(); //Initialize FileReader.
+
+                    reader.onload = function (e) {
+                        $('#PreviewImage1').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {//Check if input has files.
+                if (input.files[0].size > 25600) {
+                    alert('حجم فایل بزرگتر از 25 کیلو بایت است.');
+                }
+                else {
+                    var reader = new FileReader(); //Initialize FileReader.
+
+                    reader.onload = function (e) {
+                        $('#PreviewImage2').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+        function getBase64Image(imgElem,w,h) {
+            // imgElem must be on the same server otherwise a cross-origin error will be thrown "SECURITY_ERR: DOM Exception 18"
+            var canvas = document.createElement("canvas");
+            canvas.width = imgElem.clientWidth;
+            canvas.height = imgElem.clientHeight;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(imgElem, 0, 0, imgElem.clientWidth, imgElem.clientHeight);
+            var dataURL = canvas.toDataURL("image/jpg");
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            var url = '@Url.Action("Reload", "Staff")';
+                            Reload(url, 'Grid', '0', '', 30, 1);
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>

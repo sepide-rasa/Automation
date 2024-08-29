@@ -1,0 +1,55 @@
+﻿<div class="modal" id="YesNoMsg">
+    
+    @Automation.Helper.winClass.windowHeader("", "هشدار", 250, 180)
+    <br />
+    <div id="message">
+    </div>
+    <br />
+    @Automation.Helper.winClass.Buttons("yes", "بله", "yes")
+    @Automation.Helper.winClass.Buttons("No", "خیر", "no")
+    <br />
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#yes").button();
+            $("#No").button();
+            $("#yes").click(function () {
+                MetroDialogOpen = false;
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Content("~/MoveToFolder/SaveDeleted")',
+                    data: { BoxId: "@ViewBag.BoxId", SelectedLetterId: "@ViewBag.SelectedLetterId" },
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                       Refresh_Grid();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+                $("#YesNoMsg").remove();
+            });
+
+            $("#No").click(function () {
+                MetroDialogOpen = false;
+                $("#YesNoMsg").remove();
+            });
+            $("#btnClose").click(function () {
+                MetroDialogOpen = false;
+                $("#YesNoMsg").remove();
+            });
+        });
+    
+</script>
+@Automation.Helper.winClass.windowFother()
+</div>

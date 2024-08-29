@@ -1,0 +1,27 @@
+﻿<div class="modal" id="error">
+    
+    @Automation.Helper.winClass.windowHeader("", "error", 250, 180)
+    <br />
+    <div id="message">
+        @if (Session["ER"] != null)
+        {
+            <span>@Session["ER"].ToString()</span>
+        }
+    </div>
+    <br />
+    @Automation.Helper.winClass.Buttons("ok", "تایید", "yes")
+    <br />
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#ok").button();
+            $("#ok").click(function () {
+                $("#error").remove();
+            });
+            $("#error #btnClose").click(function () {
+                $("#error").remove();
+            });
+        });
+    
+</script>
+@Automation.Helper.winClass.windowFother()
+</div>

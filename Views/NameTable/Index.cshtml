@@ -1,0 +1,93 @@
+﻿@using Kendo.Mvc.UI;
+@model Automation.Models.LogTrack
+<div class="modal" id="NameTable">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+    
+         <a href="@Url.Content("~/Helps/تاریخچه کاربران.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+    <br />
+    <br />
+        <br />
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_NameTableSelect>()
+                .Name("Grid")
+                .Scrollable(scrollable => scrollable.Virtual(true).Height(400))
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد");
+                    columns.Bound(p => p.fldName).Title("جدول");
+
+                })
+                    .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                        .PageSize(15).Read("Fill", "NameTable")
+            )
+        )
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        از تاریخ:@Html.TextBox("txtStart")
+                    </td>
+                    <td>
+                        تا تاریخ: @Html.TextBox("txtEnd")
+                    </td>
+                    <td>
+                        @Automation.Helper.winClass.Buttons("Retrieve", "خروجی اکسل", "excel")
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var d;
+        $("document").ready(function () {
+            $("#Retrieve").button();
+            $("#exit").button();
+            $("#Help").button();
+
+            $("#exit").click(function () {
+                $("#NameTable").remove();
+            });
+
+            $('#NameTable').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#NameTable').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $("#txtStart").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#txtEnd").datepicker({
+                showButtonPanel: true,
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#Retrieve').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    //                    if ($('#txtStart').val() == '') {
+
+                    //                        return;
+                    //                    }
+                    window.location.href = '/NameTable/FileExport?id=' + id + '&start=' + $('#txtStart').val() + '&end=' + $('#txtEnd').val();
+                } else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+        });
+
+        
+    </script>
+</div>

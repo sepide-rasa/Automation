@@ -1,0 +1,56 @@
+﻿<div id="EmailOrDownload">
+    @Automation.Helper.winClass.windowHeader("", "ارسال", 250, 180)
+    <br />
+    
+    ارسال ECE توسط:
+    <br />
+    <br />
+    <br />
+    @Automation.Helper.winClass.Buttons("Download", "Download", "yes")
+    @Automation.Helper.winClass.Buttons("Emails", "Email", "yes")
+    <table>
+    <tr>
+    <td>
+          <label>@Html.RadioButton("Type", "1", true, new { @id = "One" }) اصل</label>
+          <label>@Html.RadioButton("Type", "2", new { @id = "Two" }) رونوشت</label>
+                        </td>
+    </tr>
+    </table>
+
+    @Automation.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        var state = 0;
+        var ReceiveType = "";
+        $(document).ready(function () {
+            $("#Download").button();
+            $("#Emails").button();
+            state = '@ViewBag.state';
+
+            var LetterID = '@ViewBag.LetterID';
+           
+
+            $('#Download').click(function () {
+                ReceiveType = "1";
+                if (Two.checked)
+                    ReceiveType = "2";
+                $("#EmailOrDownload").remove();
+                window.location.href = '@Url.Content("~/Home/Download/")' + '?LetterID=' + LetterID + '&Reciver=' + "" + '&ReceiveType=' + ReceiveType;
+            });
+
+            $('#Emails').click(function () {
+                ReceiveType = "1";
+                if (Two.checked)
+                    ReceiveType = "2";
+                $("#EmailOrDownload").remove();
+                windowAppend('body', '/MailContact/Index?State=4&LetterID=' + LetterID + '&Name=' + "" + '&Email=' + "" + '&RoneveshtType=' + ReceiveType);
+            });
+
+
+
+            $('#EmailOrDownload #btnClose').click(function () {
+                $("#EmailOrDownload").remove();
+                isWinOpen = false;
+            });
+        });
+    </script>
+</div>

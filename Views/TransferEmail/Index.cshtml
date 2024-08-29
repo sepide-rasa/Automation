@@ -1,0 +1,282 @@
+﻿<div id="TransferEmail">
+    @using Kendo.Mvc.UI;
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+     <a href="@Url.Content("~/Helps/انتقال ایمیل ها.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+       
+    <center>
+     <table>
+                <tr>
+                <td align="left">
+                    <span style="color: Red;">*</span>تعداد:
+                </td>
+                <td align="right">
+                        @Html.TextBox("txtNum")  
+                        <br />
+                        <span id="lblNumError" style="color: Red;" ></span>                      
+                    </td>
+                <td>
+                @Automation.Helper.winClass.Buttons("Show", "نمایش", "yes")
+                </td>
+                </tr>
+              
+                <tr>
+                <td colspan=3 align=center>
+                 @Automation.Helper.winClass.Buttons("GoToLetter", "انتقال به نامه وارده", "yes")
+                 @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                </td>
+                </tr>
+      </table>
+      
+       
+        <br />
+        
+
+    </center>
+    <script type="text/javascript">
+        isWinOpen = false;
+        var Subject = "";
+
+        function Preview() {
+            windowAppend('body', '/ExternalLetter/PreviewLetterPDFBox');
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            var t = '@Url.Content("~/TransferEmail/GeneratePDF/")' + selectedItem.fldId;
+            $('#pdf').html("<br/><object style='width: 800px;height: 550px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+
+        }
+        function SaveFile() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                window.location.href = '@Url.Content("~/TransferEmail/FileExport/")' + id;
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function SaveAtt() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                var URL = '@Url.Content("~/TransferEmail/HaveAttach")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        if (data.Have == 0)
+                            alert('این ایمیل ضمیمه ندارد');
+                        else
+                            window.location.href = '@Url.Content("~/TransferEmail/AttachementExport/")' + id;
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+                
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+
+        $("document").ready(function () {
+            $("#GoToLetter").button();
+            $("#Help").button();
+            $("#Show").button();
+            $("#DelLink").button();
+
+            $("#Show").click(function () {
+                var er = false;
+                if ($("#txtNum").val() == '') {
+                    $("#txtNum").addClass("input-validation-error");
+                    $('#lblNumError').html('لطفا تعداد را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblNumError').html('');
+
+                if (er)
+                    return;
+
+
+                var url = '@Url.Action("Reload", "TransferEmail")';
+                ReloadTEmail(url, 'Grid', $("#txtNum").val());
+
+            });
+
+//            $("#Preview").click(function () {
+//                var t = '@Url.Content("~/TransferEmail/GeneratePDF/")' + Email_Fax_ECEId;
+//                $('#pdf').html("<br/><object style='width: 800px;height: 550px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+//            });
+
+            $("#GoToLetter").click(function () {
+                GoToLetter()
+            });
+
+            $('#TransferEmail #Grid table tr').live('dblclick', function () {
+                GoToLetter()
+            });
+
+            $("#DelLink").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/TransferEmail/Delete")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+
+            });
+
+        });
+
+    function GoToLetter() {
+        var entityGrid = $("#Grid").data("kendoGrid");
+        var selectedItem = entityGrid.dataItem(entityGrid.select());
+        if (selectedItem) {
+            Subject = selectedItem.fldSubject
+            windowAppend('body', '/Externalletter/Index?Id=3&Email_Fax_ECEId=' + selectedItem.fldId);
+        }
+        else {
+            windowAppend('body', '/metro/error');
+            $('#message').html('لطفا یک سطر را انتخاب کنید.');
+            $("#error .wintitle").html("خطا");
+        }
+    }
+
+//    function HaveAttach() {
+//        var entityGrid1 = $("#Grid").data("kendoGrid");
+//        var row = entityGrid1.items();
+//        for (var i = 0; i < row.length; i++) {
+//            var y = entityGrid1.dataItem(row[i]);
+//            var URL = '@Url.Content("~/TransferEmail/HaveAttach")';
+//            URL = URL + "/" + y.fldId;
+//            $.ajax({
+//                type: "GET",
+//                url: URL,
+//                success: function (data) {
+//                    if (data.Have == 0) {
+//                        //alert('');
+//                        $('#SaveAtt' + y.fldId).hide();
+//                    }
+//                    else
+//                        $('#SaveAtt' + y.fldId).show();
+
+//                },
+//                failure: function (data) {
+//                    alert(data.data);
+//                }
+//            });
+
+//        }
+//    }
+
+    function ReloadTEmail(Url, gridname, value) {
+        $('#Lock').show();
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { value: value },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+
+                    $('#Lock').hide();
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        
+
+        function Reload1(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+
+                    var url = '@Url.Action("Reload1", "TransferEmail")';
+                    Reload1(url, 'Grid', '0', '', 30, 1);
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+</div>
+<div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_Email_TempSelect>()
+                .Name("Grid")
+                .Scrollable(m=>m.Enabled(true).Height(500))
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("موضوع").Hidden();
+                    columns.Bound(p => p.fldSubject).Title("موضوع").Width(200);
+                    columns.Bound(p => p.fldFrom).Title("فرستنده").Width(200);
+                    columns.Command(command => command.Custom("Preview").Click("Preview").Text("پیش نمایش").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "Preview" })).Width(60);
+                    columns.Command(command => command.Custom("SaveFile").Click("SaveFile").Text("ذخیره متن").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "SaveFile" })).Width(60);
+                    columns.Command(command => command.Custom("SaveAtt").Click("SaveAtt").Text("ذخیره پیوست").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "SaveAtt" })).Width(60);
+                    //columns.Template(@<text></text>).ClientTemplate("<input type='button' onclick='SaveAtt' value='ذخیره پیوست' id='SaveAtt#=fldId#' class='k-button k-button-icontext'/>").Title("توقف").Width(50);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                        .PageSize(1000)
+                                        .Read("Fill", "TransferEmail")
+            )
+        )
+        </div>

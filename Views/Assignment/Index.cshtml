@@ -1,0 +1,404 @@
+﻿@using Kendo.Mvc.UI;
+<div id="Assignment">
+    @Automation.Helper.winClass.windowHeader("", "ارجاع", 800, 400)
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    @{
+        Automation.Models.AutomationEntities p = new Automation.Models.AutomationEntities();
+        var date = MyLib.Shamsi.Miladi2ShamsiString(p.sp_GetDate().FirstOrDefault().fldDateTime);
+        
+    }
+    <script type="text/javascript">
+        var AssignmentId = '';
+        var AssignmentName = '';
+        var AssignmentType = '';
+        var AssSourceId = 0;
+        var WindowOpen = false;
+        var AssReciver = 0;
+        var LetterType = 0;
+        var Assignmentdata;
+        var isWinOpen = false;
+        $("document").ready(function () {
+
+            $("#btnErjaEdit").button();
+            $("#sendLetter").button();
+            $("#viewLetter").button();
+            $("#AssExit").button();
+            AssSourceId = '@ViewBag.AssSourceId';
+            LetterType = '@ViewBag.fldLetterType';
+            $('#txtEndDate').val('@date');
+            $("#btnErjaEdit").click(function () {
+                var data = {
+                    id: 8,
+                    Reciver_sender: AssignmentName,
+                    Reciver_senderId: AssignmentId
+                };
+                windowAppendData('body',
+                 '/CheckReciverAndSender/index', data);
+            });
+            $('#txtEndDate').datepicker({
+                showButtonPanel: true
+            });
+            $('#Assignment #btnClose').click(function () {
+                $("#Assignment").remove();
+                isWinOpen = false;
+            });
+
+            $('#txtAssignmentReciver').keyup(function () {
+                if (WindowOpen == false) {
+                    WindowOpen = true;
+                    windowAppend("body", "/SearchAssignment/index?id=3&type=2&Comissionid=" + $('#cboCreator1').val());
+                    $('#txtSearch1').focus();
+                    $('#txtSearch1').val($('#txtAssignmentReciver').val());
+                }
+            });
+
+            $("#AssExit").click(function () {
+                isWinOpen = false;
+                WinOpen = false;
+                $("#Assignment").remove();
+            });
+
+            $("#sendLetter").click(function () {
+
+                var er = false;
+                if (AssignmentId == '') {
+                    alert("لطفا گیرنده ارجاع را مشخص کنید.");
+                    er = true;
+                }
+                if (er)
+                    return;
+
+                Assignmentdata = {
+                    fldAssignmentAnswerDate: $("#txtEndDate").val(),
+                    fldAssignmentDesc: $("#txtAssDesc").val(),
+                    fldAssignmentLetterID: $("#fldID").val(),
+                    fldInternalAssignmentReciverComisionID: AssignmentId,
+                    fldComisionID: $('#cboCreator1').val(),
+                    fldAssignmentDate: $("#txtEndDate").val(),
+                    fldLetterID: LetterID,
+                    fldAssignmentTypeID: AssignmentType,
+                    fldLetterBoxID: LetterBoxID,
+                    fldAssignID: AssignmentSId
+                };
+
+                //send in mail
+                $.ajax({
+                    type: "GET",
+                    url: '/Assignment/ChekHaveMail',
+                    data: {
+                        AssignmentId: AssignmentId
+                    },
+                    success: function (data) {
+                        if (data.Name != "") {
+                            //                            windowAppend('body', '/MailContact/Index?State=2&LetterID=' + LetterID + '&Name=' + data.Name + '&Email=' + data.Email);
+                            $.ajax({
+                                type: "GET",
+                                url: '/home/SendEmail?LetterID=' + LetterID + '&Reciver=' + data.Email,
+                                success: function (data) {
+                                    $("#error").remove();
+                                    if (Assignmentdata != '') {
+                                        PostForm(Assignmentdata, '@Url.Content("~/Assignment/Save")', "#win");
+                                    }
+                                },
+                                failure: function (data) {
+                                    alert(data.data);
+                                }
+                            });
+
+                        }
+                        else {
+
+                            if (Assignmentdata != '') {
+                                PostForm(Assignmentdata, '@Url.Content("~/Assignment/Save")', "#win");
+                            }
+                        }
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+
+
+            });
+
+            $("#viewLetter").click(function () {
+                //                var id = selectedItem.fldID;
+                //                    var urlSavabegh = '@Url.Action("ReloadSavabegh", "Letter")';
+
+                if (LetterType == '1') {
+                    var URL = '@Url.Content("~/Letter/Details")';
+                    URL = URL + "/" + LetterIDAssignment;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            WinOpen = false;
+                            $("#Assignment").remove();
+                            windowAppend('body', '/Letter');                            
+                            $('#fldIDInternalAssignmentReceiver').val(data.fldIDInternalAssignmentReceiver);
+                            $('#Date').val(data.fldCreatedDate);
+                            $('#LetterNum').val(data.fldLetterNumber);
+                            $('#LetterDate').val(data.fldLetterDate);
+                            $('#LetterNumComp').val(data.fldOrderId);
+                            LetterID = data.fldID;
+                            creatorId = AssReciver;
+                            $('#Attach').attr('style', '');
+                            $('#LetterAttach').attr('style', '');
+                            $('#History').attr('style', '');
+                            $('#Inf').attr('style', '');
+                            $('#StatusFinish').attr('style', '');
+                            $("#fldID").val(data.fldID);
+                            girandeID = data.fldGirandeId;
+                            girandeName = data.fldGirandeName
+                            $('#Girandegan').html(data.fldGirandeName);
+                            $("#txtSubject").val(data.fldSubject);
+                            AssignmentSId = AssSourceId;
+                            SignID = data.fldSignerId;
+                            SignName = data.fldSignerName;
+                            $('#lblSigner').html(data.fldSignerName);
+                            rooneveshtID = data.RoneveshtId
+                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                            AssignmentDesc = data.RoneveshtText;
+                            $('#Roonevesht').html(data.RoneveshtName);
+                            rooneveshtName = data.RoneveshtName;
+                            var creator = $('#cboCreator').data('kendoDropDownList');
+                            creator.value(data.fldComisionID);
+                            creator.enable(false);
+                            $('#txtKeywords').val(data.fldKeywords);
+                            $('#txtDesc').val(data.fldDesc);
+                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                            security.value(data.fldSecurityTypeID);
+                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                            Immediacy.value(data.fldImmediacyID);
+                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "Letter")';
+                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                            var url = '@Url.Action("ReloadLetterAttach", "Letter")';
+                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                            var url = '@Url.Action("ReloadStatusFinish", "Letter")';
+                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                            var CboSign = $('#CboSignType').data('kendoDropDownList');
+                            CboSign.value(data.fldSignType);
+                            $('#PreviewImage').attr('src', '');
+                            $.ajax({
+                                type: "GET",
+                                url: '/LetterContent/CheckHaveFile',
+                                data: {
+                                    LetterID: LetterID
+                                },
+                                success: function (data) {
+                                    var have = data.have;
+                                    if (have == 1) {
+                                        var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                                        $('#PreviewImage').attr('src', g);
+                                    }
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else if (LetterType == '2') {
+                    var URL = '@Url.Content("~/ExternalLetter/Details")';
+                    URL = URL + "/" + LetterIDAssignment;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            WinOpen = false;
+                            $("#Assignment").remove();
+                            windowAppend('body', '/ExternalLetter/Index/1');
+                            $('#fldIDInternalAssignmentReceiver').val(data.fldIDInternalAssignmentReceiver);
+                            $('#Date').val(data.fldCreatedDate);
+                            $('#LetterNumber').val(data.fldLetterNumber);
+                            $('#ExLetterDate').val(data.fldLetterDate);
+                            $('#LetterNumComp').val(data.fldOrderId);
+                            LetterID = data.fldID;
+                            creatorId = AssReciver;
+                            $('#Attach').attr('style', '');
+                            $('#LetterAttach').attr('style', '');
+                            $('#History').attr('style', '');
+                            $('#Inf').attr('style', '');
+                            $('#StatusFinish').attr('style', '');
+                            $("#fldID").val(data.fldID);
+                            ReceiverID = data.fldGirandeId;
+                            ReceiverName = data.fldGirandeName
+                            $('#Girandegan').html(data.fldGirandeName);
+                            $("#txtSubject").val(data.fldSubject);
+                            AssignmentSId = AssSourceId;
+                            SenderID = data.fldSenderId;
+                            SenderName = data.fldSenderName;
+                            $('#SenderOragan').html(data.fldSenderName);
+                            rooneveshtID = data.RoneveshtId
+                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                            AssignmentDesc = data.RoneveshtText;
+                            $('#Roonevesht').html(data.RoneveshtName);
+                            rooneveshtName = data.RoneveshtName;
+                            var creator = $('#cboCreator').data('kendoDropDownList');
+                            creator.value(data.fldComisionID);
+                            creator.enable(false);
+                            $('#txtKeywords').val(data.fldKeywords);
+                            $('#txtDesc').val(data.fldDesc);
+                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                            security.value(data.fldSecurityTypeID);
+                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                            Immediacy.value(data.fldImmediacyID);
+                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "ExternalLetter")';
+                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                            var url = '@Url.Action("ReloadLetterAttach", "Letter")';
+                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                            var url = '@Url.Action("ReloadStatusFinish", "ExternalLetter")';
+                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                            var t = '@Url.Content("~/ExternalLetter/GeneratePDF/")' + LetterID;
+                            //$('#pdf').html("<br/><br/><br/><object id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+        });
+        function Clear() {
+            $('#txtAssDesc').val('');
+            $('#txtName').val('');
+            $('#fldID').val(0);
+        }
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ارسال موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }                    
+                    $('#Lock').hide();
+                    $("#Assignment").remove();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+    <div>
+        <br />
+        <table>
+            <tr>
+                <td>
+                    @Automation.Helper.winClass.Buttons("sendLetter", "ارسال نامه", "Save")
+                    @Automation.Helper.winClass.Buttons("viewLetter", "نمایش نامه", "Exit")
+                    @Automation.Helper.winClass.Buttons("AssExit", "خروج", "Exit")
+                </td>
+            </tr>
+        </table>
+        <div>
+            <table>
+                <tr>
+                    <td align="right">
+                        گیرنده ارجاع:
+                    </td>
+                    <td colspan="3" align="right">
+                        @Automation.Helper.winClass.textbox("txtAssignmentReciver")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <button id="btnErjaEdit" style="font-size: 9px;" title="حذف گیرنده">...</button>
+                    </td>
+                    <td align="right" colspan="3">
+                        <span style="color: Red;" id="Reciver"></span>
+                    </td>
+                </tr>
+                @*<tr>
+                    <td align="right">
+                        نوع ارجاع:
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                                                    .Name("cboAssignmentType")
+                                                    .DataTextField("fldName")
+                                                    .DataValueField("fldID")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetAssignmentType", "Assignment");
+                                                        });
+                                                    }).HtmlAttributes(new { @style = "width:250px;" })
+                         )
+                        <span id="lblAssignmentTypeError" style="color: Red;"></span>
+                    </td>
+                </tr>*@
+                <tr>
+                    <td align="right">
+                        ارجاع دهنده:
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                                                    .Name("cboCreator1")
+                                                    .DataTextField("fldName")
+                                                    .DataValueField("fldID")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetComission", "Assignment");
+                                                        });
+                                                    }).HtmlAttributes(new { @style = "width:250px;" })
+                                                )
+                        <span id="lblAssignmentError" style="color: Red;"></span>
+                    </td>
+                    <td align="right">
+                        <span style="color: Red;">*</span>حداکثر مهلت پاسخ:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtEndDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                        <span id="lblBirthDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        خلاصه ارجاع:
+                    </td>
+                    <td align="right" colspan="3">
+                        @Automation.Helper.winClass.textArea("txtAssDesc", 4, 98)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @Automation.Helper.winClass.windowFother();
+</div>

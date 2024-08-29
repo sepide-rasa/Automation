@@ -1,0 +1,208 @@
+﻿<div id="Facilities">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ManagePersonalFolders').click(function () {
+            windows('#emkanat', '/ManagePersonalFolders');
+        });
+
+
+        $('#SearchLetterBaygani').click(function () {
+            windows('#emkanat', '/SearchLetterBaygani');
+        });
+        $('#Baygani').click(function () {
+            windows('#emkanat', '/Baygani');
+        });
+
+        $('#substitute').click(function () {
+            windows('#emkanat', '/substitute');
+        });
+        $('#Repassword').click(function () {
+            windows('#emkanat', '/Repassword');
+        });
+        $('#Mind').click(function () {
+            windows('#emkanat', '/Mind');
+        });
+        $('#CommisionKarmand').click(function () {
+            windows('#emkanat', '/Email');
+        });
+        $('#SearchLetter').click(function () {
+            windows('#emkanat', '/SearchLetter');
+        });
+        $('#Profile').click(function () {
+            windows('#emkanat', '/Profile');
+        });
+         
+        $('#Dashburd').click(function () {
+            windows('#emkanat', '/Dashburd');
+        });
+
+        $('#FullText').click(function () {
+            windows('#emkanat', '/FullTextSearch');
+        });
+
+        $('#TransferEmail').click(function () {
+            windows('#emkanat', '/TransferEmail');
+        });
+        $('#TransferFax').click(function () {
+            windows('#emkanat', '/TransferFax');
+        });
+        $('#ECE').click(function () {
+            windows('#emkanat', '/ECE');
+        });
+        $('#TransferLetters').click(function () {
+            windows('#emkanat', '/TransferLetters');
+        });
+        $('#NameTable').click(function () {
+            windows('#emkanat', '/NameTable');
+        }); 
+        $('#Search_Letter2').click(function () {
+            windows('#emkanat', '/Search_Letter2');
+        });
+    });
+</script>
+@using Kendo.Mvc.UI;
+
+@(Html.Kendo().Splitter()
+      .Name("vertical")
+      .Orientation(SplitterOrientation.Vertical)
+         .HtmlAttributes(new { @style = "height:600px" })
+      .Panes(verticalPanes =>
+      {
+          verticalPanes.Add()
+              .HtmlAttributes(new { id = "top-pane" })
+              .Scrollable(false)
+              .Collapsible(false)
+              .Content(
+
+              Html.Kendo().Splitter()
+                    .Name("horizontal")
+                    .HtmlAttributes(new { style = "height: 100%;" })
+                    .Panes(horizontalPanes =>
+                    {
+
+
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "center-pane" })
+                            .Content(@<div id="emkanat">
+                        </div>);
+                        horizontalPanes.Add()
+                            .HtmlAttributes(new { id = "right-pane" })
+                            .Collapsible(false)
+                            .Size("220px")
+                            .Content(Html.Kendo().PanelBar().Name("Panelemkanat")
+                                .Items(pItem =>
+                                {
+                                    if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 41))
+                                    {
+                                        pItem.Add().Text("منوی امکانات")
+                                        .Expanded(true)
+                                        .Items(Banks =>
+                                        {
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 100))
+                                            {
+                                                Banks.Add().Text("انتقال ایمیل ها")
+                                                    .HtmlAttributes(new { id = "TransferEmail" })
+                                                .ImageUrl(Url.Content("~/content/images/enteghale email.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 110))
+                                            {
+                                                Banks.Add().Text("انتقال فکس ها")
+                                                    .HtmlAttributes(new { id = "TransferFax" })
+                                                    .ImageUrl(Url.Content("~/content/images/enteghale fax.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 102))
+                                            {
+                                                Banks.Add().Text("مدیریت ECE")
+                                                    .HtmlAttributes(new { id = "ECE" })
+                                                    .ImageUrl(Url.Content("~/content/images/modiriate ece.png"));
+                                            }
+                                            
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 93))
+                                            {
+                                                Banks.Add().Text("جستجو نامه")
+                                                    .HtmlAttributes(new { id = "SearchLetter" })
+                                                    .ImageUrl(Url.Content("~/content/images/jostejoo name.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 72))
+                                            {
+                                                Banks.Add().Text("مدیریت پوشه های شخصی ")
+                                                    .HtmlAttributes(new { id = "ManagePersonalFolders" })
+                                                    .ImageUrl(Url.Content("~/content/images/modiriate pooshe.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 112))
+                                            {
+                                                Banks.Add().Text("انتقال نامه ها")
+                                                    .HtmlAttributes(new { id = "TransferLetters" })
+                                                    .ImageUrl(Url.Content("~/content/images/enteghale name jari.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 94))
+                                            {
+                                                Banks.Add().Text("جستجوی نامه بایگانی")
+                                                    .HtmlAttributes(new { id = "SearchLetterBaygani" })
+                                                    .ImageUrl(Url.Content("~/content/images/jostjoo name baygani.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 76))
+                                            {
+                                                Banks.Add().Text("یایگانی نامه")
+                                                    .HtmlAttributes(new { id = "Baygani" })
+                                                    .ImageUrl(Url.Content("~/content/images/archives.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 95))
+                                            {
+                                                Banks.Add().Text("تغییر رمز عبور")
+                                                    .HtmlAttributes(new { id = "Repassword" })
+                                                    .ImageUrl(Url.Content("~/content/images/taghire ramz.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 80))
+                                            {
+                                                Banks.Add().Text("تفویض اختیار")
+                                                    .HtmlAttributes(new { id = "substitute" })
+                                                    .ImageUrl(Url.Content("~/content/images/tafviz ekhtiar.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 96))
+                                            {
+                                                Banks.Add().Text("یادآوری")
+                                                    .HtmlAttributes(new { id = "Mind" })
+                                                    .ImageUrl(Url.Content("~/content/images/yadavari.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 97))
+                                            {
+                                                Banks.Add().Text("در خواست ایمیل")
+                                                    .HtmlAttributes(new { id = "CommisionKarmand" })
+                                                    .ImageUrl(Url.Content("~/content/images/darkhast email.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 98))
+                                            {
+                                                Banks.Add().Text("ویرایش پروفایل")
+                                                    .HtmlAttributes(new { id = "Profile" })
+                                                    .ImageUrl(Url.Content("~/content/images/virayesh profile.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 99))
+                                            {
+                                                Banks.Add().Text("داشبورد مدیریتی")
+                                                    .HtmlAttributes(new { id = "Dashburd" })
+                                                    .ImageUrl(Url.Content("~/content/images/dashbord.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 111))
+                                            {
+                                                Banks.Add().Text("جستجو در متن نامه")
+                                                    .HtmlAttributes(new { id = "FullText" })
+                                                    .ImageUrl(Url.Content("~/content/images/jostejoo matn name.png"));
+                                            }
+                                            if (Automation.Controllers.Users.Permossions.haveAccess(Convert.ToInt32(Session["UserId"]), 113))
+                                            {
+                                                Banks.Add().Text("تاریخچه کاربران")
+                                                .HtmlAttributes(new { id = "NameTable" })
+                                                .ImageUrl(Url.Content("~/content/images/tarikhche karbaran.png"));
+                                            }
+                                            Banks.Add().Text("تاریخچه نامه")
+                                                .HtmlAttributes(new { id = "Search_Letter2" })
+                                                .ImageUrl(Url.Content("~/content/images/tarikhche name.png"));
+                                        });
+                                    }
+                                }).ToHtmlString());
+                    }).ToHtmlString()
+              );
+      })
+      )
+</div>

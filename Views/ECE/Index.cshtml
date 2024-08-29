@@ -1,0 +1,323 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="ECE">
+
+    <meta name="viewport" content="width=device-width" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.uploadify-3.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/uploadify.css")" rel="stylesheet" type="text/css" />
+    @*<script type="text/x-kendo-template" id="template">
+        <div id="details-container">
+        
+        </div>
+
+    </script>*@
+
+    <div>    
+        <br />
+        
+         <a href="@Url.Content("~/Helps/مدیریتECE.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+  
+        <center>
+            <table>   
+                 
+                          <tr>
+                              <td colspan="2" align="center" id="ContentUpload" style="display: none;">
+                                  @(Html.Kendo().Upload()
+                                    .Name("UpContent")
+                                    .Multiple(false)
+                                    .Async(a => a
+                                                .Save("UploadContent", "ECE")
+                                                .Remove("RemoveContent", "ECE")
+                                        .AutoUpload(true)
+                                        )
+                                        //.Events(ev => ev.Complete("upload"))
+                                    )
+                              </td>
+                          </tr>
+                          <tr>
+                              <td colspan="2" align="center">
+                                  @Automation.Helper.winClass.Buttons("btnContentDel", "حذف", "del")
+                                  @Automation.Helper.winClass.Buttons("Show", "نمایش", "yes")
+                              </td>
+                          </tr>
+                  
+            </table>
+            <p>
+                @*@Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")*@
+                @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        <br />
+
+        
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblECE_TempSelect>() 
+                .Name("ECEGrid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Hidden();
+                    columns.Bound(p => p.fldKeyWord).Title("کد").Hidden();
+                    columns.Bound(p => p.fldSenderComisionID).Title("کد فرستنده").Hidden();
+                    columns.Bound(p => p.fldLetterNumber).Title("شماره").Width(50);
+                    columns.Bound(p => p.fldLetterDate).Title("تاریخ").Width(50);
+                    columns.Bound(p => p.fldSubject).Title("موضوع").Width(50);
+                    columns.Bound(p => p.fldExternalPartner).Title("فرستنده").Width(50);
+                    columns.Bound(p => p.fldRecieverComision).Title("گیرنده").Width(50);
+                    columns.Bound(p => p.fldImmediacy).Title("فوریت").Width(50);
+                    columns.Bound(p => p.fldSecurityType).Title("محرمانگی").Width(50);
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .Sortable()
+            .Filterable()
+            .DataSource(data =>
+                 data.Ajax()
+                .PageSize(10)
+                                       // .Read("Fill", "ECE")
+            )
+                    
+        )
+            
+        </div>
+    </div>
+</div>
+
+
+    <script type="text/javascript">
+
+        var ChartID = 0;
+        function upload() {
+            var url = '@Url.Action("Reload", "ECE")';
+            ReloadECE(url, "ECEGrid");
+        }
+
+        var ProductId = 0;
+        var Serial;
+        var Standard;
+        var Size;
+        var Voltaj;
+        var isWinOpen = false;
+
+        var FileName = '';
+        var Win = 0;
+
+        $("document").ready(function () {
+            $("#next").button();
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#btnContentDel").button();
+            $("#btnContentDel").hide();
+            $('#Show').button();
+            $('#Help').button();
+            // $("#btnBrowse").button();
+            //$("#btnRemove").button();
+
+            $('#ContentUpload').attr('style', '');
+
+            FileName = '@ViewBag.FileName';
+
+            var url = '@Url.Action("Reload", "ECE")';
+            ReloadECE(url, "ECEGrid");
+
+            $("#exit").click(function () {
+                $("#ECE").remove();
+            });
+            $('#ECE').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#ECE').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $('#ECEGrid table tr').live('dblclick', function () {
+                if (isWinOpen == false) {
+
+                    isWinOpen = true;
+                    //                windowAppend('body', '/ExternalLetter/PreviewLetterPDFBox');
+                    //                var entityGrid = $("#ECEGrid").data("kendoGrid");
+                    //                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                    //                var t = '@Url.Content("~/ECE/GeneratePDF/")' + 1;
+                    //                $('#pdf').html("<br/><object style='width: 800px;height: 550px;border: 1px solid #ccc;' id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+
+                    var entityGrid = $("#ECEGrid").data("kendoGrid");
+                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+                    if (selectedItem) {
+                        windowAppend('body', '/Externalletter/Index?Id=4&Email_Fax_ECEId=' + selectedItem.fldId);
+                        $('#LetterNumber').val(selectedItem.fldLetterNumber);
+                        $('#ExLetterDate').val(selectedItem.fldLetterDate);
+                        $("#txtSubject").val(selectedItem.fldSubject);
+                        $('#txtKeywords').val(selectedItem.fldKeyWord);
+                        SenderID = selectedItem.fldSenderComisionID;
+                        SenderName = selectedItem.fldExternalPartner;
+                        $('#SenderOragan').html(selectedItem.fldExternalPartner);
+
+                    }
+                }
+            });
+
+            $('#Show').click(function () {
+                var url = '@Url.Action("ShowECE", "ECE")';
+                ReloadECE(url, 'ECEGrid');
+            });
+
+            $('#btnContentDel').click(function () {
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + ChartID + "&URL=" + '@Url.Content("~/ECE/DeleteContent")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+
+                var t = '@Url.Content("~/ECE/GeneratePDF/")' + 0;
+                $('#pdf').html("<br/><br/><br/><object id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+            });
+
+
+
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                $("#btnContentDel").show();
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+
+        });
+
+        function Clear() {
+            $('#fldId').val(0);
+            $('#txtDesc').val('');
+            ProductId = 0;
+        }
+
+
+        function SaveRecord() {
+            var er = false;
+            
+
+            if (er)
+                return;
+
+            var data = {
+                
+                fldId: $("#fldId").val()
+            };
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/ECE/Save")', "#win");
+            }
+            Clear();
+        }
+        function EditRecord() {
+            var entityGrid = $("#ECEGrid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                var URL = '@Url.Content("~/ECE/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        
+                        $("#txtDesc").val(data.fldDesc);
+                        $('#fldId').val(data.fldId);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        function DeleteRecord() {
+            var entityGrid = $("#ECEGrid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldId;
+                var URL = '@Url.Content("~/metro/YesNomsg")';
+                URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/ECE/Delete")';
+                windowAppend("body", URL);
+                $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+            }
+            else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+            Clear();
+        }
+
+        function ReloadECE(Url, gridname) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    ChartID = m.ID;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var url = '@Url.Action("Reload", "ECE")';
+                    ReloadECE(url, "ECEGrid");
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }    
+    </script>
+    

@@ -1,0 +1,500 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="Substitute">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        <br />
+         <a href="@Url.Content("~/Helps/تفویض%20اختیار.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <center>
+            <table>
+              <tr>
+             @Html.Hidden("fldID")
+                    <td align="left">
+                        <span style="color: Red;">*</span>تفویض دهنده:
+                    </td>
+                    <td align="right">
+                        @(Html.Kendo().DropDownList()
+                                .Name("cboCreator")
+                                  .OptionLabel("تفویض دهنده...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetComission", "Letter");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:250px;" })
+                                  )
+                        <span id="lblCreatorError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span id="lblcreator" style="color: Red;"></span>
+                    </td>
+                    </tr>
+                <tr>
+                    <td align="left">
+                     <span style="color: Red;">*</span>
+                        تفویض گیرنده(Ins):
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("karmandid")
+                       
+                        <span id="lblKarmandEError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                <td></td>
+                <td align="right"><span id="lblKarmand" style="color: Red;"></span></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        از تاریخ:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtStartDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                        <span id="lblStartDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تا تاریخ:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtEndDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                        <span id="lblEndDateError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        از ساعت:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtStartTimeM", null, new { @style = "width:30px;height: 23px;" })
+                        : @Html.TextBox("txtStartTimeH", null, new { @style = "width:30px;height: 23px;" })
+                        <span id="lblStartTimeMError" style="color: Red;"></span>
+                        <span id="lblStartTimeHError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        تا ساعت:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtEndTimeM", null, new { @style = "width:30px;height: 23px;" })
+                        : @Html.TextBox("txtEndTimeH", null, new { @style = "width:30px;height: 23px;" })
+                        <span id="lblEndTimeMError" style="color: Red;"></span>
+                        <span id="lblEndTimeHError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <input type="checkbox" name="sign" id="sign" />
+                    </td>
+                    <td align="right">
+                        :اعطای مجوز امضا
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td align="left">
+                        <input type="checkbox" name="Post" id="Post" />
+                    </td>
+                    <td align="right">
+                        : نمایش پست تفویض گیرنده در امضا
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblSubstituteSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldStaffName).Title("نام تفویض گیرنده");
+                    columns.Bound(p => p.fldStartDate).Title("تاریخ شروع");
+                    columns.Bound(p => p.fldEndDate).Title("تاریخ پایان");
+                    columns.Bound(p => p.fldStartTime).ClientTemplate("#=fldStartTime.Hours#:#=fldStartTime.Minutes#").Title("زمان شروع حکم");
+                    columns.Bound(p => p.fldEndTime).ClientTemplate("#=fldEndTime.Hours#:#=fldEndTime.Minutes#").Title("زمان پایان حکم");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)                
+            )
+        )
+        </div>
+        <script type="text/javascript">
+            var StartTime;
+            var EndTime;
+            var ReceiverComision = '';
+            var ReceiverComisionId;
+            var CreatorID;
+            var a;
+            $("document").ready(function () {
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#Help").button();
+                $("#exit").button();
+                $("#Help").button();
+                var isWinOpen = false;
+
+                $('#karmandid').keyup(function () {
+                    if (isWinOpen == false) {
+                     isWinOpen = true;
+                        //if(insert) then ...
+                        //                    CreatorID = $("#cboCreator").val();
+                        //                    CreatorID = CreatorID + 1;
+                        //                    a = 4;
+                        windowAppend("body", "/SearchAssignmntRole/index?id=4" + "&type=2&Comissionid=" + $("#cboCreator").val());
+                       
+                     }
+                });
+                $('#Substitute').on('keyup', 'input', function (event) {
+                    if (event.which == 13) {
+                        var inputs = $('#Substitute').find(':input:visible');
+                        inputs.eq(inputs.index(this) + 1).focus();
+                    }
+                });
+                $(document).keyup(function (event) {
+                    if (event.which == 119) {
+                        SaveRecord();
+                    }
+                    else if (event.which == 113) {
+                        EditRecord();
+                    }
+                    else if (event.which == 115) {
+                        DeleteRecord();
+                    }
+                });
+                $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+                $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+                $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+                jQuery("#EditLink").click(function () {
+                    EditRecord();
+                });
+
+                $('#DelLink').click(function () {
+                    DeleteRecord();
+                });
+
+                $("#AddLink").click(function () {
+                    SaveRecord();
+                });
+                $("#cboCreator").change(function () {
+                    var url = '@Url.Action("Reload", "Substitute")';
+                    Reload(url, 'Grid', '0', $("#cboCreator").val(), 0, 2);
+                });
+                $("#exit").click(function () {
+                    $("#Substitute").remove();
+                });
+
+                $('#txtStartDate').datepicker({
+                    onSelect: function (dateText, inst) {
+                        $('#txtEndDate').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                    },
+                    showButtonPanel: true
+                });
+                $('#txtEndDate').datepicker({
+                    showButtonPanel: true
+                });
+
+                $('#txtSearch').keyup(function () {
+                    var url = '@Url.Action("Reload", "Substitute")';
+                    Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+                });
+
+                $("#txtStartDate").keyup(function () {
+                    if ($("#txtStartDate").val() != '') {
+                        $("#txtStartDate").removeClass("input-validation-error");
+                        $("#lblStartDateError").html("");
+                    }
+                    else {
+                        $("#txtStartDate").addClass("input-validation-error");
+                        $('#lblStartDateError').html('لطفا تاریخ شروع را وارد کنید.');
+                    }
+                });
+
+                $("#txtEndDate").keyup(function () {
+                    if ($("#txtEndDate").val() != '') {
+                        $("#txtEndDate").removeClass("input-validation-error");
+                        $("#lblEndDateError").html("");
+                    }
+                    else {
+                        $("#txtEndDate").addClass("input-validation-error");
+                        $('#lblEndDateError').html('لطفا تاریخ پایان را وارد کنید.');
+                    }
+                });
+
+                $("#txtStartTimeM").keyup(function () {
+                    if ($("#txtStartTimeM").val() != '') {
+                        $("#txtStartTimeM").removeClass("input-validation-error");
+                        $("#lblStartTimeMError").html("");
+                    }
+                    else {
+                        $("#txtStartTimeM").addClass("input-validation-error");
+                        $('#lblStartTimeMError').html('لطفا زمان شروع را وارد کنید.');
+                    }
+                });
+
+                $("#txtStartTimeH").keyup(function () {
+                    if ($("#txtStartTimeH").val() != '') {
+                        $("#txtStartTimeH").removeClass("input-validation-error");
+                        $("#lblStartTimeHError").html("");
+                    }
+                    else {
+                        $("#txtStartTimeH").addClass("input-validation-error");
+                        $('#lblStartTimeHError').html('لطفا زمان شروع را وارد کنید.');
+                    }
+                });
+
+                $("#txtEndTimeM").keyup(function () {
+                    if ($("#txtEndTimeM").val() != '') {
+                        $("#txtEndTimeM").removeClass("input-validation-error");
+                        $("#lblEndTimeMError").html("");
+                    }
+                    else {
+                        $("#txtEndTimeM").addClass("input-validation-error");
+                        $('#lblEndTimeMError').html('لطفا زمان پایان را وارد کنید.');
+                    }
+                });
+
+                $("#txtEndTimeH").keyup(function () {
+                    if ($("#txtEndTimeH").val() != '') {
+                        $("#txtEndTimeH").removeClass("input-validation-error");
+                        $("#lblEndTimeHError").html("");
+                    }
+                    else {
+                        $("#txtEndTimeH").addClass("input-validation-error");
+                        $('#lblEndTimeHError').html('لطفا زمان پایان را وارد کنید.');
+                    }
+                });
+            });
+            function Clear() {
+                $('#fldID').val(0);
+                $("#lblKarmand").val('');
+                $("#txtStartDate").val('');
+                $("#txtEndDate").val('');
+                $("#txtStartTimeM").val('');
+                $("#txtStartTimeH").val('');
+                $("#txtEndTimeM").val('');
+                $("#txtEndTimeH").val('');
+                $('#txtDesc').val('');
+            }
+           
+              function DeleteRecord() {
+                    var entityGrid = $("#Grid").data("kendoGrid");
+                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+                    if (selectedItem) {
+                        var id = selectedItem.fldID;
+                        var URL = '@Url.Content("~/metro/YesNomsg")';
+                        URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/Substitute/Delete")';
+                        windowAppend("body", URL);
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                    else {
+                        windowAppend('body', '/metro/error');
+                        $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                        $("#error .wintitle").html("خطا");
+                    }
+                    Clear();
+                }
+             function SaveRecord() {
+                    var er = false;
+
+                    //                    if ($("#lblKarmand").val() == '') {
+                    //                        $("#lblKarmand").addClass("input-validation-error");
+                    //                        $('#lblKarmandEError').html('لطفا نام تفویض گیرنده را وارد کنید.');
+                    //                        er = true;
+                    //                    }
+                    //                    else
+                    //                        $('#lblKarmandEError').html('');
+
+
+                    if ($("#txtStartDate").val() == '') {
+                        $("#txtStartDate").addClass("input-validation-error");
+                        $('#lblStartDateError').html('لطفا تاریخ شروع را وارد کنید.');
+                        er = true;
+                    }
+                    else {
+                        $('#lblStartDateError').html('');
+                        $("#txtStartDate").removeClass("input-validation-error");
+                    }
+
+                    if ($("#txtEndDate").val() == '') {
+                        $("#txtEndDate").addClass("input-validation-error");
+                        $('#lblEndDateError').html('لطفا تاریخ پایان را وارد کنید.');
+                        er = true;
+                    }
+                    else {
+                        $('#lblEndDateError').html('');
+                        $("#txtEndDate").removeClass("input-validation-error");
+                    }
+
+                    if ($("#txtStartTimeM").val() == '') {
+                        $("#txtStartTimeM").addClass("input-validation-error");
+                        $('#lblStartTimeMError').html('لطفا زمان شروع را وارد کنید.');
+                        er = true;
+                    }
+                    else {
+                        $('#lblStartTimeMError').html('');
+                        $("#txtStartTimeM").removeClass("input-validation-error");
+                    }
+
+                    if ($("#txtStartTimeH").val() == '') {
+                        $("#txtStartTimeH").addClass("input-validation-error");
+                        $('#lblStartTimeHError').html('لطفا زمان شروع را وارد کنید.');
+                        er = true;
+                    }
+                    else {
+                        $('#lblStartTimeHError').html('');
+                        $("#txtStartTimeH").removeClass("input-validation-error");
+                    }
+
+                    if ($("#txtEndTimeM").val() == '') {
+                        $("#txtEndTimeM").addClass("input-validation-error");
+                        $('#lblEndTimeMError').html('لطفا زمان پایان را وارد کنید.');
+                        er = true;
+                    }
+                    else {
+                        $('#lblEndTimeMError').html('');
+                        $("#txtEndTimeM").removeClass("input-validation-error");
+                    }
+
+                    if ($("#txtEndTimeH").val() == '') {
+                        $("#txtEndTimeH").addClass("input-validation-error");
+                        $('#lblEndTimeHError').html('لطفا زمان پایان را وارد کنید.');
+                        er = true;
+                    }
+                    else {
+                        $('#lblEndTimeHError').html('');
+                        $("#txtEndTimeH").removeClass("input-validation-error");
+                    }
+
+                    if (er)
+                        return;
+
+                    StartTime = $("#txtStartTimeH").val() + ':' + $("#txtStartTimeM").val();
+                    EndTime = $("#txtEndTimeH").val() + ':' + $("#txtEndTimeM").val();
+                    var data = {
+                        fldSenderComisionID: $("#cboCreator").val(),
+                        fldReceiverComisionID: ReceiverComisionId,
+                        fldStartDate: $("#txtStartDate").val(),
+                        fldEndDate: $("#txtEndDate").val(),
+                        fldStartTime: StartTime,
+                        fldEndTime: EndTime,
+                        fldIsSigner: sign.checked,
+                        fldShowReceiverName: Post.checked,
+                        fldDesc: $("#txtDesc").val(),
+                        fldID: $("#fldID").val()
+                    };
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/Substitute/Save")', "#win");
+                    }
+                    Clear();
+                }
+              function EditRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    //                        var ComisionID = selectedItem.fldReceiverComisionID;
+                    var URL = '@Url.Content("~/Substitute/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#fldID').val(data.fldID);
+                            ReceiverComisionId = data.fldReceiverComisionID;
+                            $("#txtStartDate").val(data.fldStartDate);
+                            $("#txtEndDate").val(data.fldEndDate);
+                            $("#txtStartTimeM").val(data.fldStartTimeM);
+                            $("#txtStartTimeH").val(data.fldStartTimeH);
+                            $("#txtEndTimeM").val(data.fldEndTimeM);
+                            $("#txtEndTimeH").val(data.fldEndTimeH);
+                            ReceiverComision = data.fldStaffName;
+                            sign.checked=data.fldIsSigner;
+                            Post.checked=data.fldShowReceiverName;
+                            $('#txtDesc').val(data.fldDesc);
+                            $("#lblKarmand").html(ReceiverComision);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoGrid');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { field: field, value: value, top: top, searchtype: searchType },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    }
+
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                var url = '@Url.Action("Reload", "Substitute")';
+                                Reload(url, 'Grid', '0', $("#cboCreator").val(), 0, 1);
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }    
+        </script>
+    </div>
+    </div>

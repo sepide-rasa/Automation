@@ -1,0 +1,101 @@
+﻿<div id="MoveToFolder">
+    @Automation.Helper.winClass.windowHeader("", "انتخاب پوشه", 500, 400)
+    <script type="text/javascript">
+        function CID() {
+            return {
+                BoxId: Boxid
+            }
+        }
+        var dataItem;
+        function TreeSelect(e) {
+            dataItem = this.dataItem(e.node);
+            SelectedFolderId = dataItem.id;
+
+        }
+        function expand() {
+            var treeview = $("#PTreeView").data("kendoTreeView");
+            treeview.expand(".k-item");
+        }
+        var SelectedFolderId = 0;
+        var BoxTypeID;
+        var Boxid = 0;
+        var SelectedLetterId = '';
+        $(document).ready(function () {
+            $('#btnSelect').button();
+            $('#btnExit').button();
+            $('#Help').button();
+            $('#btnExit').click(function () {
+                $('#MoveToFolder').remove();
+            });
+            $('#O_Folder').html($('#LocationDiv').valueOf());
+            Boxid = '@ViewBag.BoxId';
+            SelectedLetterId = '@ViewBag.SelectedLetterId';
+
+            $('#MoveToFolder #btnClose').click(function () {
+                $("#MoveToFolder").remove();
+                isWinOpen = false;
+            });
+
+            $('#btnSelect').click(function () {
+                if (SelectedFolderId != 0) {
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Content("~/MoveToFolder/Save")',
+                        data: { SelectedFolderId: SelectedFolderId, SelectedLetterId: SelectedLetterId },
+                        datatype: "json",
+                        success: function (data) {
+                            var m = data;
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);
+                            switch (m.state) {
+                                case 0:
+                                    $("#error .wintitle").html("ذخیره موفق");
+                                    break;
+                                case 1:
+                                    $("#error .wintitle").html("خطا");
+                                    break;
+                            }
+                            $('#MoveToFolder').remove();
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+        });
+    </script>  
+    <center>
+        <table>
+            <tr>
+                <td align="left">
+                    پوشه ها:
+                </td>
+                <td dir="rtl" id="O_Folder" align="right">
+                </td>
+            </tr>
+        </table>
+        @Automation.Helper.winClass.Buttons("btnSelect", "انتخاب", "yes")
+        @Automation.Helper.winClass.Buttons("btnExit", "خروج", "exit")
+    </center>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                    .DataImageUrlField("image")
+                    .HtmlAttributes(new { @class = "tree" })
+                    .Name("PTreeView")
+                    .DataTextField("Name")
+                    .Events(ev => ev.Select("TreeSelect").DataBound("expand"))
+                    .DataSource(dataSource => dataSource
+                    .Read(read => read
+                        .Action("_FolderTree", "MoveToFolder")
+                        .Data("CID()")
+                    )
+                ))
+    </div>
+    @Automation.Helper.winClass.windowFother()
+</div>

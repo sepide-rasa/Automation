@@ -1,0 +1,247 @@
+﻿@using Kendo.Mvc.UI;
+<div id="ManagePersonalFolders">
+
+    <div>
+        <br />
+          <a href="@Url.Content("~/Helps/مدیریت پوشه های شخصی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+      <center>
+            <table>
+                <tr>
+                    @Html.Hidden("fldId")
+                    <td align="left">
+                        عنوان پوشه:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("txtTitle")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <p>
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        پوشه ها:
+                    </td>
+                    <td  dir="rtl" id="O_Folder" align="right">
+                    </td>
+                </tr>
+            </table>
+        </center>
+        <script type="text/javascript">
+            function CID(id) {
+                return {
+                    cId: id
+                }
+            }
+            var dataItem;
+            function TreeSelect(e) {
+                dataItem = this.dataItem(e.node);
+                Pid = dataItem.id;
+
+            }
+            function expand() {
+                var treeview = $("#treeview").data("kendoTreeView");
+                treeview.expand(".k-item");
+            }
+            var Pid;
+            var BoxTypeID;
+            $("document").ready(function () {
+
+                $('#O_Folder').html($('#LocationDiv').valueOf());
+                $("#AddLink").button();
+                $("#EditLink").button();
+                $("#DelLink").button();
+                $("#exit").button(); 
+                $("#Help").button();
+
+
+                $("#cboComision").change(function () {
+                    var tree = $('#treeview').data("kendoTreeView");
+                    tree.dataSource.read()
+                });
+
+                $("#exit").click(function () {
+                    $("#ManagePersonalFolders").remove();
+                });
+                $(document).keyup(function (event) {
+                    if (event.which == 119) {
+                        SaveRecord();
+                    }
+                    else if (event.which == 113) {
+                        EditRecord();
+                    }
+                    else if (event.which == 115) {
+                        DeleteRecord();
+                    }
+                });
+                $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+                $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+                $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+                jQuery("#EditLink").click(function () {
+                    EditRecord();
+                });
+
+                $('#DelLink').click(function () {
+                    DeleteRecord();
+                });
+
+                $("#AddLink").click(function () {
+                    SaveRecord();
+                });
+             
+            });
+            function Clear() {
+                $("#txtTitle").val('');
+                $('#fldId').val('0');
+            }
+            function DeleteRecord() {
+                if (Pid != null) {
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + Pid + "&URL=" + '@Url.Content("~/ManagePersonalFolders/Delete")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            }
+
+            function EditRecord() {
+
+                if (Pid != null) {
+                    var URL = '@Url.Content("~/ManagePersonalFolders/Details")';
+                    URL = URL + "/" + Pid;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            Pid = data.fldPId;
+                            $("#fldId").val(data.fldId);
+                            $("#txtTitle").val(data.fldName);
+                            BoxTypeID = data.fldBoxTypeID;
+
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+
+         function SaveRecord() {
+                if (Pid != null) {
+                    var data = {
+                        fldName: $("#txtTitle").val(),
+                        fldPID: Pid,
+                        fldId: $("#fldId").val(),
+                        fldBoxTypeID: BoxTypeID
+                    };
+                    if (data != '') {
+                        PostForm(data, '@Url.Content("~/ManagePersonalFolders/Save")', "#win");
+                    }
+                    Clear();
+                } else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            }
+
+            function Reload(Url, gridname, field, value, top, searchType) {
+                var grid = $('#' + gridname).data('kendoTreeView');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { id: 1 },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoTreeView").dataSource.data(result);
+                    }
+
+                });
+            }
+
+            function PostForm(datas, url, id) {
+                var sendInfo = datas;
+                $('#Lock').show();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: sendInfo,
+                    datatype: "json",
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                        //var url = '@Url.Action("_FolderTree", "ManagePersonalFolders")';
+                        //Reload(url, 'TreeView', '0', '', 30, 1);
+                        var tree = $('.tree').data("kendoTreeView");
+                        tree.dataSource.read();
+                        $('#Lock').hide();
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    @{
+        Automation.Models.AutomationEntities hh = new Automation.Models.AutomationEntities();
+        var user = hh.sp_tblUserSelect("fldId", Session["UserId"].ToString(), 0, 1, "").FirstOrDefault();
+        var q = hh.sp_tblCommisionSelect("fldStaffID", user.fldStaffID.ToString(), 0, 1, "");
+    }
+   
+   <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+           
+            @foreach (var c in q)
+            {            
+                @(c.fldStaffName + "(" + c.fldOrganicRoleName + ")")
+                @(Html.Kendo().TreeView()
+                .DataImageUrlField("image")
+                .HtmlAttributes(new { @class="tree"})
+                .Name("Ptree" + c.fldID)
+                .DataTextField("Name")
+                .Events(ev => ev.Select("TreeSelect"))
+                .DataSource(dataSource => dataSource
+                .Read(read => read
+                    .Action("_FolderTree", "ManagePersonalFolders")
+                    .Data("CID(" + c.fldID + ")")
+                    )
+                        ));
+            }
+             
+        </div>
+      
+</div>

@@ -1,0 +1,17 @@
+﻿<div id="CommonWin">
+    @Automation.Helper.winClass.windowHeader("", ".", 800, 550)
+    <div id="WinContent"></div>
+    @Automation.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CommonWin #btnClose').click(function () {
+                $("#CommonWin").remove();
+                $("#ExternalPartner").remove();
+                _WinOpen = false;
+                $('#txtSearch1').focus();
+                var url = '@Url.Action("Reload", "SearchAssignmntRole")';
+                Reload(url, 'searchGrid', $("#cboSearchFiald1").val(), $("#txtSearch1").val(), $("#txtTop1").val(), $("#cboSearchType1").val());
+            });
+        });
+    </script>
+</div>

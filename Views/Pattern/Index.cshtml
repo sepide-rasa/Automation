@@ -1,0 +1,91 @@
+﻿<div id="Pattern" dir="rtl">
+<script src="@Url.Content("~/Scripts/jquery-1.7.1.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/ui.css")" rel="stylesheet" type="text/css" />
+
+<center>
+    @Automation.Helper.winClass.Buttons("save", "ذخیره", "save")
+    @Automation.Helper.winClass.Buttons("close", "خروج", "exit")
+</center>
+<object classid="clsid:7677E74E-5831-4C9E-A2DD-9B1EF9DF2DB4" id="OA1" width="100%"
+    height="620px" codebase="../../officeviewer.ocx">
+    <param name="Toolbars" value="-1">
+    <param name="BorderColor" value="15647136">
+    <param name="BorderStyle" value="2">
+</object>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#save').button();
+        $('#close').button();
+        var HaveFile = '@ViewBag.HaveFile';
+        var Id = '@ViewBag.id';
+        
+        document.OA1.DisableFileCommand(1, true); //wdUIDisalbeOfficeButton
+        document.OA1.DisableFileCommand(2, true); //wdUIDisalbeNew
+        document.OA1.DisableFileCommand(4, true); //wdUIDisalbeOpen		
+        //document.OA1.DisableFileCommand(16, true); //wdUIDisalbeSave
+        //document.OA1.DisableFileCommand(32, true); //wdUIDisalbeSaveAs
+        document.OA1.DisableFileCommand(512, true); //wdUIDisalbePrint (Ctrl+P) PES,PCT,CON
+        document.OA1.DisableFileCommand(1024, true); //wdUIDisalbePrintQuick
+        document.OA1.DisableFileCommand(2048, true); //wdUIDisalbePrintPreview
+        if (HaveFile == 1) {
+            var strUploadPath = "@ViewBag.SiteURL" + "/Pattern/Doc/" + Id;
+            document.all.OA1.HttpInit();
+            document.all.OA1.HttpAddpostString("DocumentID", Id + ".docx");
+            document.all.OA1.HttpOpenFileFromStream(strUploadPath, "Word.Application");
+        } else {
+            document.all.OA1.CreateNew("Word.Application");
+        }
+        $('#Pattern #btnClose').click(function () {
+            $("#Pattern").remove();
+            isWinOpen = false;
+        });
+        
+        $('#close').click(function () {
+            if (document.OA1.IsOpened) {
+                document.all.OA1.ExitOfficeApp();
+            }
+            window.close();
+        });
+        $('#save').click(function () {
+            if (document.OA1.IsOpened) {
+                document.OA1.HttpInit();
+                var sFileName = Id + '.docx';
+
+                document.OA1.HttpAddPostOpenedFile(sFileName);
+                document.OA1.HttpPost("@ViewBag.SiteURL"+"/Pattern/save/" + Id);
+                if (document.OA1.GetErrorCode() == 0) {
+                    var sPath = "ذخیره با موفقیت انجام شد.";
+                    alert(sPath);
+                }
+            }
+            //            $('#Lock').show();
+            //            $.ajax({
+            //                type: "GET",
+            //                url: '/pattern/save/' + Id,
+            //                success: function (data) {
+            //                    windowAppend("body", "/metro/error");
+            //                    $("#message").html(m.data);
+            //                    switch (m.state) {
+            //                        case 0:
+            //                            $("#error .wintitle").html("ذخیره موفق");
+            //                            var url = '@Url.Action("Reload", "Pattern")';
+            //                            Reload(url, 'Grid', '0', '', 30, 1);
+            //                            break;
+            //                        case 1:
+            //                            $("#error .wintitle").html("خطا");
+            //                            break;
+            //                    }
+            //                    $('#Lock').hide();
+            //                },
+            //                failure: function (data) {
+            //                    alert(data.data);
+            //                }
+            //            });
+        });
+    });
+</script>
+</div>

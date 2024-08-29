@@ -1,0 +1,1282 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="LetterPage">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        function SaveAtt() {
+            var entityGrid = $("#GridAttach").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                window.location.href = '@Url.Content("~/LetterPage/FileExport/")' + id;
+            } else {
+                alert('لطفا یک سطر را انتخاب کنید.');
+            }
+        }
+        
+    </script>
+    <script type="text/javascript">
+        var girandeName = '';
+        var girandeID = '';
+        var rooneveshtName = '';
+        var rooneveshtID = '';
+        var SignName = '';
+        var SignID = '';
+        var LetterID = 0;
+        var LetterBoxID;
+        var AssignmentSId = 0;
+        var AssignmentTypeId = '';
+        var AssignmentDesc = '';
+        var creatorId = 0;
+        var isWinOpen = false;
+        var isWinOpen1 = false;
+        var id;
+        var comId;
+
+        var path, f, r;
+        //        $(function () {
+        //            $('#image33').uploadify({
+        //                'swf': '@Url.Content("~/Content/uploadify.swf")',
+        //                //this is where the file posts when it uploads.
+        //                'uploader': '@Url.Action("Upload", "LetterPage")',
+        //                'onUploadSuccess': function (file, data, response) {
+        //                    path = data;
+        //                    f = file;
+        //                    r = response;
+        //                }
+        //            });
+        //        });
+        function InsRecivers() {
+            if (isWinOpen == false) {
+                windowAppend("body", "/SearchAssignmntRole/index?id=1&type=1&Comissionid=" + $('#cboCreator').val());
+                isWinOpen = true;
+                $('#txtSearch1').focus();
+                $('#txtSearch1').val($('#txtReciver').val());
+            }
+        }
+        function InsSigner() {
+            if (isWinOpen == false) {
+                windowAppend("body", "/SearchProComision/index/1");
+                isWinOpen = true;
+                $('#txtSearch1').focus();
+                $('#txtSearch1').val($('#txtSigner').val());
+            }
+        }
+        function InsCopy() {
+            if (isWinOpen == false) {
+                windowAppend("body", "/SearchAssignmntRole/index?id=2&type=1&Comissionid=" + $('#cboCreator').val());
+                isWinOpen = true;
+                $('#txtSearch1').focus();
+                $('#txtSearch1').val($('#txtCopy').val());
+            }
+        }
+        $("document").ready(function () {
+            $("#Assignment").remove();
+            $('#SearchpanelContent').html($('#SearchDiv').html());
+            $("#SaveLetter").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#PreviewAttach").button();
+            $("#LetterPrint").button();
+            $("#SaveNew").button();
+            $("#okLetter").button();
+            $("#postage_stamp").button();
+            $("#saere").button();
+            $("#mail_send").button();
+            $("#btnExit").button();
+            $("#AddLinkAttach").button();
+            $("#SaveStatusFinish").button();
+            $("#btnSaveHistory").button();
+            $("#btnKhateme").button();
+            $("#btnEbtal").button();
+            $("#LetterCopyPrint").button();
+            $("#btnTozi").button();
+            $("#btnReciverEdit").button();
+            $("#btnSignerEdit").button();
+            $("#btnRoneveshtEdit").button();
+            $("#Help1").button();
+            isWinOpen = false;
+            windows('#LetterContentDiv', '/LetterContent');
+            $('#PreviewImage').click(function () {
+                if (isWinOpen == false) {
+                    isWinOpen = true;
+                    windowAppend('body', '/LetterPage/PreviewLetterImageBox');
+                    $('#PreviewImageBox').attr('src', document.getElementById('PreviewImage').src);
+                }
+            });
+            $("#btnReciverEdit").click(function () {
+                var data = {
+                    id: 1,
+                    Reciver_sender: girandeName,
+                    Reciver_senderId: girandeID
+                };
+                windowAppendData('body',
+                 '/CheckReciverAndSender/index', data);
+            });
+            $("#btnSignerEdit").click(function () {
+                var data = {
+                    id: 2,
+                    Reciver_sender: SignName,
+                    Reciver_senderId: SignID
+                };
+                windowAppendData('body',
+                 '/CheckReciverAndSender/index', data);
+
+            });
+
+            $("#History").click(function () {
+                var urlSavabegh = '@Url.Action("ReloadSavabegh", "LetterPage")';
+                Reload(urlSavabegh, 'GridSavabegh', '0', LetterID, 30, 2);
+            });
+
+            $('#LetterPage #GridSavabegh table tr').live('dblclick', function () {
+                var entityGrid = $("#GridSavabegh").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+
+                    var URL = '@Url.Content("~/LetterPage/Details")';
+                    URL = URL + "/" + LetterID;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            isWinOpen = false;
+                            window.open('/LetterPage');
+                            $('#Date').val(data.fldCreatedDate);
+                            $('#LetterNum').val(data.fldLetterNumber);
+                            $('#LetterDate').val(data.fldLetterDate);
+                            $('#LetterNumComp').val(data.fldOrderId);
+                            LetterID = data.fldID;
+                            creatorId = data.fldComisionID;
+                            $('#Attach').attr('style', '');
+                            $('#LetterAttach').attr('style', '');
+                            $('#History').attr('style', '');
+                            $('#Inf').attr('style', '');
+                            $('#StatusFinish').attr('style', '');
+                            $("#fldID").val(data.fldID);
+                            girandeID = data.fldGirandeId;
+                            girandeName = data.fldGirandeName
+                            $('#Girandegan').html(data.fldGirandeName);
+                            $("#txtSubject").val(data.fldSubject);
+                            AssignmentSId = 0;
+                            SignID = data.fldSignerId;
+                            SignName = data.fldSignerName;
+                            $('#lblSigner').html(data.fldSignerName);
+                            rooneveshtID = data.RoneveshtId
+                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                            AssignmentDesc = data.RoneveshtText;
+                            $('#Roonevesht').html(data.RoneveshtName);
+                            rooneveshtName = data.RoneveshtName;
+                            var creator = $('#cboCreator').data('kendoDropDownList');
+                            creator.value(data.fldComisionID);
+                            creator.enable(false);
+                            $('#txtKeywords').val(data.fldKeywords);
+                            $('#txtDesc').val(data.fldDesc);
+                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                            security.value(data.fldSecurityTypeID);
+                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                            Immediacy.value(data.fldImmediacyID);
+                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "LetterPage")';
+                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                            var url = '@Url.Action("ReloadLetterAttach", "LetterPage")';
+                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                            var url = '@Url.Action("ReloadStatusFinish", "LetterPage")';
+                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                            var CboSign = $('#CboSignType').data('kendoDropDownList');
+                            CboSign.value(data.fldSignType);
+                            $('#PreviewImage').attr('src', '');
+                            $.ajax({
+                                type: "GET",
+                                url: '/LetterContent/CheckHaveFile',
+                                data: {
+                                    LetterID: LetterID
+                                },
+                                success: function (data) {
+                                    var have = data.have;
+                                    if (have == 1) {
+                                        var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                                        $('#PreviewImage').attr('src', g);
+                                    }
+                                }
+                            });
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+
+            });
+
+            $('#LetterPage').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#LetterPage').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $("#LetterPage").keyup(function (e) {
+                if (e.keyCode == 27) {
+                    $("#LetterPage").remove();
+                    isWinOpen1 = false;
+                }
+            });
+
+
+            $("#btnRoneveshtEdit").click(function () {
+                var data = {
+                    id: 3,
+                    Reciver_sender: rooneveshtName,
+                    Reciver_senderId: rooneveshtID
+                };
+                windowAppendData('body',
+                 '/CheckReciverAndSender/index', data);
+
+            });
+            $('#LetterPage #btnClose').click(function () {
+                $("#LetterPage").remove();
+                isWinOpen = false;
+            });
+
+            $(document).keyup(function (e) {
+                if (e.keyCode == 27) {
+                    $("#LetterPage").remove();
+                    isWinOpen = false;
+                }
+            });
+            $("#LetterCopyPrint").click(function () {
+                if (LetterID == null || LetterID == 0 || LetterID == '') {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('نامه ای جهت چاپ وجود ندارد.');
+                    $("#error .wintitle").html("خطا");
+                }
+                else {
+                    $.ajax({
+                        type: "GET",
+                        url: '/LetterPage/GetRoonevesht',
+                        data: {
+                            LetterID: LetterID
+                        },
+                        success: function (data) {
+                            var data = {
+                                id: 4,
+                                Reciver_sender: data.rooneveshtName,
+                                Reciver_senderId: data.rooneveshtID
+                            };
+                            windowAppendData('body', '/CheckReciverAndSender/index', data);
+                        }
+                    });
+                }
+
+            });
+            $('#mail_send').click(function () {
+
+                if (LetterID != 0) {
+                    windowAppend('body', '/Charkhe/index/' + LetterID);
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('نامه دارای چرخه نمی باشد.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+            $("#saere").click(function () {
+                if (LetterID != 0) {
+                    windowAppend('body', '/SendToSecretariat');
+                }
+            });
+
+            $("#btnExit").click(function () {
+                $("#LetterPage").remove();
+                //                var tabStrip = $("#tabstrip").data("kendoTabStrip");
+                //                var tab = tabStrip.select();
+                //                tabStrip.remove(tab);
+                //                tabStrip.select(0);
+            });
+            $('#btnTozi').click(function () {
+                if (LetterID != 0) {
+                    $('#Lock').show();
+                    var URL = '@Url.Content("~/LetterPage/Distribute")';
+                    $.ajax({
+                        type: "post",
+                        url: URL,
+                        data: {
+                            fldLetterID: LetterID,
+                            fldLetterBoxID: LetterBoxID,
+                            fldComisionID: $('#cboCreator').val(),
+                            fldReceiverComisionID: girandeID,
+                            fldRoneveshId: rooneveshtID,
+                            fldAssignmentID: AssignmentSId
+                        },
+                        success: function (data) {
+                            var m = data;
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);
+                            switch (m.state) {
+                                case 0:
+                                    $("#error .wintitle").html("ذخیره موفق");
+                                    break;
+                                case 1:
+                                    $("#error .wintitle").html("خطا");
+                                    break;
+                            }
+                            $('#Lock').hide();
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+            $("#LetterPrint").click(function () {
+                if (LetterID == null || LetterID == 0 || LetterID == '') {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('نامه ای جهت چاپ وجود ندارد.');
+                    $("#error .wintitle").html("خطا");
+                }
+                else {
+                    var have = 0;
+                    $.ajax({
+                        type: "GET",
+                        url: '/LetterContent/CheckHaveFile',
+                        data: {
+                            LetterID: LetterID
+                        },
+                        success: function (data) {
+                            have = data.have;
+                            if (have == 1) {
+                                var r = '';
+                                windowAppend('#LetterPage', '/LetterContent/ViewDoc?id=' + LetterID + '&state=3&Ronevesht=' + r);
+
+                            }
+                            else {
+                                windowAppend('body', '/metro/error');
+                                $('#message').html('نامه حاوی متن نمی باشد.');
+                                $("#error .wintitle").html("خطا");
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#txtReciver').keyup(function () {
+                InsRecivers();
+            });
+            $('#txtReciver').dblclick(function () {
+                InsRecivers();
+            });
+
+            $('#okLetter').click(function () {
+                if (isWinOpen == false && LetterID != 0) {
+                    windowAppend("body", "/Assignment/index?CreatorComId=" + creatorId);
+                    isWinOpen = true;
+                    $('#viewLetter').attr('style', 'display:none;');
+                }
+            });
+
+            $('#txtSigner').keyup(function () {
+                InsSigner();
+            });
+            $('#txtSigner').dblclick(function () {
+                InsSigner();
+            });
+
+            $('#txtCopy').keyup(function () {
+                InsCopy();
+            });
+            $('#txtCopy').dblclick(function () {
+                InsCopy();
+            });
+
+            $('#btnKhateme').click(function () {
+                var URL = '@Url.Content("~/LetterPage/Khateme")';
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    data: {
+                        fldLetterID: LetterID,
+                        AssignmentId: AssignmentSId
+                    },
+                    success: function (data) {
+                        var m = data;
+                        windowAppend("body", "/metro/error");
+                        $("#message").html(m.data);
+                        switch (m.state) {
+                            case 0:
+                                //alert('1');
+                                $("#error .wintitle").html("ذخیره موفق");
+                                break;
+                            case 1:
+                                $("#error .wintitle").html("خطا");
+                                break;
+                        }
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            });
+
+            $('#postage_stamp').click(function () {
+                var URL = '@Url.Content("~/LetterPage/Signer")';
+                if (LetterID != '') {
+                    $.ajax({
+                        type: "post",
+                        url: URL,
+                        data: {
+                            fldLetterID: LetterID,
+                            fldSignerComisionID: SignID,
+                            CreatorComId: creatorId
+                        },
+                        success: function (data) {
+                            var m = data;
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);
+                            switch (m.state) {
+                                case 0:
+                                    $("#error .wintitle").html("ذخیره موفق");
+                                    break;
+                                case 1:
+                                    $("#error .wintitle").html("خطا");
+                                    break;
+                            }
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+
+            $('#btnSaveHistory').click(function () {
+                var entityGrid = $("#GridSearch").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var urlSavabegh = '@Url.Action("ReloadSavabegh", "LetterPage")';
+                    var URL = '@Url.Content("~/LetterPage/SaveHistory")';
+                    $.ajax({
+                        type: "post",
+                        url: URL,
+                        data: {
+                            fldCurrentLetter_Id: LetterID,
+                            fldHistoryLetter_Id: id,
+                            fldHistoryType_Id: $("#cboLetterType").val()
+                        },
+                        success: function (data) {
+                            var m = data;
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);
+                            switch (m.state) {
+                                case 0:
+                                    $("#error .wintitle").html("ذخیره موفق");
+                                    break;
+                                case 1:
+                                    $("#error .wintitle").html("خطا");
+                                    break;
+                            }
+                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+
+            $('#SaveStatusFinish').click(function () {
+                var er = false;
+
+                if ($("#txtStatusFinish").val() == '') {
+                    $("#txtStatusFinish").addClass("input-validation-error");
+                    $('#lblStatusFinishError').html('لطفا آخرین وضعیت نامه را وارد کنید.');
+                    er = true;
+                }
+                else {
+                    $("#txtStatusFinish").removeClass("input-validation-error");
+                    $('#lblStatusFinishError').html('');
+                }
+
+                if (er)
+                    return;
+
+                var URL = '@Url.Content("~/LetterPage/SaveStatusFinish")';
+                var url = '@Url.Action("ReloadStatusFinish", "LetterPage")';
+                $.ajax({
+                    type: "post",
+                    url: URL,
+                    data: {
+                        fldLetterID: LetterID,
+                        fldLetterText: $('#txtStatusFinish').val(),
+                        fldDesc: $('#txtDescStatusFinish').val()
+                    },
+                    success: function (data) {
+                        Reload(url, 'GridStatusFinish', '0', data.LetterID, 30, 1);
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("ReloadLetter", "LetterPage")';
+                Reload(url, 'GridSearch', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            jQuery("#EditLink").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/LetterPage/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#Date').val(data.fldCreatedDate);
+                            $('#LetterDate').val(data.fldLetterDate);
+                            $('#LetterNum').val(data.fldLetterNumber);
+                            $('#txtSubject').val(data.fldSubject);
+                            $('#fldID').val(data.fldID);
+                            $('#txtDesc').val(data.fldDesc);
+                            $('#txtKeywords').val(data.fldKeywords);
+
+                            var model = $("#cboImmediacyType").data("kendoDropDownList");
+                            model.value(data.fldImmediacyID);
+                            var model = $("#cboSecurityType").data("kendoDropDownList");
+                            model.value(data.fldSecurityTypeID);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+            jQuery("#PreviewAttach").click(function () {
+                var entityGrid = $("#GridAttach").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var g = '@Url.Content("~/LetterPage/Image/")' + id;
+                    $('#PreviewImage33').attr('src', g);
+                }
+                else {
+                    alert('لطفا یک سطر را انتخاب کنید.');
+                }
+            });
+
+            //            jQuery("#Edit1").click(function () {
+            //                var entityGrid = $("#GridAttach").data("kendoGrid");
+            //                var selectedItem = entityGrid.dataItem(entityGrid.select());
+            //                if (selectedItem) {
+            //                    var id = selectedItem.fldId;
+            //                    var URL = '@Url.Content("~/LetterPage/Details1")';
+            //                    URL = URL + "/" + id;
+            //                    $.ajax({
+            //                        type: "GET",
+            //                        url: URL,
+            //                        success: function (data) {
+            //                         $('#PreviewImage33').val(data.fldLetterText);
+            //          
+            //                        },
+            //                        failure: function (data) {
+            //                            alert(data.data);
+            //                        }
+            //                    });
+            //                }
+            //                else {
+            //                    windowAppend('body', '/metro/error');
+            //                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+            //                    $("#error .wintitle").html("خطا");
+            //                }
+            //            });
+
+
+            //            $('#txtSearch').keyup(function () {
+            //                var url = '@Url.Action("Reload", "LetterPage")';
+            //                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            //            });
+
+            $('#DelLink').click(function () {
+                var entityGrid = $("#GridSavabegh").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldId;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/LetterPage/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+
+            $("#AddLinkAttach").click(function () {
+                var er = false;
+                if (LetterID == 0 || LetterID == '' || LetterID == null) {
+                    alert('نامه قبلا ثبت نشده است و شما نمی توانید فایل پیوست اضافه کنید.')
+                    er = true;
+                }
+                if (er)
+                    return;
+                var data = {
+                    fldName: $("#txtNameAttach").val(),
+                    fldDesc: $("#txtDescAttach").val(),
+                    fldID: $("#fldIDAttach").val(),
+                    fldLetterID: LetterID
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/LetterPage/SaveAttach")', "#win");
+                    var url = '@Url.Action("ReloadLetterAttach", "LetterPage")';
+                    Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                }
+            });
+
+            $("#SaveLetter").click(function () {
+                var er = false;
+                if (girandeID == '') {
+                    alert('لطفا گیرنده نامه را مشخص کنید');
+                    er = true;
+                }
+
+                if (SignID == '') {
+                    alert('لطفا امضا کننده نامه را مشخص کنید');
+                    er = true;
+                }
+                if (er)
+                    return;
+
+                var data = {
+                    fldSubject: $('#txtSubject').val(),
+                    fldLetterNumber: $('#LetterNum').val(),
+                    fldLetterDate: $('#LetterDate').val(),
+                    fldKeywords: $('#txtKeywords').val(),
+                    fldCreatedDate: $('#Date').val(),
+                    fldImmediacyID: $('#cboImmediacyType').val(),
+                    fldSecurityTypeID: $('#cboSecurityType').val(),
+                    fldComisionID: $('#cboCreator').val(),
+                    fldDesc: $("#txtDesc").val(),
+                    fldID: $("#fldID").val(),
+                    fldExternalLetterReceiverExternalPartnerID: girandeID,
+                    fldSignerComisionID: SignID,
+                    fldRooneveshtID: rooneveshtID,
+                    fldRooneveshtName: rooneveshtName,
+                    fldRooneveshtAssTypeID: AssignmentTypeId,
+                    fldRooneveshtAssDesc: AssignmentDesc,
+                    fldSignType: $('#CboSignType').val()
+                };
+
+                if (data != '') {
+                    var url = '@Url.Content("~/LetterPage/Save")';
+                    $('#Lock').show();
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: data,
+                        datatype: "json",
+                        success: function (data) {
+                            var m = data;
+                            windowAppend("body", "/metro/error");
+                            $("#message").html(m.data);
+                            switch (m.state) {
+                                case 0:
+                                    $("#error .wintitle").html("ذخیره موفق");
+                                    break;
+                                case 1:
+                                    $("#error .wintitle").html("خطا");
+                                    break;
+                            }
+                            LetterID = data.LetterID;
+                            creatorId = data.CreatorId;
+                            $('#LetterNumComp').val(data.LetterOrderId);
+                            $('#Date').val(data.LetterCreateDate);
+                            $('#Attach').attr('style', '');
+                            $('#LetterAttach').attr('style', '');
+                            $('#History').attr('style', '');
+                            $('#Inf').attr('style', '');
+                            $('#StatusFinish').attr('style', '');
+                            $("#fldID").val(data.LetterID);
+                            $('#Lock').hide();
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+            });
+
+        });
+
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    if (LetterID == 0) {
+                        LetterID = data.LetterID;
+                        LetterBoxID = data.LetterBoxID;
+                    }
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var urlSavabegh = '@Url.Action("ReloadSavabegh", "LetterPage")';
+                    Reload(urlSavabegh, 'GridSavabegh', '0', LetterID, 30, 2);
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+
+    </script>
+    <div>
+        <br />
+        <a href="@Url.Content("~/Helps/نامه صادره.htm")" target="_blank" id="Help1" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;">
+        </a>
+        <center>
+            <table>
+                <tr style="width: 100%;">
+                    <td style="width: 600px;" colspan="8">
+                        <center>
+                            <button id="SaveLetter" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/SaveNew.png');
+                                background-repeat: no-repeat;" title="ذخیره نامه">
+                            </button>
+                            <button id="okLetter" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/ok.png');
+                                background-repeat: no-repeat;" title="ارجاع نامه">
+                            </button>
+                            <button id="postage_stamp" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/postage_stamp.png');
+                                background-repeat: no-repeat;" title="امضا نامه">
+                            </button>
+                            <button id="saere" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/saere.png');
+                                background-repeat: no-repeat;" title="ارسال به دبیر خانه">
+                            </button>
+                            <button id="mail_send" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/mail_send.png');
+                                background-repeat: no-repeat;" title="چرخه نامه">
+                            </button>
+                            <button id="LetterPrint" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/printer.png');
+                                background-repeat: no-repeat;" title="چاپ نامه">
+                            </button>
+                            <button id="LetterCopyPrint" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/printers.png');
+                                background-repeat: no-repeat;" title="چاپ نامه با رونوشت">
+                            </button>
+                            <button id="btnTozi" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/Tozie.png');
+                                background-repeat: no-repeat;" title="توزیع">
+                            </button>
+                            <button id="btnKhateme" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/Khteme.png');
+                                background-repeat: no-repeat;" title="خاتمه نامه">
+                            </button>
+                            <button id="btnEbtal" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/Ebtal.png');
+                                background-repeat: no-repeat;" title="ابطال نامه">
+                            </button>
+                            <button id="btnExit" style="font-size: 11px; direction: rtl; font-family: tornado tahoma;
+                                width: 47px; height: 41px; text-align: left; background-image: url('/Content/images/ExitLetter.png');
+                                background-repeat: no-repeat;" title="خروج">
+                            </button>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Hidden("fldID")
+                    <td align="left">
+                        تاریخ ساخت:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("Date2", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                    <td align="left">
+                        شماره نامه:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("LetterNum2", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                    <td align="left">
+                        تاریخ نامه:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("LetterDate2", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                    <td align="left">
+                        شماره ثبت رایانه:
+                    </td>
+                    <td align="right">
+                        @Html.TextBox("LetterNumComp2", null, new { @style = "width: 164px;height: 23px;background-color:rgb(255, 202, 153);", @readonly = "true" })
+                    </td>
+                </tr>
+            </table>
+            @(Html.Kendo().TabStrip().Name("LetterTab")
+            .SelectedIndex(0)
+              .Items(ItemTab =>
+              {
+                  ItemTab.Add().Text("مشخصات نامه")
+                      .LinkHtmlAttributes(new { @style = "color:black;" })
+                  .Content(@<div>
+                      <table>
+                          <tr>
+                              <td align="left">
+                                  <span style="color: Red;">*</span>موضوع نامه:
+                              </td>
+                              <td colspan="7" align="right">
+                                  @Html.TextBox("txtSubject", null, new { @style = "direction:rtl;font-family:tornado tahoma;width: 800px;height: 23px;" })
+                                  <span id="lblSubjectError" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  <span style="color: Red;">*</span>گیرنده نامه(Ins):
+                              </td>
+                              <td align="right">
+                                  @Automation.Helper.winClass.textbox("txtReciver")
+                                  <span id="lblReciverError" style="color: Red;"></span>
+                              </td>
+                              <td align="left">
+                                  <span style="color: Red;">*</span> محرمانگی:
+                              </td>
+                              <td>
+                                  @(Html.Kendo().DropDownList()
+                                  .Name("cboSecurityType")
+                                  .OptionLabel("")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetSecurityTypes", "LetterPage");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                                  <span id="lblSecurityTypeError" style="color: Red;"></span>
+                              </td>
+                              <td align="left">
+                                  <span style="color: Red;">*</span> فوریت:
+                              </td>
+                              <td colspan="3" align="right">
+                                  @(Html.Kendo().DropDownList()
+                                .Name("cboImmediacyType")
+                                  .OptionLabel("")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetImmediacyTypes", "LetterPage");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                                  <span id="lblImmediacyTypeError" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  <button id="btnReciverEdit" style="font-size: 9px;" title="حذف گیرنده">
+                                      ...</button>
+                              </td>
+                              <td style="text-align: right" colspan="6">
+                                  <span id="Girandegan" style="color: Red;"></span>
+                              </td>
+                              <td rowspan="6">
+                                  <img id="PreviewImage" src="@Url.Content("~/Content/images/Blank.jpg")" alt=""  style="border-style: double;width: 167px;height: 230px;"/>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  <span style="color: Red;">*</span>امضا کننده(Ins):
+                              </td>
+                              <td align="right">
+                                  @Automation.Helper.winClass.textbox("txtSigner")
+                                  <span id="lblSignerError" style="color: Red;"></span>
+                              </td>
+                              <td align="left">
+                                  نوع امضا:
+                              </td>
+                              <td align="right" colspan="4">
+                                  @(Html.Kendo().DropDownList()
+                                        .Name("CboSignType")
+                                        .Items(it =>
+                                        {
+                                            it.Add().Text("امضاء دیجیتال").Value("1");
+                                            it.Add().Text("امضاء گرم").Value("2");
+                                        })
+                                   )
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  <button id="btnSignerEdit" style="font-size: 9px;" title="حذف امضا کننده">
+                                      ...</button>
+                              </td>
+                              <td align="right" colspan="6">
+                                  <span id="lblSigner" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  رونوشت(Ins):
+                              </td>
+                              <td align="right">
+                                  @Automation.Helper.winClass.textbox("txtCopy")
+                                  <span id="lblCopyError" style="color: Red;"></span>
+                              </td>
+                              <td id="LetterContentDiv" colspan="5">
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  <button id="btnRoneveshtEdit" style="font-size: 9px;" title="حذف رونوشت">
+                                      ...</button>
+                              </td>
+                              <td style="text-align: right" colspan="5">
+                                  <span id="Roonevesht" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  <span style="color: Red;">*</span>ایجاد کننده:
+                              </td>
+                              <td align="right" colspan="6">
+                                  @(Html.Kendo().DropDownList()
+                                .Name("cboCreator")
+                                  .OptionLabel("")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetComission", "LetterPage");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:250px;" })
+                                  )
+                                  <span id="lblCreatorError" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  کلید واژه:
+                              </td>
+                              <td colspan="7" align="right">
+                                  @Html.TextBox("txtKeywords", null, new { @style = "direction:rtl;font-family:tornado tahoma;width: 800px;height: 23px;" })
+                                  <span id="lblKeywordsError" style="color: Red;"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td align="left">
+                                  توضیحات:
+                              </td>
+                              <td align="right" colspan="8">
+                                  @Automation.Helper.winClass.textArea("txtDesc", 4, 111)
+                              </td>
+                          </tr>
+                      </table>
+                  </div>);
+                  //ItemTab.Add().Text("ضمائم نامه")
+                  //.HtmlAttributes(new { @style = "display:none;", @id = "Attach" })
+                  //.LoadContentFrom("index", "LetterContent")
+                  //.LinkHtmlAttributes(new { @style = "color:black;" });
+                  ItemTab.Add().Text("پیوست نامه")
+                      .HtmlAttributes(new { @style = "display:none;", @id = "LetterAttach" })
+                      .Content(@<div>
+                          <table>
+                              <tr>
+                                  <td>
+                                      <table>
+                                          <tr>
+                                              <td align="left">
+                                                  عنوان پیوست:
+                                              </td>
+                                              <td>
+                                                  @Automation.Helper.winClass.textbox("txtNameAttach")
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td align="left">
+                                                  انتخاب فایل :
+                                              </td>
+                                              <td>
+                                                  @*<input type="file" name="image33" id="image33" />*@
+                                                  @(Html.Kendo().Upload()
+                                                    .Name("files")
+                                                    .Multiple(false)
+                                                    .Async(a => a
+                                                        .Save("UploadAttach", "LetterPage")
+                                                        .Remove("RemoveAttach", "LetterPage")
+                                                        .AutoUpload(true)
+
+                                                        )
+                                                    )
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td align="left">
+                                                  توضیحات:
+                                              </td>
+                                              <td>
+                                                  @Automation.Helper.winClass.textArea("txtDescAttach", 4, 30)
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td align="left">
+                                                  @Automation.Helper.winClass.Buttons("AddLinkAttach", "ذخیره", "Save")
+                                              </td>
+                                              <td align="right">
+                                                  @Automation.Helper.winClass.Buttons("PreviewAttach", "پیش نمایش", "Save")
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td colspan='2' width="100px">
+                                                  <div class="k-rtl demo-section">
+                                                      @(Html.Kendo().Grid<Automation.Models.sp_tblLetterAttachmentSelect>()
+                                                        .Name("GridAttach")
+                                                        .Columns(columns =>
+                                                        {
+                                                            columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                                                            columns.Bound(p => p.fldDesc).Title("توضیحات").Width(100);
+                                                            columns.Command(command => command.Custom("SaveAtt").Click("SaveAtt").Text("ذخیره فایل").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "SaveAtt" })).Width(45);
+                                                            columns.Command(command => command.Custom("DeleteAtt").Text("حذف فایل").HtmlAttributes(new { @style = "color: #000000;font-size: smaller;", @id = "DeleteAtt" })).Width(45);
+
+                                                        })
+                                                        .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                                                        .Pageable()
+                                                        .Scrollable()
+                                                        .DataSource(data =>
+                                                             data.Ajax()
+                                                            .PageSize(10)
+                                                                     .Model(m => m.Id(p => p.fldID))
+
+                                                        )
+
+                                                    )
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                  </td>
+                                  <td>
+                                      <img id="PreviewImage33" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" style="width: 500px; height: 500px; border: 2px;" />
+                                  </td>
+                              </tr>
+                          </table>
+                          @*<p>
+                                  @Automation.Helper.winClass.Buttons("AddLinkAttach", "ذخیره", "Save")
+                                  @Automation.Helper.winClass.Buttons("Edit1", "ویرایش", "Save")
+                              </p>*@
+                      </div>);
+                  ItemTab.Add().Text("سوابق نامه")
+                      .HtmlAttributes(new { @style = "display:none;", @id = "History" })
+                      .Content(@<div>
+                          <center>
+                              <fieldset id="Savabegh">
+                                  <legend>سوابق نامه</legend>
+                                  <br />
+                                  <div class="k-rtl demo-section">
+                                      @(Html.Kendo().Grid<Automation.Models.sp_tblHistoryLetterSelect>()
+                                            .Name("GridSavabegh")
+                                            .Columns(columns =>
+                                            {
+                                                columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                                                columns.Bound(p => p.fldLetterNumber).Title("شماره نامه");
+                                                columns.Bound(p => p.fldLetterDate).Title("تاریخ نامه");
+                                                columns.Bound(p => p.fldHistoryName).Title("نوع نامه");
+                                                columns.Bound(p => p.fldSubject).Title("موضوع نامه");
+                                            })
+                                        .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                                        .Pageable()
+                                        .Scrollable()
+                                        .DataSource(data =>
+                                            data.Ajax()
+                                            .PageSize(10)
+
+                                        )
+                                    )
+                                  </div>
+                                  <p>
+                                      @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                                  </p>
+                              </fieldset>
+                          </center>
+                          @(Html.Kendo().PanelBar().Name("Searchpanelbar").Items(panel =>
+                                        {
+                                            panel.Add().Text("جستجو")
+                                                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                                                .Content("<div id='SearchpanelContent'></div>"
+
+                                ).Expanded(true);
+                                        })
+                                        )
+                          <div class="k-rtl demo-section">
+                              @(Html.Kendo().Grid<Automation.Models.tblLetterModel>()
+                                    .Name("GridSearch")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                                        columns.Bound(p => p.fldOrderId).Title("ش ثبت در رایانه");
+                                        columns.Bound(p => p.fldSubject).Title("موضوع");
+                                        columns.Bound(p => p.fldLetterNumber).Title("شماره نامه");
+                                        columns.Bound(p => p.fldCreatedDate).Title("تاریخ ایجاد نامه");
+                                        columns.Bound(p => p.fldLetterDate).Title("تاریخ نامه");
+                                        columns.Bound(p => p.fldSenderName).Title("فرستنده");
+                                        columns.Bound(p => p.ReciverName).Title("گیرنده");
+                                        columns.Bound(p => p.Desc).Title("توضیحات");
+                                    })
+                                .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                                .Pageable()
+                                .Scrollable()
+                                .DataSource(data =>
+                                    data.Ajax()
+                                    .PageSize(10)
+                                )
+                            )
+                          </div>
+                          <div id="SearchDiv" style="display: none;">
+                              <table>
+                                  <tr>
+                                      <td>
+                                          فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "شماره ثبت" }, new { ID = "1", Name = "شماره نامه" }, new { ID = "2", Name = "تاریخ نامه" }, new { ID = "3", Name = "تاریخ ایجادنامه" } }, "ID", "Name"))
+                                      </td>
+                                      <td>
+                                          نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>
+                                          عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                                      </td>
+                                      <td>
+                                          نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                                      </td>
+                                  </tr>
+                              </table>
+                              <br />
+                          </div>
+                          <center>
+                              <table>
+                                  <tr>
+                                      @Html.Hidden("fldIDLetterType")
+                                      <td align="left">
+                                          <span style="color: Red;">*</span> نوع نامه:
+                                      </td>
+                                      <td align="right">
+                                          @(Html.Kendo().DropDownList()
+                                            .Name("cboLetterType")
+                                              .OptionLabel("")
+                                              .DataTextField("fldName")
+                                              .DataValueField("fldID")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetHistoryType", "LetterPage");
+                                                  });
+                                              }).HtmlAttributes(new { @style = "width:250px;" })
+                                              )
+                                          <span id="lblLetterTypeError" style="color: Red;"></span>
+                                      </td>
+                                      <td>
+                                          @Automation.Helper.winClass.Buttons("btnSaveHistory", "ذخیره", "Save")
+                                      </td>
+                                  </tr>
+                              </table>
+                          </center>
+                      </div>);
+                  ItemTab.Add().Text("پیگیری نامه")
+                      .HtmlAttributes(new { @style = "display:none;", @id = "StatusFinish" })
+                      .Content(@<div>
+                          <table>
+                              <tr>
+                                  <td align="left">
+                                      <span style="color: Red;">*</span>آخرین وضعیت:
+                                  </td>
+                                  <td align="right">
+                                      @Automation.Helper.winClass.textbox("txtStatusFinish")
+                                      <span id="lblStatusFinishError" style="color: Red;"></span>
+                                  </td>
+                                  <td align="left">
+                                      توضیحات:
+                                  </td>
+                                  <td>
+                                      @Automation.Helper.winClass.textArea("txtDescStatusFinish", 3, 40)
+                                  </td>
+                              </tr>
+                              <tr align="center">
+                                  <td>
+                                      @Automation.Helper.winClass.Buttons("SaveStatusFinish", "ثبت", "Save")
+                                  </td>
+                              </tr>
+                          </table>
+                          <div class="k-rtl demo-section">
+                              @(Html.Kendo().Grid<Automation.Models.sp_tblLetterFollowSelect>()
+                                .Name("GridStatusFinish")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                                    columns.Bound(p => p.fldLetterText).Title("وضعیت");
+                                    columns.Bound(p => p.fldLetterID).Title("شماره ثبت نامه");
+                                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                                })
+                                .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+                                .Pageable()
+                                .Scrollable()
+                                .DataSource(data =>
+                                    data.Ajax()
+                                    .PageSize(10)
+                                      //.Read("FillStatusFinish", "LetterPage")
+                                )
+                            )
+                          </div>
+                      </div>);
+              })
+       )
+        </center>
+    </div>

@@ -1,0 +1,373 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="OrganicRole">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <a href="@Url.Content("~/Helps/تعریف پست سازمانی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <center>
+            <table>
+                <tr>
+                    <td align="left">چارت سازمانی:
+                    </td>
+                    <td colspan="2" dir="rtl" id="O_Unit" align="right"></td>
+                </tr>
+                <tr>
+                    <td align="left"></td>
+                    <td colspan="2" dir="rtl" id="OrgUnitLocation" align="right"></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldID")
+                        <span style="color: Red;">*</span>تعریف پست سازمانی:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">توضیحات:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <p style="text-align:center;">
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                            @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td align="left">پست سازمانی:
+                    </td>
+                    <td colspan="2" dir="rtl" id="O_Role" align="right"></td>
+                </tr>
+            </table>
+        </center>
+
+    </div>
+    <script type="text/javascript">
+        var er = false;
+        var dataItem;
+        function selectOrg(e) {
+            dataItem = this.dataItem(e.node);
+            O_Unit = dataItem.id;
+            var url = '@Url.Content("~/OrganicRole/OrgUnitPosition")';
+            $.ajax({
+                type: "get",
+                url: url,
+                data: { id: O_Unit },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    $('#OrgUnitLocation').html('مورد انتخاب شده: ' + m.Position);
+                    
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        function selectRole(e) {
+            dataItem = this.dataItem(e.node);
+            Pid = dataItem.id;
+        }
+        var Pid=null;
+        var O_Unit = null;
+        function expand() {
+            var treeview = $("#treeview").data("kendoTreeView");
+            treeview.expand(".k-item");
+        }
+        function expand_Rol() {
+            var treeview = $("#treeviewO_Role").data("kendoTreeView");
+            treeview.expand(".k-item");
+        }
+        var Pid
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button(); 
+            $("#Help").button();
+            $('#O_Unit').html($('#LocationDiv').valueOf());
+            $('#O_Role').html($('#Div').valueOf());
+
+            $("#exit").click(function () {
+                $("#OrganicRole").remove();
+            });
+            $('#OrganicRole').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#OrganicRole').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "OrganicRole")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#txtName").keyup(function () {
+                if ($("#txtName").val() != '') {
+                    $("#txtName").removeClass("input-validation-error");
+                    $("#lblNameError").html("");
+                }
+                else {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا پست سازمانی را وارد کنید.');
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+        });
+        function Clear() {
+            $('#fldID').val(0);
+            $('#txtName').val('');
+            $('#txtDesc').val('');
+            Pid = null;
+            O_Unit = null;
+        }
+
+        function DeleteRecord() {
+                if (Pid!=null) {
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + Pid + "&URL=" + '@Url.Content("~/OrganicRole/Delete")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک مورد از پست سازمانی را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            }
+
+            function SaveRecord() {
+                if ($("#txtName").val() == '') {
+                    $("#txtName").addClass("input-validation-error");
+                    $('#lblNameError').html('لطفا پست سازمانی را وارد کنید.');
+                    er = true;
+                }
+                else
+                    $('#lblNameError').html('');
+                if (O_Unit == null) {
+                    er = true;
+                    alert('لطفا یک مورد از چارت سازمانی را انتخاب نمایید.');
+                }
+
+                if (er)
+                    return;
+                var data = {
+                    fldName: $("#txtName").val(), fldOrganizationUnitID: O_Unit, fldPID: Pid, fldDesc: $("#txtDesc").val(), fldID: $("#fldID").val()
+                };
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/OrganicRole/Save")', "#win");
+                }
+                Clear();
+            }
+
+            function EditRecord() {
+            if (Pid != null) {
+                var id = Pid;
+                var URL = '@Url.Content("~/OrganicRole/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#fldID').val(data.fldID);
+                        $('#txtName').val(data.fldName);
+                        $('#txtDesc').val(data.fldDesc);
+                        Pid = data.fldPID;
+                        O_Unit = data.O_UnitId;
+                        var url = '@Url.Content("~/OrganicRole/OrgUnitPosition")';
+                        $.ajax({
+                            type: "get",
+                            url: url,
+                            data: { id: O_Unit },
+                            datatype: "json",
+                            success: function (data) {
+                                var m = data;
+                                $('#OrgUnitLocation').html('مورد انتخاب شده: ' + m.Position);
+
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                windowAppend('body', '/metro/error');
+                $('#message').html('لطفا یک مورد از پست سازمانی را انتخاب کنید.');
+                $("#error .wintitle").html("خطا");
+            }
+        }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoTreeView');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { id: 1 },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoTreeView").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                         //var url = '@Url.Action("Reload", "OrganicRole")';
+                            //Reload(url, 'Grid', '0', '', 30, 1);
+                            var tree = $('#treeviewO_Role').data("kendoTreeView");
+                            tree.dataSource.read();
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        function drop(e) {
+            var data = $('#treeviewO_Role').data('kendoTreeView').dataItem(e.sourceNode);
+            var newData = $('#treeviewO_Role').data('kendoTreeView').dataItem(e.destinationNode);
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: '/OrganicRole/Move',
+                data: {
+                    Source: data.id,
+                    Destination: newData.id
+                },
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                    var tree = $('#treeviewO_Role').data("kendoTreeView");
+                    tree.dataSource.read();
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+    <div class="treeview-back  k-rtl" dir="rtl" id="LocationDiv">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_UnitTree", "OrganicRole")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("selectOrg");
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+
+    <div class="treeview-back  k-rtl" dir="rtl" id="Div">
+        @(Html.Kendo().TreeView()
+                        .Name("treeviewO_Role")
+                        .DataTextField("Name")
+                        .DragAndDrop(true)
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(false).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                                          .Action("_RoleTree", "OrganicRole")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.Select("selectRole");
+                            events.Drop("drop");
+                            //events.DataBound("expand_Rol");
+                        })
+                        )
+    </div>
+</div>

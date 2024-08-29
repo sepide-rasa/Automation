@@ -1,0 +1,124 @@
+﻿<div id="LetterDocView" style="z-index: 10001;">
+    @Automation.Helper.winClass.windowHeader("LetterDoc", "متن نامه", 950, 620)
+    <br />
+    
+    @if (ViewBag.State == 3)
+    {        
+        @Automation.Helper.winClass.Buttons("PrintDoc", "چاپ", "yes")
+    }
+    else
+    {
+        @Automation.Helper.winClass.Buttons("SaveDoc", "ذخیره متن", "save")
+    }
+    @Automation.Helper.winClass.Buttons("CloseDoc", "خروج", "exit")
+    <br />
+    <object classid="clsid:7677E74E-5831-4C9E-A2DD-9B1EF9DF2DB4" id="OA1" width="100%"
+        height="620px" codebase="../../officeviewer.ocx">
+        <param name="Toolbars" value="-1">
+        <param name="BorderColor" value="15647136">
+        <param name="BorderStyle" value="2">
+    </object>
+    
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //document.OA1.DisableFileCommand(1, true); //wdUIDisalbeOfficeButton
+            //document.OA1.DisableFileCommand(2, true); //wdUIDisalbeNew
+            //document.OA1.DisableFileCommand(4, true); //wdUIDisalbeOpen		
+//            document.OA1.DisableFileCommand(16, true); //wdUIDisalbeSave
+//            document.OA1.DisableFileCommand(32, true); //wdUIDisalbeSaveAs
+//            document.OA1.DisableFileCommand(512, true); //wdUIDisalbePrint (Ctrl+P) PES,PCT,CON
+//            document.OA1.DisableFileCommand(1024, true); //wdUIDisalbePrintQuick
+//            document.OA1.DisableFileCommand(2048, true); //wdUIDisalbePrintPreview
+            var id = '@ViewBag.Id';
+            var state = '@ViewBag.State';
+            var strUploadPath = "";
+            if (state == 1)
+                strUploadPath = "@ViewBag.SiteURL" + "/LetterContent/PatternDoc/" + id;
+            else
+                strUploadPath = "@ViewBag.SiteURL" + "/LetterContent/EditDoc/" + id;
+
+            document.all.OA1.HttpInit();
+            document.all.OA1.HttpAddpostString("DocumentID", id + ".docx");
+            document.all.OA1.HttpOpenFileFromStream(strUploadPath, "Word.Application");
+
+            if (state == 3) {
+                //if ("@ViewBag.HaveAndicator" == "1") {
+                //document.all.OA1.WordReplaceText("#تاریخ#", "@ViewBag.LetterDate", true, false);
+                //document.all.OA1.WordReplaceText("#شماره#", "@ViewBag.LetterNumber", true, false);
+                //document.all.OA1.WordReplaceText("#پیوست#", "@ViewBag.Attach", true, false);
+                //document.OA1.HttpInit();
+                //var sFileName = id + '.docx';
+                //document.OA1.HttpAddPostOpenedFile(sFileName);
+                //document.OA1.HttpPost("@ViewBag.SiteURL" + "/LetterContent/save/?fldLetterPatternID=" + id + "&fldLetterID=" + LetterID);
+
+                //}
+                var g = document.all.OA1.WordGotoItem(2, 1, 1);
+                //                alert(g);
+                //                var f = document.getElementById('R');
+                document.all.OA1.WordInsertText($('#R').val(), 1);
+                document.all.OA1.ProtectDoc(2, "PaSSw0rd");
+                //var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                //$('#PreviewImage').attr('src', g);
+            }
+
+
+            $('#SaveDoc').button();
+            $('#PrintDoc').button();
+            $('#CloseDoc').button();
+
+            $('#PrintDoc').click(function () {
+                if (document.all.OA1.IsOpened()) {
+                    document.all.OA1.PrintDialog();
+                }
+            });
+            $('#LetterDoc #btnClose').click(function () {
+                
+                var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                $('#PreviewImage').attr('src', g);
+                $("#LetterDoc").remove();
+                isWinOpen = false;
+            });
+
+            $('#SaveDoc').click(function () {
+                if (state != 3) {
+                    if (document.OA1.IsOpened) {
+                        document.OA1.HttpInit();
+                        var sFileName = id + '.docx';
+
+                        document.OA1.HttpAddPostOpenedFile(sFileName);
+                        document.OA1.HttpPost("@ViewBag.SiteURL" + "/LetterContent/save/?fldLetterPatternID=" + id + "&fldLetterID=" + LetterID);
+                        if (document.OA1.GetErrorCode() == 0) {
+                            var sPath = "ذخیره با موفقیت انجام شد.";
+                            alert(sPath);
+                            //                            var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                            //                            $('#PreviewImage').attr('src', g);
+                        }
+                    }
+                }
+                else {
+                    alert('شما مجاز به تغییر متن نمی باشید.\n برای اعمال تغییر به قسمت ضمائم نامه مراجعه شود.');
+                }
+            });
+            $('#CloseDoc').click(function () {
+                
+                var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                $('#PreviewImage').attr('src', g);
+                
+                if (document.OA1.IsOpened) {
+                    document.all.OA1.ExitOfficeApp();
+                }
+                isWinOpen = false;
+                $('#LetterDocView').remove();
+            });
+        });
+    </script>
+    @Html.Hidden("R", (string)ViewBag.Ronevesht)
+    @Automation.Helper.winClass.windowFother()
+    
+</div>

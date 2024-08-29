@@ -1,0 +1,35 @@
+﻿<div class="modal" id="YesNoMsgWin">
+
+    @Automation.Helper.winClass.windowHeader("", "هشدار", 250, 180)
+    <br />
+    <div id="message">
+    </div>
+    <br />
+    @Automation.Helper.winClass.Buttons("yes", "بله", "yes")
+    @Automation.Helper.winClass.Buttons("No", "خیر", "no")
+    <br />
+    <script type="text/javascript">
+    $("document").ready(function () {
+        $("#yes").button();
+        $("#No").button();
+        $("#yes").click(function () {
+            MetroDialogOpen = false;
+            var url = '@ViewBag.URL';
+            var data = { id: '@ViewBag.ID' };
+                $("#YesNoMsgWin").remove();
+                windowAppend("body", url + "/?id=" + '@ViewBag.ID');
+            });
+
+            $("#No").click(function () {
+                MetroDialogOpen = false;
+                $("#YesNoMsgWin").remove();
+            });
+            $("#btnClose").click(function () {
+                MetroDialogOpen = false;
+                $("#YesNoMsgWin").remove();
+            });
+        });
+
+    </script>
+    @Automation.Helper.winClass.windowFother()
+</div>

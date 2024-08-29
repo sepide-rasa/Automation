@@ -1,0 +1,166 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id=" Baygani">  
+   <meta name="viewport" content="width=device-width" />  
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>   
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script> 
+ <div>    
+        <br />
+        <a href="@Url.Content("~/Helps/بایگانی نامه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+         <center>
+            <table>                
+                <tr>
+ 
+                   <td align="left">
+                      <span style="color: Red;"></span> ازتاریخ:
+                     </td>
+                          <td align="right">
+                            @Html.TextBox("txtStartDate", null, new { @style = "width: 150px;height: 23px;", @readonly = "true" })
+                               <span id="lblStartDateError" style="color: Red;"></span>
+                           </td>
+                           <td align="left">
+                      <span style="color: Red;"></span>تا تاریخ:
+                     </td>
+                          <td align="right">
+                            @Html.TextBox("txtEndDate", null, new { @style = "width: 150px;height: 23px;", @readonly = "true" })
+                               <span id="lblEndDateError" style="color: Red;"></span>
+                           </td>
+                           @*<td align="left">
+                        وارده:
+                    </td>*@
+                       <td>
+                        <label>@Html.RadioButton("Pish", "true", new { @id="varede"}) وارده </label>
+                    </td>
+                    @*<td align="left">
+                        صادره:
+                    </td>*@
+                    <td>
+                        <label>@Html.RadioButton("Pish", "false", true, new { @id = "sadere" })صادره </label>
+                    </td>
+                    <td>
+                  @Automation.Helper.winClass.Buttons("Search", "جستجو", "Search")
+                  </td>
+                    <td>
+                  @Automation.Helper.winClass.Buttons("Save", "ثبت", "Save")
+                  
+                  </td>
+                  </tr>                
+            </table>
+        </center>
+    <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblLetterSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("شماره ثبت در رایانه");
+                    columns.Bound(p => p.fldLetterNumber).Title("شماره نامه  ");
+                    columns.Bound(p => p.fldLetterDate).Title("تاریخ");
+                    columns.Bound(p => p.fldSubject).Title("عنوان");
+                   
+                    
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        //.Read("Fill", "Baygani")
+            )
+        )
+        </div>
+   </div>
+    <script type="text/javascript">
+        var id;
+        var isWinOpen = false;
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#Search").button();
+            $("#Save").button();
+            $("#Help").button();
+            $('#Baygani').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#Baygani').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $('#Baygani #btnClose').click(function () {
+                $("#Baygani").remove();
+                isWinOpen = false;
+            });
+
+            $('#txtStartDate').datepicker({
+                onSelect: function (dateText, inst) {
+                    $('#txtEndDate').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                },
+                showButtonPanel: true
+            });
+            $('#txtEndDate').datepicker({
+                showButtonPanel: true
+            });
+            $('#Search').click(function () {
+                var url = '@Url.Action("Reload", "Baygani")';
+                var sadere = document.getElementById('sadere');
+                var varede = document.getElementById('varede');
+                if (sadere.checked)
+                    Reload(url, 'Grid', $("#txtStartDate").val(), $("#txtEndDate").val(), 1);
+                else if (varede.checked)
+                    Reload(url, 'Grid', $("#txtStartDate").val(), $("#txtEndDate").val(), 2);
+            });
+
+            $('#StaffName').keyup(function () {
+                if (isWinOpen == false) {
+                    windowAppend("body", "/SearchStaffUser/index");
+                    isWinOpen = true;
+                }
+            });
+
+            $('#Save').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    id = selectedItem.fldID;
+                    if (isWinOpen == false) {
+                        windowAppend("body", "/SearchArchive/index?id=" + id);
+                        isWinOpen = true;
+                    }
+                }
+            });
+
+            function Reload(Url, gridname, start, end, type) {
+                var grid = $('#' + gridname).data('kendoGrid');
+                $.ajax({
+                    url: Url,
+                    type: 'get',
+                    datatype: 'json',
+                    data: { start: start, end: end, type: type },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                    }
+
+                });
+            }
+            function Clear() {
+                $('#fldID').val(0);
+                $('#txtEndDate').val('');
+                $('#txtStartDate').val('');
+            }
+            //            $('#yess').change(function () {
+            //                var g = document.getElementById('yess');
+            //                if (g.checked)
+            //                    $('#pishPardakht').show();
+            //            });
+
+            //            $('#no').change(function () {
+            //                var g = document.getElementById('no');
+            //                if (g.checked)
+            //                    $('#pishPardakht').hide();
+            //            });
+        });
+
+    </script>
+</div>

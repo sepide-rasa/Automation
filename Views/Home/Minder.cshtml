@@ -1,0 +1,43 @@
+﻿<div id="Minder"> 
+    @Automation.Helper.winClass.windowHeader("", "یادآوری", 500, 400)
+    @{
+        Automation.Models.AutomationEntities p = new Automation.Models.AutomationEntities();
+        int mindid = (int)ViewBag.MindId;
+        var mind = p.sp_tblMindSelect("fldid", mindid.ToString(), 0, 0).FirstOrDefault();
+        
+    }
+    <table>
+        <tr>
+            <td align="left">
+                موضوع: 
+            </td>
+            <td align="right">
+                @if (mind != null)
+                {
+                    <span>@mind.fldSubject</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                متن:
+            </td>
+            <td align="right">
+                @if (mind != null)
+                {
+                    <span>@mind.fldText</span>
+                }
+            </td>
+        </tr>
+    </table>
+
+    @Automation.Helper.winClass.windowFother()
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Minder #btnClose').click(function () {
+                $("#Minder").remove();
+                isWinOpened = false;
+            });
+        });
+    </script>
+</div>

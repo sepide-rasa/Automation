@@ -1,0 +1,412 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="User">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    @{
+        Automation.Models.AutomationEntities car = new Automation.Models.AutomationEntities();
+        var q = car.sp_tblUserGroupSelect("", "", 0).ToList();        
+    }
+    <div>
+        <br />
+        <a href="@Url.Content("~/Helps/تعریف کاربران.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+        <center>
+            @Html.Hidden("fldID")
+            <table>
+                <tr>
+                    <td align="left">
+                        
+                        <span style="color: Red;">*</span>نام و نام خانوادگی(Ins):
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("StaffName")
+                        <span id="lblStaffNameError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span>نام کاربری:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtUser")
+                        <span id="lblUserError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span> عنوان گروه:
+                    </td>
+                    <td>
+                        @foreach (var item in q)
+                        {
+                            <input class="checkbox" type="checkbox" value="@item.fldID" />
+                            <label>@item.fldTitle</label><br />
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        حساب کاربری
+                    </td>
+                    <td>
+                        <label>@Html.RadioButton("Active", "true", new { @id = "yess" }) فعال</label><label>@Html.RadioButton("Active", "false", true, new { @id = "no" }) غیرفعال</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        توضیحات:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                    </td>
+                </tr>
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Automation.Helper.winClass.Buttons("Reset", "ریست پسورد", "Clean")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+               
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>
+                                فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام خانوادگی" } }, "ID", "Name"))
+                            </td>
+                            <td>
+                                نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>
+                                نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblUserSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldStaffName).Title("نام و نام خانوادگی");
+                    columns.Bound(p => p.fldUserName).Title("نام کابری");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(30)
+                        .Read("Fill", "User")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        var StaffID;
+        var ch = 0;
+        var isWinOpen = false;
+        $("document").ready(function () {
+            $('#StaffName').keyup(function () {
+                if (isWinOpen == false) {
+                    windowAppend("body", "/SearchStaffUser/index");
+                    isWinOpen = true;
+                }
+            });
+            $("#Letter").keyup(function (e) {
+                if (e.keyCode == 27) {
+                    $("#SearchStaffUser").remove();
+                    isWinOpen = false;
+                }
+            });
+        
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#Back").button();
+            $("#Reset").button();
+            $("#Help").button();
+
+            $("#exit").click(function () {
+                $("#User").remove();
+            });
+            $('#User').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#User').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+
+            $("#Reset").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/User/Reset/")' + id;
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به ریست پسورد رکورد انتخاب شده هستید؟');
+                }
+
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            });
+
+            $('#yess').change(function () {
+                var g = document.getElementById('yess');
+                if (g.checked)
+                    ch = 1
+            });
+
+            $('#no').change(function () {
+                var g = document.getElementById('no');
+                if (g.checked)
+                    ch = 0
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "User")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $("#txtUser").keyup(function () {
+                if ($("#txtUser").val() != '') {
+                    $("#txtUser").removeClass("input-validation-error");
+                    $("#lblUserError").html("");
+                }
+                else {
+                    $("#txtUser").addClass("input-validation-error");
+                    $('#lblUserError').html('لطفا نام کاربری را وارد نمایید.');
+                }
+            });
+
+            $("#StaffName").keyup(function () {
+                if ($("#StaffName").val() != '') {
+                    $("#StaffName").removeClass("input-validation-error");
+                    $("#lblStaffNameError").html("");
+                }
+                else {
+                    $("#StaffNames").addClass("input-validation-error");
+                    $('#lblStaffNameError').html('لطفا نام را وارد نمایید.');
+                }
+            });
+
+
+        
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+
+        });
+        function Clear() {
+            $('#fldID').val(0);
+            $('#txtUser').val('');
+            $('#StaffName').val('');
+            $('#txtDesc').val('');
+            yess.checked = false;
+            no.checked=false
+
+        }
+        function DeleteRecord() {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/User/Delete")';
+                    if (MetroDialogOpen == false) {
+                        MetroDialogOpen = true;
+                        windowAppend("body", URL);
+                        $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            }
+
+        function SaveRecord() {
+                var er = false;
+                if ($("#txtUser").val() == '') {
+                    $("#txtUser").addClass("input-validation-error");
+                    $('#lblUserError').html('لطفا نام کاربری را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblUserError').html('');
+
+                if ($("#StaffName").val() == '') {
+                    $("#StaffName").addClass("input-validation-error");
+                    $('#lblStaffNameError').html('لطفانام راوارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblStaffNameError').html('');
+                if (er)
+                    return;
+
+                if (yess.checked)
+                    ch = true;
+                else
+                    ch = false;
+
+                var _checked = new Array();
+                var c = document.querySelectorAll('.checkbox');
+                for (var i = 0; i < c.length; i++) {
+                    var b = c[i];
+                    if (b.checked)
+                        _checked.push(b.value);
+                }
+                var data = {
+                    fldStaffID: StaffID, fldUserName: $("#txtUser").val(),
+                    fldPassword: $("#txtUser").val(), fldActive_Deactive: ch,
+                    fldDesc: $("#txtDesc").val(), fldID: $("#fldID").val(),
+                    _checked: _checked
+                };
+
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/User/Save")', "#win");
+                }
+                Clear();
+            }
+        function EditRecord() {
+            var entityGrid = $("#Grid").data("kendoGrid");
+            var selectedItem = entityGrid.dataItem(entityGrid.select());
+            if (selectedItem) {
+                var id = selectedItem.fldID;
+                var URL = '@Url.Content("~/User/Details")';
+                URL = URL + "/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: URL,
+                    success: function (data) {
+                        $('#fldID').val(data.fldID);
+                        $('#StaffName').val(data.fldStaffName);
+                        $('#txtUser').val(data.fldUserName);
+                        $('#txtDesc').val(data.fldDesc);
+                        StaffID = data.fldStaffId;
+                        var checked = $('input[type=checkbox]');
+                        for (var i = 0; i < checked.length; i++) {
+                            var f = checked.valueOf()[i];
+                            f.checked = false;
+                            for (var k = 0; k < data.checkedNodes.length; k++) {
+                                if (f.value == data.checkedNodes[k])
+                                    f.checked = true;
+                            }
+                        }
+                        if (data.fldActive_Deactive)
+                            yess.checked = true;
+                        else
+                            no.checked = true;
+                    },
+                    failure: function (data) {
+                        alert(data.data);
+                    }
+                });
+            }
+            else {
+                windowAppend('body', '/metro/error');
+                $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                $("#error .wintitle").html("خطا");
+            }
+        }
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                data: JSON3.stringify(sendInfo),
+                contentType: 'application/json',
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            var url = '@Url.Action("Reload", "User")';
+                            Reload(url, 'Grid', '0', '', 30, 1);
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+                  
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+          
+          
+
+    </script>
+</div>

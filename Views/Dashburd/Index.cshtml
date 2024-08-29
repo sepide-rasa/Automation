@@ -1,0 +1,97 @@
+﻿<div id="Dashburd">
+    @using Kendo.Mvc.UI;
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    
+  <a href="@Url.Content("~/Helps/داشبورد مدیریتی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+
+    <center>
+        <table>
+            <tr>
+                <td align="left">
+                    از تاریخ:
+                </td>
+                <td align="right">
+                    @Html.TextBox("txtStartDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                    <span id="lblStartDateError" style="color: Red;"></span>
+                </td>
+            
+                <td align="left">
+                    تا تاریخ:
+                </td>
+                <td align="right">
+                    @Html.TextBox("txtEndDate", null, new { @style = "width: 164px;height: 23px;", @readonly = "true" })
+                    <span id="lblEndDateError" style="color: Red;"></span>
+                </td>
+            </tr>
+        </table>
+        @Automation.Helper.winClass.Buttons("BtnSearch", "جستجو", "search")
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_ManagerVaziatYekMahe>()
+                .Name("Grid")
+                .Scrollable(m=>m.Enabled(true).Height(500))
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.StaffName).Title("نام و نام خانوادگی");
+                    columns.Bound(p => p.UnReadLetters).Title("تعداد خوانده نشده ها");
+                    columns.Bound(p => p.sent).Title("تعداد ارسالی ها");
+                    columns.Bound(p => p.Recive).Title("تعداد دریافتی ها");
+                    columns.Bound(p => p.sentPercent).Title("نسبت ارسالی(%)");
+                    columns.Bound(p => p.recivePercent).Title("نسبت دریافتی(%)");
+                    columns.Bound(p => p.Takhirtime).Title("تاخیر در مشاهده");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(1000)
+            )
+        )
+        </div>
+
+    </center>
+    <script type="text/javascript">
+        isWinOpen = false;
+        $("document").ready(function () {
+            $("#BtnSearch").button();
+            $("#Help").button();
+
+            $('#txtStartDate').datepicker({
+                onSelect: function (dateText, inst) {
+                    $('#txtEndDate').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                },
+                showButtonPanel: true
+            });
+            $('#txtEndDate').datepicker({
+                showButtonPanel: true
+            });
+            $("#BtnSearch").click(function () {
+
+                $.ajax({
+                    url: '/Dashburd/reload',
+                    type: 'get',
+                    datatype: 'json',
+                    data: { Start: $('#txtStartDate').val(), End: $('#txtEndDate').val() },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#Grid").data("kendoGrid").dataSource.data(result);
+                    }
+
+                });
+            });
+
+            $('#Dashburd #Grid table tr').live('dblclick', function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    if (isWinOpen == false) {
+                        windowAppend("body", "/Dashburd_Letter/Index?CommisionId=" + selectedItem.fldCommisionId);
+                        isWinOpen = true;
+                    }
+                }
+            });
+        });
+    </script>
+</div>

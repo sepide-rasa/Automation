@@ -1,0 +1,163 @@
+﻿@using Kendo.Mvc.UI;
+<div id="Contentdiv">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <center>
+            <table style="width: 100%; height: 100%;">
+                <tr>
+                    <td align="center" style="z-index: 100;">
+                        الگوی نامه:
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboLetterPattern")
+                                  .HtmlAttributes(new { @style = "z-index:0;" })
+                                  .OptionLabel("الگوی نامه...")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetLetterPattern", "LetterContent");
+                                      });
+                                  })
+                                  )
+                        @Automation.Helper.winClass.Buttons("OpenWord", "متن نامه", "yes")
+                        @Automation.Helper.winClass.Buttons("EditWord", "ویرایش متن", "edit")
+                        @Automation.Helper.winClass.Buttons("DelWord", "حذف متن", "del")
+                    </td>
+                </tr>
+                <tr>
+                    @*<td align="center" colspan="2">
+                        <img id="PreviewImage" src="@Url.Content("~/Content/images/Blank.jpg")" alt="" width="500px" style="border-style: double;"/>
+                    </td>*@
+                </tr>
+            </table>
+        </center>
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#OpenWord").button();
+            $("#EditWord").button();
+            $("#DelWord").button();
+            $('#Contentdiv #btnClose').click(function () {
+                $("#Contentdiv").remove();
+                isWinOpen = false;
+            });
+
+
+            $("#OpenWord").click(function () {
+                $('#PreviewImage').attr('src', '');
+                if ($('#cboLetterPattern').val() != '') {
+                    var have = 0;
+                    if (LetterID != 0 ) {
+                        $.ajax({
+                            type: "GET",
+                            url: '/LetterContent/CheckHaveFile',
+                            data: {
+                                LetterID: LetterID
+                            },
+                            success: function (data) {
+                                have = data.have;
+                                if (have == 0) {
+                                    var r = '';
+                                    windowAppend('#Contentdiv', '/LetterContent/ViewDoc?id=' + $('#cboLetterPattern').val() + '&state=1&Ronevesht=' + r);
+                                } else {
+                                    windowAppend('#Contentdiv', '/metro/error');
+                                    $('#message').html('نامه حاوی متن می باشد لطفا جهت اعمال تغییرات از دکمه ویرایش استفاده نمایید.');
+                                    $("#error .wintitle").html("خطا");
+                                }
+                            }
+                        });
+                    } else
+                        alert('ابتدا مشخصات نامه را ثبت کنید.');
+                }
+                else {
+                    windowAppend('#Contentdiv', '/metro/error');
+                    $('#message').html('لطفا یک الگو را انتخاب کنید');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+            $("#EditWord").click(function () {
+                $('#PreviewImage').attr('src', '');
+                var have = 0;
+                $.ajax({
+                    type: "GET",
+                    url: '/LetterContent/CheckHaveFile',
+                    data: {
+                        LetterID: LetterID
+                    },
+                    success: function (data) {
+                        have = data.have;
+                        if (have == 1) {
+                            if (data.issign == 0) {
+                                var r = '';
+                                windowAppend('#Contentdiv', '/LetterContent/ViewDoc?id=' + LetterID + '&state=2&Ronevesht=' + r);
+                            }
+                            else {
+                                windowAppend('#Contentdiv', '/metro/error');
+                                $('#message').html('نامه امضا شده و شما مجاز به تغییر آن نمی باشید.');
+                                $("#error .wintitle").html("خطا");
+                            }
+                        }
+                        else {
+                            windowAppend('#Contentdiv', '/metro/error');
+                            $('#message').html('نامه حاوی متن نمی باشد.');
+                            $("#error .wintitle").html("خطا");
+                        }
+                    }
+                });
+            });
+
+            $("#DelWord").click(function () {
+                $('#PreviewImage').attr('src', '');
+                var have = 0;
+                $.ajax({
+                    type: "GET",
+                    url: '/LetterContent/CheckHaveFile',
+                    data: {
+                        LetterID: LetterID
+                    },
+                    success: function (data) {
+                        have = data.have;
+                        if (have == 1) {
+                            if (data.issign == 0) {
+                                $('#Lock').show();
+                                $.ajax({
+                                    type: "post",
+                                    url: '/LetterContent/delete/' + LetterID,
+                                    success: function (data) {
+                                        var m = data;
+                                        windowAppend("#Contentdiv", "/metro/error");
+                                        $("#message").html(m.data);
+                                        switch (m.state) {
+                                            case 0:
+                                                $("#error .wintitle").html("ذخیره موفق");
+                                                break;
+                                            case 1:
+                                                $("#error .wintitle").html("خطا");
+                                                break;
+                                        }
+                                        $('#Lock').hide();
+                                    }
+                                });
+                            }
+                            else {
+                                windowAppend('#Contentdiv', '/metro/error');
+                                $('#message').html('نامه امضا شده و شما مجاز به حذف آن نمی باشید.');
+                                $("#error .wintitle").html("خطا");
+                            }
+                        }
+                        else {
+                            windowAppend('#Contentdiv', '/metro/error');
+                            $('#message').html('نامه حاوی متن نمی باشد.');
+                            $("#error .wintitle").html("خطا");
+                        }
+                    }
+                });
+
+            });
+        });
+
+        
+    </script>
+</div>

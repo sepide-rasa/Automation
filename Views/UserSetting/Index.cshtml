@@ -1,0 +1,315 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="AutomationUser">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldID")
+                        <span style="color: Red;">*</span>نام کاربری:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtUserName")
+                        <span id="lblNameError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                        <span style="color: Red;">*</span>رمز عبور:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtUserPass")
+                        <span id="lblFamilyError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;">*</span>تکرار رمز عبور:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtUserPass1")
+                        <span id="lblMeliCodeError" style="color: Red;"></span>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td align="left">حساب کاربری
+                    </td>
+                    <td>
+                        <label>@Html.RadioButton("Active", "true", new { @id = "yes" }) دارد</label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td align="left"></td>
+                    <td>
+                        <label>@Html.RadioButton("Active", "false", true, new { @id = "no" }) ندارد</label>
+                    </td>
+
+                </tr>
+                <td align="left">توضیحات:
+                </td>
+                <td align="right">
+                    @Automation.Helper.winClass.textArea("txtDesc", 4, 30)
+                </td>
+                </tr>               
+            </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                @Automation.Helper.winClass.Buttons("EditLink", "ویرایش", "Edit")
+                @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+            </p>
+        </center>
+        @(Html.Kendo().PanelBar()
+        .Name("panelbar-images")
+        .Items(panelbar =>
+        {
+            panelbar.Add().Text("جستجو")
+                .ImageUrl(Url.Content("~/Content/images/search.png"))
+                .Content(@<div>
+                    <table>
+                        <tr>
+                            <td>فیلد جستجو:@Html.DropDownList("cboSearchFiald", new SelectList(new[] { new { ID = "0", Name = "نام کاربری" } }, "ID", "Name"))
+                            </td>
+                            <td>نوع جستجو: @Html.DropDownList("cboSearchType", new SelectList(new[] { new { ID = "0", Name = "مشابه عبارت" }, new { ID = "1", Name = "مشابه عبارت از سمت راست" }, new { ID = "2", Name = "عین عبارت" } }, "ID", "Name"))
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>عبارت جستجو: @Automation.Helper.winClass.textbox("txtSearch")
+                            </td>
+                            <td>نتیجه رکوردها: @Html.TextBox("txtTop", 30, new { @style = "width:30px;" }) رکورد
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </div>);
+        })
+        )
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_tblAutomationUserSelect>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldUserName).Title("نام کابری");
+                    columns.Bound(p => p.fldPassword).Title("تکراررمزعبور");
+                    columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                        .Read("Fill", "AutomationUser")
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#EditLink").button();
+            $("#DelLink").button();
+            $("#exit").button();
+
+            $("#exit").click(function () {
+                $("#StaffType").remove();
+            });
+            $('#yes').change(function () {
+                var ch = 0
+                var g = document.getElementById('yes');
+                if (g.checked)
+                    ch = 1
+            });
+
+            $('#no').change(function () {
+                var g = document.getElementById('no');
+                if (g.checked)
+                    ch = 0
+            });
+            jQuery("#EditLink").click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/AutomationUser/Details")';
+                    URL = URL + "/" + id;
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        success: function (data) {
+                            $('#fldID').val(data.fldID);
+                            $('#txtUserName').val(data.fldName);
+                            $('#txtUserPass').val(data.fldFamily);
+                            $('#Active').val(data.fldEmailAddress);
+                            $('#txtDesc').val(data.fldDesc);
+                        },
+                        failure: function (data) {
+                            alert(data.data);
+                        }
+                    });
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+
+            $('#txtSearch').keyup(function () {
+                var url = '@Url.Action("Reload", "AutomationUser")';
+                Reload(url, 'Grid', $("#cboSearchFiald").val(), $("#txtSearch").val(), $("#txtTop").val(), $("#cboSearchType").val());
+            });
+
+            $('#DelLink').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    var id = selectedItem.fldID;
+                    var URL = '@Url.Content("~/metro/YesNomsg")';
+                    URL = URL + "/?id=" + id + "&URL=" + '@Url.Content("~/AutomationUser/Delete")';
+                    windowAppend("body", URL);
+                    $("#message").html('آیا مایل به حذف رکورد انتخاب شده هستید؟');
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+                Clear();
+            });
+
+            $("#txtUserName").keyup(function () {
+                if ($("#txtUserName").val() != '') {
+                    $("#txtUserName").removeClass("input-validation-error");
+                    $("#lblUserNameError").html("");
+                }
+                else {
+                    $("#txtUserName").addClass("input-validation-error");
+                    $('#lblUserNameError').html('لطفا نام کاربری را وارد نمایید.');
+                }
+            });
+
+            $("#txtUserPass").keyup(function () {
+                if ($("#txtUserPass").val() != '') {
+                    $("#txtUserPass").removeClass("input-validation-error");
+                    $("#lblUserPassError").html("");
+                }
+                else {
+                    $("#txtUserPass").addClass("input-validation-error");
+                    $('#lblUserPassError').html('لطفا رمز عبور را وارد نمایید.');
+                }
+            });
+            $("#txtUserPass1").keyup(function () {
+                if ($("#txtUserPass1").val() != '') {
+                    $("#txtUserPass1").removeClass("input-validation-error");
+                    $("#lblUserPass1Error").html("");
+                }
+                else {
+                    $("#txtUserPass1").addClass("input-validation-error");
+                    $('#lblUserPass1Error').html('لطفا تکرار رمز عبور را وارد نمایید.');
+                }
+            });
+
+            $("#AddLink").click(function () {
+                var er = false;
+                if ($("#txtUserName").val() == '') {
+                    $("#txtUserName").addClass("input-validation-error");
+                    $('#lblUserNameError').html('لطفا نام کاربری را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblUserNameError').html('');
+
+                if ($("#txtUserPass").val() == '') {
+                    $("#txtUserPass").addClass("input-validation-error");
+                    $('#lblUserPassError').html('لطفا نام خانوادگی را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lblUserPassError').html('');
+
+                if ($("#txtUserPass1").val() == '') {
+                    $("#txtUserPass1").addClass("input-validation-error");
+                    $('#lbltxtUserPass1Error').html('لطفا تاریخ را وارد نمایید.');
+                    er = true;
+                }
+                else
+                    $('#lbltxtUserPass1Error').html('');
+
+                if (er)
+                    return;
+
+                var data = {
+                    fldUserName: $("#txtUserName").val(), fldPassword: $("#txtUserPass").val(), fldActive_Deactive: ch,
+                     fldDesc: $("#txtDesc").val(), fldID: $("#fldID").val()
+                };
+
+                if (data != '') {
+                    PostForm(data, '@Url.Content("~/AutomationUser/Save")', "#win");
+                }
+                Clear();
+            });
+
+        });
+        function Clear() {
+            $('#fldID').val(0);
+            $('#txtUserName').val('');
+            $('#txtUserPass').val('');
+            $('#txtDesc').val('');
+        }
+
+
+        function Reload(Url, gridname, field, value, top, searchType) {
+            var grid = $('#' + gridname).data('kendoGrid');
+            $.ajax({
+                url: Url,
+                type: 'get',
+                datatype: 'json',
+                data: { field: field, value: value, top: top, searchtype: searchType },
+                error: function (xhr, status, error) {
+                    alert(xhr + status);
+                },
+                success: function (result) {
+                    $("#" + gridname).data("kendoGrid").dataSource.data(result);
+                }
+
+            });
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendInfo,
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            var url = '@Url.Action("Reload", "Staff")';
+                            Reload(url, 'Grid', '0', '', 30, 1);
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        
+
+    </script>
+</div>

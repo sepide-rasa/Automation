@@ -1,0 +1,298 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SearchLetterBaygani">
+   <meta name="viewport" content="width=device-width" />
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.ui.datepicker-cc.all.min.js")" type="text/javascript"></script>
+    <div>
+        <br />
+        <a href="@Url.Content("~/Helps/جستجوی نامه بایگانی.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+     
+        <center>
+            <table>
+                <tr>
+                    <td align="left">
+                        @Html.Hidden("fldID")
+                        <span style="color: Red;"></span>شماره ثبت در رایانه:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtNumber")
+                        <span id="lblNumberError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                      <span style="color: Red;"></span> ازتاریخ:
+                     </td>
+                          <td align="right">
+                            @Html.TextBox("txtStartDate", null, new { @style = "width: 150px;height: 23px;" })
+                               <span id="lblStartDateError" style="color: Red;"></span>
+                           </td>
+         
+                            <td align="left">
+                        <span style="color: Red;"></span> محرمانگی:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("cboSecurityType")
+                                  .OptionLabel("")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .OptionLabel("محرمانگی...")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetSecurityTypes", "SearchLetterBaygani");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                        <span id="lblSecurityTypeError" style="color: Red;"></span>
+                    </td>
+                                          
+                      </tr>
+                       <tr>                   
+                    <td align="left"> 
+                        <span style="color: Red;"></span>موضوع نامه:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtSubLetter")
+                        <span id="lblSubLetterError" style="color: Red;"></span>
+                    </td>
+                    <td align="left">
+                      <span style="color: Red;"></span>تا تاریخ:
+                     </td>
+                          <td align="right">
+                            @Html.TextBox("txtEndDate", null, new { @style = "width: 150px;height: 23px;"})
+                               <span id="lblEndDateError" style="color: Red;"></span>
+                           </td>
+
+                            <td align="left">
+                        <span style="color: Red;"></span> نوع نامه:
+                    </td>
+                    <td>
+                        @(Html.Kendo().DropDownList()
+                            .Name("cboLetterTypes")
+                                  .OptionLabel("")
+                                  .DataTextField("fldName")
+                                  .DataValueField("fldID")
+                                  .OptionLabel("نوع نامه...")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetLetterTypes", "SearchLetterBaygani");
+                                      });
+                                  }).HtmlAttributes(new { @style = "width:169px;" })
+                                  )
+                        <span id="lblLetterTypeError" style="color: Red;"></span>
+                    </td>
+
+                        
+                </tr>
+                <tr>
+                    <td align="left">
+                        <span style="color: Red;"></span>فرستنده یا گیرنده:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtRecOrSend")
+                        <span id="lblRecOrSendError" style="color: Red;"></span>
+                    </td>
+                     <td align="left">
+                        <span style="color: Red;"></span>شماره نامه:
+                    </td>
+                    <td align="right">
+                       @Automation.Helper.winClass.textbox("LetterNumber")
+                      <span id="lblLetterNumberError" style="color: Red;"></span>
+                    </td>
+                     
+                </tr>
+                <tr>
+                   <td align="left">
+                        <span style="color: Red;"></span>آرشیو:
+                    </td>
+                    <td align="right">
+                     @Automation.Helper.winClass.textbox("txtArchiv")
+                       <span id="lblArchivError" style="color: Red;"></span>
+                    </td> 
+                    <td align="left">
+                        کلید واژه:
+                    </td>
+                    <td align="right">
+                        @Automation.Helper.winClass.textbox("txtKeyword")
+                    </td> 
+                </tr>
+                
+                     </table>
+            <p>
+                @Automation.Helper.winClass.Buttons("AddLink", "پیمایش", "Save")
+                @Automation.Helper.winClass.Buttons("Cut", "انتقال", "Edit")
+                @Automation.Helper.winClass.Buttons("Search", "جستجو", "Search")
+                @Automation.Helper.winClass.Buttons("DelLink", "حذف", "Del")
+                @Automation.Helper.winClass.Buttons("exit", "لغو", "Exit")
+            </p>
+        </center>
+      
+        <div class="k-rtl demo-section">
+            @(Html.Kendo().Grid<Automation.Models.sp_SelectLettersInCartabl>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldID).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldLetterNumber).Title("شماره نامه");
+                    columns.Bound(p => p.fldSubject).Title("عنوان نامه");
+                    columns.Bound(p => p.fldKeywords).Title("کلید واژه");
+                    columns.Bound(p => p.fldLetterType).Title("نوع نامه");
+                    columns.Bound(p => p.LetterSender).Title(" فرستنده");
+                    columns.Bound(p => p.LetterRecievers).Title("گیرنده");
+                    columns.Bound(p => p.fldCreatedDate).Title("تاریخ ایجاد");
+                 columns.Bound(p => p.fldDesc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable()
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+                  
+            )
+        )
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#Cut").button();
+            $("#DelLink").button();
+            $("#Search").button();
+            $("#DelLink").button();
+            $("#exit").button();
+            $("#Help").button();
+
+            $('#SearchLetterBaygani').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#SearchLetterBaygani').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $('#txtStartDate').datepicker({
+                onSelect: function (dateText, inst) {
+                    $('#txtEndDate').datepicker('option', 'minDate', new JalaliDate(inst['selectedYear'], inst['selectedMonth'], inst['selectedDay']));
+                },
+                showButtonPanel: true
+            });
+            $('#txtEndDate').datepicker({
+                showButtonPanel: true
+            });
+
+
+            $("#exit").click(function () {
+                $("#SearchBayganiLetter").remove();
+            });
+
+            $('#Search').click(function () {
+                var SearchModel = new Array();
+
+                //if ($('#txtNumber').val() != '') {
+                //    SearchModel.push({ "ParamName": "Number", "Value": $('#txtNumber').val() });
+                //}
+                //if ($('#txtStartDate').val() != '' && $('#txtEndDate').val() != '') {
+                //    SearchModel.push({ "ParamName": "BetweenDate", "Value": $('#txtStartDate').val() + '|' + $('#txtEndDate').val() });
+                //}
+                //if ($('#cboSecurityType').val() != '') {
+                //    SearchModel.push({ "ParamName": "SecurityType", "Value": $('#txtNumber').val() });
+                //}
+                //if ($('#txtSubLetter').val() != '') {
+
+                //}
+
+                //if ($('#cboLetterTypes').val() != '') {
+
+                //}
+                //if ($('#txtRecOrSend').val() != '') {
+
+                //}
+                //if ($('#LetterNumber').val() != '') {
+
+                //}
+                //if ($('#txtArchiv').val() != '') {
+
+                //}
+                //if ($('#txtKeyword').val() != '') {
+
+                //}
+                var d = "";
+                if ($('#txtStartDate').val() != '' && $('#txtEndDate').val() != '') {
+                    d = $('#txtStartDate').val() + "|" + $('#txtEndDate').val();
+                }
+                $.ajax({
+                    url: '/SearchLetterBaygani/Search',
+                    type: 'get',
+                    datatype: 'json',
+                    data: {
+                        fldOrderId: $('#txtNumber').val(),
+                        fldSecurityType: $('#cboSecurityType').val(),
+                        fldSubject: $('#txtSubLetter').val(),
+                        fldLetterType: $('#cboLetterTypes').val(),
+                        fldSenderName: $('#txtRecOrSend').val(),
+                        ReciverName: $('#txtRecOrSend').val(),
+                        fldKeywords: $('#txtKeyword').val(),
+                        fldCreatedDate: d,
+                        fldLetterNumber: $('#LetterNumber').val()
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#Grid").data("kendoGrid").dataSource.data(result);
+                    }
+                });
+                                
+           /*     SearchModel.push({
+                    "fldOrderId": $('#txtNumber').val(),
+                    "fldSecurityType": $('#cboSecurityType').val(),
+                    "fldSubject": $('#txtSubLetter').val(),
+                    "fldLetterTypeID": $('#cboLetterTypes').val(),
+                    "fldSenderName": $('#txtRecOrSend').val(),
+                    "ReciverName": $('#txtRecOrSend').val(),
+                    "fldKeywords": $('#txtKeyword').val()
+                });
+
+                
+                var grid = $('#Grid').data('kendoGrid');
+                if (SearchModel.length > 0) {                    
+                    var sendInfo = { SearchModel: SearchModel };
+                    $.ajax({
+                        url: '/SearchLetterBaygani/Reload',
+                        type: 'POST',
+                        data: JSON3.stringify(sendInfo),
+                        datatype: "json",
+                        contentType: 'application/json',
+                        error: function (xhr, status, error) {
+                            alert(xhr + status);
+                        },
+                        success: function (result) {
+                            $("#Grid").data("kendoGrid").dataSource.data(result);
+                        }
+                    });
+                }*/
+            });
+            
+            $('#Cut').click(function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                if (entityGrid != null) {
+                    var selectedItem = entityGrid.dataItem(entityGrid.select());
+                    if (selectedItem) {
+                        id = selectedItem.fldID;
+                            windowAppend("body", "/SearchArchive/index?id=" + id);
+                    }
+                }
+                else {
+                    windowAppend('body', '/metro/error');
+                    $('#message').html('لطفا یک سطر را انتخاب کنید.');
+                    $("#error .wintitle").html("خطا");
+                }
+            });
+        });   
+    </script>
+</div>
+
+

@@ -1,0 +1,186 @@
+﻿@using Kendo.Mvc.UI;
+<div class="modal" id="SecretarialOrganizationUnit">
+    <script src="@Url.Content("~/Content/Base.js")" type="text/javascript"></script>
+    <div>
+    
+            <a href="@Url.Content("~/Helps/تعریف دبیرخانه ها.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+      
+      <br />
+       <center>
+          <table>  
+                <tr>
+                    <td align="left">@Html.Hidden("fldID")
+                        نام دبیر خانه:
+                    </td>
+                    <td colspan="2" dir="rtl" id="SecretariatID" align="right"></td>
+                </tr>
+                <tr>
+                    <td align="left">چارت سازمانی:
+                    </td>
+                    <td colspan="2" dir="rtl" id="O_Unit" align="right"></td>
+                </tr>
+                <tr>
+                    <td align="left"></td>
+                    <td colspan="2" dir="rtl" id="OrgUnitLocation" align="right"></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <p style="text-align:center;">
+                            @Automation.Helper.winClass.Buttons("AddLink", "ذخیره", "Save")
+                            @Automation.Helper.winClass.Buttons("exit", "خروج", "Exit")
+                        </p>
+                    </td>
+                </tr>
+                 
+            </table>
+        </center>
+
+    </div>
+    <script type="text/javascript">
+        function expand() {
+            var treeview = $("#treeview").data("kendoTreeView");
+            treeview.expand(".k-item");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Content("~/SecretarialOrganizationUnit/checkBox/")' + SecretariatID,
+                success: function (data) {
+                    d = data;
+                    var array = data;
+                    var checked = $('input[type=checkbox]');
+                    for (var i = 0; i < checked.length; i++) {
+                        var f = checked.valueOf()[i];
+                        f.checked = false;
+                        for (var k = 0; k < array.length; k++) {
+                            if (f.value == array[k])
+                                f.checked = true;
+                        }
+                    }
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+        var SecretariatID = null;
+        $("document").ready(function () {
+            $("#AddLink").button();
+            $("#exit").button(); 
+            $("#Help").button();
+            $('#O_Unit').html($('#Div').valueOf());
+            $("#exit").click(function () {
+                $("#SecretarialOrganizationUnit").remove();
+            });
+            SecretariatID = '@ViewBag.SecretariantId';
+            $('#SecretariatID').html('@ViewBag.SecretariantName');
+            $('#SecretarialOrganizationUnit').on('keyup', 'input', function (event) {
+                if (event.which == 13) {
+                    var inputs = $('#SecretarialOrganizationUnit').find(':input:visible');
+                    inputs.eq(inputs.index(this) + 1).focus();
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.which == 119) {
+                    SaveRecord();
+                }
+                else if (event.which == 113) {
+                    EditRecord();
+                }
+                else if (event.which == 115) {
+                    DeleteRecord();
+                }
+            });
+            $('#AddLink').attr('title', 'کلید میانبر (F8)'); //119
+            $('#EditLink').attr('title', 'کلید میانبر (F2)'); //113
+            $('#DelLink').attr('title', 'کلید میانبر (F4)'); //115
+
+            jQuery("#EditLink").click(function () {
+                EditRecord();
+            });
+
+            $('#DelLink').click(function () {
+                DeleteRecord();
+            });
+
+            $("#AddLink").click(function () {
+                SaveRecord();
+            });
+
+        });
+        function Clear() {
+            
+        }
+        function SaveRecord() {
+            var checkedNodes = new Array();
+            var checked = $('input[type=checkbox]');
+            for (var i = 0; i < checked.length; i++) {
+                var f = checked.valueOf()[i];
+                if (f.checked == true)
+                    checkedNodes.push({ "fldOrganizationUnitID": f.value });
+            }
+
+            var data = {
+                checkedNodes: checkedNodes,
+                SecretariatId: SecretariatID
+            };
+            d = data;
+            if (data != '') {
+                PostForm(data, '@Url.Content("~/SecretarialOrganizationUnit/Save")', "#win");
+            }
+            Clear();
+        }
+
+        function PostForm(datas, url, id) {
+            var sendInfo = datas;
+            $('#Lock').show();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON3.stringify(sendInfo),
+                contentType: 'application/json',
+                datatype: "json",
+                success: function (data) {
+                    var m = data;
+                    windowAppend("body", "/metro/error");
+                    $("#message").html(m.data);
+                    switch (m.state) {
+                        case 0:
+                            $("#error .wintitle").html("ذخیره موفق");
+                            break;
+                        case 1:
+                            $("#error .wintitle").html("خطا");
+                            break;
+                    }
+
+                    $('#Lock').hide();
+                },
+                failure: function (data) {
+                    alert(data.data);
+                }
+            });
+        }
+    </script>
+    
+
+    <div class="treeview-back  k-rtl" dir="rtl" id="Div">
+        @(Html.Kendo().TreeView()
+                        .Name("treeview")
+                        .DataTextField("Name")
+                        .Checkboxes(chkbxs =>
+                        {
+                            chkbxs.Enabled(true).CheckChildren(false);
+                        })
+                        .DataSource(dataSource => dataSource
+                        .Read(read => read
+                         .Action("_OrganizationUnitTree", "SecretarialOrganizationUnit")
+                        )
+                        )
+                        .Events(events =>
+                        {
+                            events.DataBound("expand");
+                        })
+                        )
+    </div>
+</div>
+
+

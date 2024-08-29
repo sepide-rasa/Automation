@@ -1,0 +1,213 @@
+﻿<div>
+    @using Kendo.Mvc.UI;
+    
+  <a href="@Url.Content("~/Helps/جستجو در متن نامه.htm")" target="_blank" id="Help" title="راهنما" style="background-image:url('/Content/images/1381415123_help.png');background-repeat: no-repeat;width:20px;height: 20px;float: left;top: 10px;left: 10px;"></a>
+
+    <center>
+        <table>
+            <tr>
+                <td>
+                    عبارت جستجو:
+                </td>
+                <td>
+                    @Automation.Helper.winClass.textbox("txtSearch")
+                </td>
+            </tr>
+        </table>
+        @Automation.Helper.winClass.Buttons("btnSearch", "جستجو", "search")
+    </center>
+    <div class="k-rtl demo-section">
+        @(Html.Kendo().Grid<Automation.Models.tblLetterModel>()
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.fldId).Title("کد").Visible(false);
+                    columns.Bound(p => p.fldOrderId).Title("ش ثبت در رایانه");
+                    columns.Bound(p => p.fldSubject).Title("موضوع");
+                    columns.Bound(p => p.fldLetterNumber).Title("شماره نامه");
+                    columns.Bound(p => p.fldLetterDate).Title("تاریخ نامه");
+                    columns.Bound(p => p.Desc).Title("توضیحات");
+                })
+            .Selectable(selectable => selectable.Mode(GridSelectionMode.Single))
+            .Pageable()
+            .Scrollable(k=>k.Height(400))
+            .DataSource(data =>
+                data.Ajax()
+                .PageSize(10)
+
+            )
+        )
+    </div>
+    <script type="text/javascript">
+        var WinOpen = false;
+        $(document).ready(function () {
+            $('#btnSearch').button();
+            $("#Help").button();
+            $('#btnSearch').click(function () {
+                $.ajax({
+                    url: '/FullTextSearch/Search',
+                    type: 'get',
+                    datatype: 'json',
+                    data: { Text: $('#txtSearch').val() },
+                    error: function (xhr, status, error) {
+                        alert(xhr + status);
+                    },
+                    success: function (result) {
+                        $("#Grid").data("kendoGrid").dataSource.data(result);
+                    }
+                });
+            });
+
+            $('#Grid table tr').live('dblclick', function () {
+                var entityGrid = $("#Grid").data("kendoGrid");
+                var selectedItem = entityGrid.dataItem(entityGrid.select());
+                if (selectedItem) {
+                    if (WinOpen == false) {
+                        WinOpen = true;
+                        var URL = '@Url.Content("~/Draft/Details")';
+                        URL = URL + "?id=" + selectedItem.fldID;
+                        $.ajax({
+                            type: "GET",
+                            url: URL,
+                            success: function (data) {
+                                if (data.fldLetterTypeId == '1') {
+                                    var URL = '@Url.Content("~/Letter/Details")';
+                                    URL = URL + "/" + selectedItem.fldID;
+                                    $.ajax({
+                                        type: "GET",
+                                        url: URL,
+                                        success: function (data) {
+                                            WinOpen = false;
+
+                                            windowAppend('body', '/Letter');
+                                            $('#Date').val(data.fldCreatedDate);
+                                            $('#LetterNum').val(data.fldLetterNumber);
+                                            $('#LetterDate').val(data.fldLetterDate);
+                                            $('#LetterNumComp').val(data.fldOrderId);
+                                            LetterID = data.fldID;
+                                            creatorId = data.fldComisionID;
+                                            $('#Attach').attr('style', '');
+                                            $('#LetterAttach').attr('style', '');
+                                            $('#History').attr('style', '');
+                                            $('#Inf').attr('style', '');
+                                            $('#StatusFinish').attr('style', '');
+                                            $("#fldID").val(data.fldID);
+                                            girandeID = data.fldGirandeId;
+                                            girandeName = data.fldGirandeName
+                                            $('#Girandegan').html(data.fldGirandeName);
+                                            $("#txtSubject").val(data.fldSubject);
+                                            AssignmentSId = 0;
+                                            SignID = data.fldSignerId;
+                                            SignName = data.fldSignerName;
+                                            $('#lblSigner').html(data.fldSignerName);
+                                            rooneveshtID = data.RoneveshtId
+                                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                                            AssignmentDesc = data.RoneveshtText;
+                                            $('#Roonevesht').html(data.RoneveshtName);
+                                            rooneveshtName = data.RoneveshtName;
+                                            var creator = $('#cboCreator').data('kendoDropDownList');
+                                            creator.value(data.fldComisionID);
+                                            creator.enable(false);
+                                            $('#txtKeywords').val(data.fldKeywords);
+                                            $('#txtDesc').val(data.fldDesc);
+                                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                                            security.value(data.fldSecurityTypeID);
+                                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                                            Immediacy.value(data.fldImmediacyID);
+                                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "Letter")';
+                                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                                            var url = '@Url.Action("ReloadLetterAttach", "Letter")';
+                                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                                            var url = '@Url.Action("ReloadStatusFinish", "Letter")';
+                                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                                            var CboSign = $('#CboSignType').data('kendoDropDownList');
+                                            CboSign.value(data.fldSignType);
+                                            $('#PreviewImage').attr('src', '');
+                                            $.ajax({
+                                                type: "GET",
+                                                url: '/LetterContent/CheckHaveFile',
+                                                data: {
+                                                    LetterID: LetterID
+                                                },
+                                                success: function (data) {
+                                                    var have = data.have;
+                                                    if (have == 1) {
+                                                        var g = '@Url.Content("~/LetterContent/prview/")' + LetterID;
+                                                        $('#PreviewImage').attr('src', g);
+                                                    }
+                                                }
+                                            });
+                                        },
+                                        failure: function (data) {
+                                            alert(data.data);
+                                        }
+                                    });
+                                }
+                                else if (data.fldLetterTypeId == '2') {
+                                    var URL = '@Url.Content("~/ExternalLetter/Details")';
+                                    URL = URL + "/" + selectedItem.fldID;
+                                    $.ajax({
+                                        type: "GET",
+                                        url: URL,
+                                        success: function (data) {
+                                            WinOpen = false;
+                                            windowAppend('body', '/ExternalLetter/Index/1');
+                                            $('#Date').val(data.fldCreatedDate);
+                                            $('#LetterNumber').val(data.fldLetterNumber);
+                                            $('#ExLetterDate').val(data.fldLetterDate);
+                                            $('#LetterNumComp').val(data.fldOrderId);
+                                            LetterID = data.fldID;
+                                            creatorId = data.fldComisionID;
+                                            $('#Attach').attr('style', '');
+                                            $('#LetterAttach').attr('style', '');
+                                            $('#History').attr('style', '');
+                                            $('#Inf').attr('style', '');
+                                            $('#StatusFinish').attr('style', '');
+                                            $("#fldID").val(data.fldID);
+                                            ReceiverID = data.fldGirandeId;
+                                            ReceiverName = data.fldGirandeName
+                                            $('#Girandegan').html(data.fldGirandeName);
+                                            $("#txtSubject").val(data.fldSubject);
+                                            AssignmentSId = 0;
+                                            SenderID = data.fldSenderId;
+                                            SenderName = data.fldSenderName;
+                                            $('#SenderOragan').html(data.fldSenderName);
+                                            rooneveshtID = data.RoneveshtId
+                                            AssignmentTypeId = data.RoneveshtAssTypeId;
+                                            AssignmentDesc = data.RoneveshtText;
+                                            $('#Roonevesht').html(data.RoneveshtName);
+                                            rooneveshtName = data.RoneveshtName;
+                                            var creator = $('#cboCreator').data('kendoDropDownList');
+                                            creator.value(data.fldComisionID);
+                                            creator.enable(false);
+                                            $('#txtKeywords').val(data.fldKeywords);
+                                            $('#txtDesc').val(data.fldDesc);
+                                            var security = $('#cboSecurityType').data('kendoDropDownList');
+                                            security.value(data.fldSecurityTypeID);
+                                            var Immediacy = $('#cboImmediacyType').data('kendoDropDownList');
+                                            Immediacy.value(data.fldImmediacyID);
+                                            var urlSavabegh = '@Url.Action("ReloadSavabegh", "ExternalLetter")';
+                                            Reload(urlSavabegh, 'GridSavabegh', '0', data.LetterID, 30, 2);
+                                            var url = '@Url.Action("ReloadLetterAttach", "Letter")';
+                                            Reload(url, 'GridAttach', '0', LetterID, 0, 2);
+                                            var url = '@Url.Action("ReloadStatusFinish", "ExternalLetter")';
+                                            Reload(url, 'GridStatusFinish', '0', LetterID, 30, 2);
+                                            var t = '@Url.Content("~/ExternalLetter/GeneratePDF/")' + LetterID;
+                                            //$('#pdf').html("<br/><br/><br/><object id='pdfbox' type='application/pdf' data='" + t + "'></object> ");
+                                        },
+                                        failure: function (data) {
+                                            alert(data.data);
+                                        }
+                                    });
+                                }
+                            },
+                            failure: function (data) {
+                                alert(data.data);
+                            }
+                        });
+                    } 
+                }
+            });
+        });
+    </script>
+</div>
