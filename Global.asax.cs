@@ -52,18 +52,18 @@ namespace Automation
                           "_bReadOnly",
                           BindingFlags.Instance | BindingFlags.NonPublic);
             fi.SetValue(settings, false);
-            //settings.ConnectionString = @"metadata=res://*/Models.Model1.csdl|res://*/Models.Model1.ssdl|res://*/Models.Model1.msl;provider=System.Data.SqlClient;provider connection string= """ +
-            //    @"data source=.\sql2017;initial catalog=AutomationTest;user id=rasasystem;password=rasasystem!@#;multipleactiveresultsets=True;application name=EntityFramework""";
             settings.ConnectionString = @"metadata=res://*/Models.Model1.csdl|res://*/Models.Model1.ssdl|res://*/Models.Model1.msl;provider=System.Data.SqlClient;provider connection string= """ +
-               @"data source=.;Initial Catalog=Automation;User ID=rasasystem;Password=rasasystem!@#;multipleactiveresultsets=True;application name=EntityFramework""";
+                @"data source=.\sql2017;initial catalog=AutomationTest;user id=rasasystem;password=rasasystem!@#;multipleactiveresultsets=True;application name=EntityFramework""";
+            //settings.ConnectionString = @"metadata=res://*/Models.Model1.csdl|res://*/Models.Model1.ssdl|res://*/Models.Model1.msl;provider=System.Data.SqlClient;provider connection string= """ +
+            //   @"data source=.;Initial Catalog=Automation;User ID=rasasystem;Password=rasasystem!@#;multipleactiveresultsets=True;application name=EntityFramework""";
 
             var settings1 = ConfigurationManager.ConnectionStrings["AutomationConnectionString"];
             var fi1 = typeof(ConfigurationElement).GetField(
                           "_bReadOnly",
                           BindingFlags.Instance | BindingFlags.NonPublic);
             fi1.SetValue(settings1, false);
-            //settings1.ConnectionString = @"Data Source=.\sql2017;initial catalog=AutomationTest;user id=rasasystem;password=rasasystem!@#";
-            settings1.ConnectionString = @"Data source=.;Initial Catalog=Automation;User ID=rasasystem;Password=rasasystem!@#;";
+            settings1.ConnectionString = @"Data Source=.\sql2017;initial catalog=AutomationTest;user id=rasasystem;password=rasasystem!@#";
+            //settings1.ConnectionString = @"Data source=.;Initial Catalog=Automation;User ID=rasasystem;Password=rasasystem!@#;";
         }
 
         protected void Session_End(object sender, EventArgs e)
