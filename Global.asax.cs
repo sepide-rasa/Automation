@@ -56,7 +56,7 @@ namespace Automation
                 @"data source=.\sql2017;initial catalog=AutomationTest;user id=rasasystem;password=rasasystem!@#;multipleactiveresultsets=True;application name=EntityFramework""";
             //settings.ConnectionString = @"metadata=res://*/Models.Model1.csdl|res://*/Models.Model1.ssdl|res://*/Models.Model1.msl;provider=System.Data.SqlClient;provider connection string= """ +
             //   @"data source=.;Initial Catalog=Automation;User ID=rasasystem;Password=rasasystem!@#;multipleactiveresultsets=True;application name=EntityFramework""";
-
+            //testii
             var settings1 = ConfigurationManager.ConnectionStrings["AutomationConnectionString"];
             var fi1 = typeof(ConfigurationElement).GetField(
                           "_bReadOnly",
