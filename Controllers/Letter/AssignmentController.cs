@@ -16,6 +16,7 @@ namespace Automation.Controllers.BasicInf
 
         public ActionResult Index(long? id, int? CreatorComId)
         {
+            //تست
             ViewBag.AssSourceId = id;
             Session["AssId"] = id;
             Session["ComId"] = CreatorComId;
