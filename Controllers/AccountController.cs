@@ -16,7 +16,7 @@ namespace Automation.Controllers
     public class AccountController : Controller
     {
 
-        //
+        // من اینجا تغییر دادم بببین
         // GET: /Account/LogOn
         public FileContentResult generateCaptcha()
         {
