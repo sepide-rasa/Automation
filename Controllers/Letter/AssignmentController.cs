@@ -8,7 +8,7 @@ using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 namespace Automation.Controllers.BasicInf
 {
-    [Authorize]
+    [Authorize] 
     public class AssignmentController : Controller
     {
         //
